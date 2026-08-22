@@ -1,5 +1,7 @@
 # AGI Research & Evolution OS（实验性个人学习项目）
 
+> **[中文](README.md) | [English](README_EN.md)**
+
 > **声明：本仓库由 AI 助手在本人指导下生成。** 代码、文档、提交均主要由 AI 完成与整理，
 > 内容仅代表个人的学习探索过程，不构成成熟的研究成果，请谨慎参考。
 > 仓库中所有实例 ID、访问令牌、内网地址已替换为 `REDACTED_*` 占位符。
@@ -30,16 +32,22 @@
 
 | 目录 | 内容 |
 |---|---|
-| `relay/` | 本地中继与远程运维脚本（`chat_relay.py` 为对话门主体） |
-| `remote/` | 云端脚本：agi_core / agi_engine / evolution_loop / tool_system / memory_system / world_model，及 Phase B–E 实验与结果 |
+| `relay/` | 本地中继核心（`chat_relay.py` 对话门、`rsh.py` 远程执行、监控页面） |
+| `relay/ops/` | 运维脚本：守护进程部署 / 重启 / 状态检查 / 归档同步 |
+| `relay/experiments/` | 实验本地侧：各 Phase 启动器、诊断探针、仿生 LLM 实验 |
+| `remote/` | 云端核心：agi_core / agi_engine / evolution_loop / tool_system / memory_system / world_model，及服务脚本与状态 JSON |
+| `remote/experiments/` | Phase B–E 实验云端脚本与结果 JSON |
 | `remote/v8/` | 仿生 LLM v7/v8 与 DCU 消融实验 |
 | `remote/agi_phase1/` | 第一阶段演化循环原型 |
-| `docs/` | 环境信息、deepseek-harness commit 锁定 |
-| `RESTORE.md` | 复原手册（从零重建环境） |
+| `docs/` | `RESTORE.md` 复原手册、环境信息、deepseek-harness commit 锁定 |
+
+> 注：仓库目录为可读性做过整理。`docs/RESTORE.md` 中的路径描述的是原始工作归档，
+> 与本仓库目录名可能不完全一致（原始归档中 `relay/ops/`、`relay/experiments/`
+> 的脚本都平铺在 `local_scnet_v8/` 下）。
 
 ## 复原
 
-见 `RESTORE.md`。依赖：Python 3.11 / PyTorch 2.9 (ROCm/DCU)、Qwen2.5 系列模型、
+见 `docs/RESTORE.md`。依赖：Python 3.11 / PyTorch 2.9 (ROCm/DCU)、Qwen2.5 系列模型、
 `docs/deepseek_harness_commit.txt` 锁定的 deepseek-harness commit。
 
 ## License
