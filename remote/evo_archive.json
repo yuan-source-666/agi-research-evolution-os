@@ -1,0 +1,747 @@
+{
+ "version": 2,
+ "champion": {
+  "genome": {
+   "blocks": [
+    {
+     "type": "gru",
+     "skip": null
+    },
+    {
+     "type": "mlp",
+     "skip": null
+    },
+    {
+     "type": "mlp",
+     "skip": null
+    },
+    {
+     "type": "gate",
+     "skip": null
+    }
+   ],
+   "iters": 1
+  },
+  "arch": "gru->mlp->mlp->gate",
+  "dev": 0.6842,
+  "test": 0.6919,
+  "params": 4065412,
+  "per_class": [
+   0.6776,
+   0.7,
+   0.8502,
+   0.5102
+  ]
+ },
+ "members": [
+  {
+   "genome": {
+    "blocks": [
+     {
+      "type": "gru",
+      "skip": null
+     },
+     {
+      "type": "mlp",
+      "skip": null
+     },
+     {
+      "type": "gate",
+      "skip": null
+     }
+    ]
+   },
+   "arch": "gru->mlp->gate",
+   "dev": 0.816,
+   "test": 0.8117,
+   "params": 3999236
+  },
+  {
+   "genome": {
+    "blocks": [
+     {
+      "type": "gru",
+      "skip": null
+     },
+     {
+      "type": "mlp",
+      "skip": null
+     },
+     {
+      "type": "gru",
+      "skip": null
+     },
+     {
+      "type": "gate",
+      "skip": null
+     }
+    ]
+   },
+   "arch": "gru->mlp->gru->gate",
+   "dev": 0.815,
+   "test": 0.8128,
+   "params": 4073988
+  },
+  {
+   "genome": {
+    "blocks": [
+     {
+      "type": "gru",
+      "skip": null
+     },
+     {
+      "type": "mlp",
+      "skip": null
+     },
+     {
+      "type": "gru",
+      "skip": null
+     },
+     {
+      "type": "gate",
+      "skip": null
+     }
+    ]
+   },
+   "arch": "gru->mlp->gru->gate",
+   "dev": 0.8145,
+   "test": 0.8213,
+   "params": 4073988
+  },
+  {
+   "genome": {
+    "blocks": [
+     {
+      "type": "gru",
+      "skip": null
+     },
+     {
+      "type": "mlp",
+      "skip": 0
+     },
+     {
+      "type": "gru",
+      "skip": 1
+     },
+     {
+      "type": "gru",
+      "skip": null
+     },
+     {
+      "type": "gate",
+      "skip": null
+     }
+    ]
+   },
+   "arch": "gru->mlp(0)->gru(1)->gru->gate",
+   "dev": 0.813,
+   "test": 0.8014,
+   "params": 4148742
+  }
+ ],
+ "history": [
+  {
+   "cycle": 1,
+   "ts": "2026-08-22 13:33:19",
+   "champ_dev": 0.8069,
+   "champ_test": 0.8227,
+   "best_mutant_dev": 0.8125,
+   "best_mutant_arch": "gru->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2
+  },
+  {
+   "cycle": 2,
+   "ts": "2026-08-22 13:38:52",
+   "champ_dev": 0.808,
+   "champ_test": 0.8172,
+   "best_mutant_dev": 0.8025,
+   "best_mutant_arch": "gru->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2
+  },
+  {
+   "cycle": 1,
+   "ts": "2026-08-22 13:40:30",
+   "champ_dev": 0.8069,
+   "champ_test": 0.8227,
+   "best_mutant_dev": 0.8125,
+   "best_mutant_arch": "gru->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0003,
+    "os_ratio": 0.15,
+    "min_gain": 0.0045
+   }
+  },
+  {
+   "cycle": 2,
+   "ts": "2026-08-22 13:46:05",
+   "champ_dev": 0.808,
+   "champ_test": 0.8172,
+   "best_mutant_dev": 0.8075,
+   "best_mutant_arch": "gru->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.00027,
+    "os_ratio": 0.18,
+    "min_gain": 0.00405
+   }
+  },
+  {
+   "cycle": 3,
+   "ts": "2026-08-22 13:51:36",
+   "champ_dev": 0.8025,
+   "champ_test": 0.8135,
+   "best_mutant_dev": 0.7868,
+   "best_mutant_arch": "gru->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000243,
+    "os_ratio": 0.216,
+    "min_gain": 0.003645
+   }
+  },
+  {
+   "cycle": 1,
+   "ts": "2026-08-22 14:00:34",
+   "champ_dev": 0.7913,
+   "champ_test": 0.8109,
+   "best_mutant_dev": 0.7902,
+   "best_mutant_arch": "(gru->mlp->gate)*3",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000243,
+    "os_ratio": 0.2592,
+    "min_gain": 0.00328
+   }
+  },
+  {
+   "cycle": 2,
+   "ts": "2026-08-22 14:05:56",
+   "champ_dev": 0.784,
+   "champ_test": 0.8042,
+   "best_mutant_dev": 0.7835,
+   "best_mutant_arch": "gru->gate->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000219,
+    "os_ratio": 0.31104,
+    "min_gain": 0.002952
+   }
+  },
+  {
+   "cycle": 3,
+   "ts": "2026-08-22 14:11:22",
+   "champ_dev": 0.7846,
+   "champ_test": 0.8036,
+   "best_mutant_dev": 0.7684,
+   "best_mutant_arch": "gru->mlp->gate(1)",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000197,
+    "os_ratio": 0.373248,
+    "min_gain": 0.002657
+   }
+  },
+  {
+   "cycle": 1,
+   "ts": "2026-08-22 14:15:14",
+   "champ_dev": 0.7701,
+   "champ_test": 0.7841,
+   "best_mutant_dev": 0.7723,
+   "best_mutant_arch": "gate->gru->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000197,
+    "os_ratio": 0.4,
+    "min_gain": 0.002391,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 2,
+   "ts": "2026-08-22 14:20:53",
+   "champ_dev": 0.7684,
+   "champ_test": 0.7799,
+   "best_mutant_dev": 0.7796,
+   "best_mutant_arch": "(gru->mlp->gate)*2",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000177,
+    "os_ratio": 0.4,
+    "min_gain": 0.002152,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 3,
+   "ts": "2026-08-22 14:26:25",
+   "champ_dev": 0.76,
+   "champ_test": 0.7758,
+   "best_mutant_dev": 0.7115,
+   "best_mutant_arch": "mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000159,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 4,
+   "ts": "2026-08-22 14:31:50",
+   "champ_dev": 0.7422,
+   "champ_test": 0.7578,
+   "best_mutant_dev": 0.6897,
+   "best_mutant_arch": "gru->mlp(0)->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000143,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 5,
+   "ts": "2026-08-22 14:37:16",
+   "champ_dev": 0.7176,
+   "champ_test": 0.7333,
+   "best_mutant_dev": 0.7143,
+   "best_mutant_arch": "moe->mlp(0)->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000129,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 6,
+   "ts": "2026-08-22 14:42:47",
+   "champ_dev": 0.7154,
+   "champ_test": 0.7292,
+   "best_mutant_dev": 0.6802,
+   "best_mutant_arch": "gate->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000116,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 7,
+   "ts": "2026-08-22 14:48:17",
+   "champ_dev": 0.6892,
+   "champ_test": 0.7115,
+   "best_mutant_dev": 0.6959,
+   "best_mutant_arch": "(gru->mlp->gate)*2",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.000104,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 8,
+   "ts": "2026-08-22 14:53:59",
+   "champ_dev": 0.6669,
+   "champ_test": 0.6909,
+   "best_mutant_dev": 0.6869,
+   "best_mutant_arch": "(gru->gru->mlp->gate)*3",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 1,
+   "ts": "2026-08-22 14:59:43",
+   "champ_dev": 0.6635,
+   "champ_test": 0.6924,
+   "best_mutant_dev": 0.6791,
+   "best_mutant_arch": "gru->attn->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 2,
+   "ts": "2026-08-22 15:04:42",
+   "champ_dev": 0.6652,
+   "champ_test": 0.6914,
+   "best_mutant_dev": 0.5653,
+   "best_mutant_arch": "gru->mlp->gru(1)->gru",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 3,
+   "ts": "2026-08-22 15:09:29",
+   "champ_dev": 0.6657,
+   "champ_test": 0.6857,
+   "best_mutant_dev": 0.6797,
+   "best_mutant_arch": "(gru->mlp->gate)*2",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.002,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 4,
+   "ts": "2026-08-22 15:13:58",
+   "champ_dev": 0.6529,
+   "champ_test": 0.6833,
+   "best_mutant_dev": 0.6289,
+   "best_mutant_arch": "(gru->mlp->gate)*3",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 5,
+   "ts": "2026-08-22 15:18:37",
+   "champ_dev": 0.6607,
+   "champ_test": 0.6846,
+   "best_mutant_dev": 0.6183,
+   "best_mutant_arch": "(gru->mlp->gate(1))*3",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 6,
+   "ts": "2026-08-22 15:23:12",
+   "champ_dev": 0.6663,
+   "champ_test": 0.6875,
+   "best_mutant_dev": 0.6842,
+   "best_mutant_arch": "gru->mlp->mlp->gate",
+   "promoted": true,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.34,
+    "min_gain": 0.002205,
+    "width": 128.0,
+    "growth": 1
+   }
+  },
+  {
+   "cycle": 7,
+   "ts": "2026-08-22 15:27:54",
+   "champ_dev": 0.7372,
+   "champ_test": 0.7354,
+   "best_mutant_dev": 0.7154,
+   "best_mutant_arch": "gru->moe->mlp->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 8,
+   "ts": "2026-08-22 15:32:20",
+   "champ_dev": 0.726,
+   "champ_test": 0.7341,
+   "best_mutant_dev": 0.639,
+   "best_mutant_arch": "gru->mlp->mlp",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 9,
+   "ts": "2026-08-22 15:36:53",
+   "champ_dev": 0.7254,
+   "champ_test": 0.7378,
+   "best_mutant_dev": 0.6669,
+   "best_mutant_arch": "mlp->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 10,
+   "ts": "2026-08-22 15:41:35",
+   "champ_dev": 0.7288,
+   "champ_test": 0.7354,
+   "best_mutant_dev": 0.7137,
+   "best_mutant_arch": "(gru->mlp->mlp->gate)*3",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 11,
+   "ts": "2026-08-22 15:46:11",
+   "champ_dev": 0.7215,
+   "champ_test": 0.7208,
+   "best_mutant_dev": 0.6814,
+   "best_mutant_arch": "gru->attn->mlp",
+   "promoted": false,
+   "weakest_class": 0,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 12,
+   "ts": "2026-08-22 15:50:52",
+   "champ_dev": 0.731,
+   "champ_test": 0.731,
+   "best_mutant_dev": 0.6925,
+   "best_mutant_arch": "gru->mlp->mlp->gru->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 13,
+   "ts": "2026-08-22 15:55:27",
+   "champ_dev": 0.7372,
+   "champ_test": 0.7354,
+   "best_mutant_dev": 0.7026,
+   "best_mutant_arch": "(gru->mlp(0)->mlp->gate)*3",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 14,
+   "ts": "2026-08-22 15:59:59",
+   "champ_dev": 0.726,
+   "champ_test": 0.7326,
+   "best_mutant_dev": 0.6518,
+   "best_mutant_arch": "gru->mlp->mlp->gru->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 15,
+   "ts": "2026-08-22 16:04:40",
+   "champ_dev": 0.7232,
+   "champ_test": 0.7359,
+   "best_mutant_dev": 0.7316,
+   "best_mutant_arch": "(gru->mlp->mlp->gate)*3",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 16,
+   "ts": "2026-08-22 16:09:25",
+   "champ_dev": 0.7316,
+   "champ_test": 0.732,
+   "best_mutant_dev": 0.7087,
+   "best_mutant_arch": "mlp->mlp->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 17,
+   "ts": "2026-08-22 16:14:03",
+   "champ_dev": 0.7305,
+   "champ_test": 0.7385,
+   "best_mutant_dev": 0.6797,
+   "best_mutant_arch": "gru->mlp->attn->mlp->gate(0)",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 18,
+   "ts": "2026-08-22 16:18:48",
+   "champ_dev": 0.7182,
+   "champ_test": 0.7292,
+   "best_mutant_dev": 0.721,
+   "best_mutant_arch": "moe->gru->mlp->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 19,
+   "ts": "2026-08-22 16:23:28",
+   "champ_dev": 0.7266,
+   "champ_test": 0.7357,
+   "best_mutant_dev": 0.7137,
+   "best_mutant_arch": "mlp->gru->mlp->mlp->mlp->gate",
+   "promoted": false,
+   "weakest_class": 2,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 20,
+   "ts": "2026-08-22 16:28:07",
+   "champ_dev": 0.7366,
+   "champ_test": 0.7326,
+   "best_mutant_dev": 0.7093,
+   "best_mutant_arch": "gru->mlp->mlp->mlp->gate",
+   "promoted": false,
+   "weakest_class": 3,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  },
+  {
+   "cycle": 21,
+   "ts": "2026-08-22 16:32:50",
+   "champ_dev": 0.7321,
+   "champ_test": 0.7292,
+   "best_mutant_dev": 0.6992,
+   "best_mutant_arch": "gru->attn->mlp->gru->gate",
+   "promoted": false,
+   "weakest_class": 0,
+   "adapt": {
+    "lr": 0.0001,
+    "os_ratio": 0.4,
+    "min_gain": 0.0021,
+    "width": 128.0,
+    "growth": 0
+   }
+  }
+ ]
+}

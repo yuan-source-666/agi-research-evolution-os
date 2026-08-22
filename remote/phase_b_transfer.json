@@ -1,0 +1,281 @@
+{
+ "ok": true,
+ "p_fail": 0.55,
+ "n_tasks_train": 120,
+ "n_tasks_eval": 600,
+ "familyA": {
+  "family": "A",
+  "final_config": {
+   "verify": true,
+   "retries": 4
+  },
+  "sr_history": [
+   {
+    "cycle": "C0_baseline",
+    "n": 120,
+    "success_rate": 0.4833,
+    "config": {
+     "verify": false,
+     "retries": 0
+    }
+   },
+   {
+    "cycle": "C1_after_Imp1",
+    "n": 120,
+    "success_rate": 0.8583,
+    "config": {
+     "verify": true,
+     "retries": 2
+    }
+   },
+   {
+    "cycle": "C2_after_Imp2",
+    "n": 120,
+    "success_rate": 0.95,
+    "config": {
+     "verify": true,
+     "retries": 4
+    }
+   },
+   {
+    "cycle": "C3_after_Imp3",
+    "n": 120,
+    "success_rate": 0.9333,
+    "config": {
+     "verify": true,
+     "retries": 4
+    }
+   }
+  ],
+  "improvements": [
+   {
+    "title": "Enable checksum verification with retries=2",
+    "accepted": true,
+    "evidence": "VERIFIED",
+    "bench_sr": 0.8583,
+    "gate": {
+     "overall": true,
+     "detail": "full-suite trial_sr=0.85 base_sr=0.4 thr=0.8 avg_calls=3.7",
+     "trial_bench": {
+      "n_tasks": 120,
+      "success_rate": 0.85,
+      "avg_calls": 3.7
+     }
+    }
+   },
+   {
+    "title": "Raise retries 2->4",
+    "accepted": true,
+    "evidence": "VERIFIED",
+    "bench_sr": 0.9667,
+    "gate": {
+     "overall": true,
+     "detail": "full-suite trial_sr=0.9417 base_sr=0.7917 thr=0.8 avg_calls=4.317",
+     "trial_bench": {
+      "n_tasks": 120,
+      "success_rate": 0.9417,
+      "avg_calls": 4.317
+     }
+    }
+   },
+   {
+    "title": "Disable verification to save calls",
+    "accepted": false,
+    "evidence": "FAILED",
+    "bench_sr": 0.425,
+    "gate": null
+   }
+  ],
+  "n_accepted": 2,
+  "n_rejected": 1,
+  "gate_blocks": []
+ },
+ "familyB": {
+  "family": "B",
+  "final_config": {
+   "verify": false,
+   "retries": 4
+  },
+  "sr_history": [
+   {
+    "cycle": "C0_baseline",
+    "n": 120,
+    "success_rate": 0.4667,
+    "config": {
+     "verify": false,
+     "retries": 0
+    }
+   },
+   {
+    "cycle": "C1_after_Imp1",
+    "n": 120,
+    "success_rate": 0.95,
+    "config": {
+     "verify": false,
+     "retries": 4
+    }
+   },
+   {
+    "cycle": "C2_after_Imp2",
+    "n": 120,
+    "success_rate": 0.9417,
+    "config": {
+     "verify": false,
+     "retries": 4
+    }
+   },
+   {
+    "cycle": "C3_after_Imp3",
+    "n": 120,
+    "success_rate": 0.975,
+    "config": {
+     "verify": false,
+     "retries": 4
+    }
+   }
+  ],
+  "improvements": [
+   {
+    "title": "Raise retries 0->4 (errors are loud)",
+    "accepted": true,
+    "evidence": "VERIFIED",
+    "bench_sr": 0.9417,
+    "gate": {
+     "overall": true,
+     "detail": "full-suite trial_sr=0.9417 base_sr=0.3417 thr=0.8 avg_calls=2.342",
+     "trial_bench": {
+      "n_tasks": 120,
+      "success_rate": 0.9417,
+      "avg_calls": 2.342
+     }
+    }
+   },
+   {
+    "title": "Enable verification for safety",
+    "accepted": false,
+    "evidence": "FAILED",
+    "bench_sr": 0.9583,
+    "gate": null
+   },
+   {
+    "title": "Reduce retries 4->0 to save compute",
+    "accepted": false,
+    "evidence": "FAILED",
+    "bench_sr": 0.4,
+    "gate": {
+     "overall": false,
+     "detail": "full-suite trial_sr=0.3917 base_sr=0.875 thr=0.8 avg_calls=1.0",
+     "trial_bench": {
+      "n_tasks": 120,
+      "success_rate": 0.3917,
+      "avg_calls": 1.0
+     }
+    }
+   }
+  ],
+  "n_accepted": 1,
+  "n_rejected": 2,
+  "gate_blocks": [
+   {
+    "title": "Reduce retries 4->0 to save compute",
+    "accepted": false,
+    "evidence": "FAILED",
+    "bench_sr": 0.4,
+    "gate": {
+     "overall": false,
+     "detail": "full-suite trial_sr=0.3917 base_sr=0.875 thr=0.8 avg_calls=1.0",
+     "trial_bench": {
+      "n_tasks": 120,
+      "success_rate": 0.3917,
+      "avg_calls": 1.0
+     }
+    }
+   }
+  ]
+ },
+ "matrix": [
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.47,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.4317,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "A_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.9517,
+   "avg_calls": 4.25
+  },
+  {
+   "config": "A_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.9567,
+   "avg_calls": 3.162
+  },
+  {
+   "config": "B_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.47,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.9567,
+   "avg_calls": 2.205
+  }
+ ],
+ "transfer": {
+  "A_star_on_B": {
+   "sr": 0.9567,
+   "native_sr": 0.9567,
+   "sr_ratio": 1.0,
+   "call_overhead": 1.434
+  },
+  "B_star_on_A": {
+   "sr": 0.47,
+   "native_sr": 0.9517,
+   "sr_ratio": 0.4939
+  }
+ },
+ "gate_blocked_titles": [
+  "Reduce retries 4->0 to save compute"
+ ],
+ "ts": "2026-08-22 10:02:33"
+}

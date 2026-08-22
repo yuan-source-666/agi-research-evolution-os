@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bionic LLM v8 · 实时研发监控</title>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2129; --border:#2d333b;
+  --text:#e6edf3; --muted:#8b949e; --accent:#58a6ff; --green:#3fb950;
+  --red:#f85149; --yellow:#d29922; --purple:#bc8cff; --teal:#39d2c0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI","Microsoft YaHei",sans-serif;padding:24px;min-height:100vh}
+.wrap{max-width:1180px;margin:0 auto}
+h1{font-size:22px;font-weight:600;display:flex;align-items:center;gap:10px}
+h1 .dot{width:10px;height:10px;border-radius:50%;background:var(--green);animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.sub{color:var(--muted);font-size:13px;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px}
+.stat .v{font-size:26px;font-weight:700;margin-top:6px}
+.stat .l{font-size:12px;color:var(--muted)}
+.stat .d{font-size:11px;color:var(--muted);margin-top:4px}
+.section{margin-top:26px}
+.section h2{font-size:15px;color:var(--muted);font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px}
+.run{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+.run .head{display:flex;justify-content:space-between;align-items:baseline}
+.run .name{font-size:16px;font-weight:600}
+.run .phase{font-size:11px;padding:3px 10px;border-radius:20px;background:#2d333b;color:var(--purple)}
+.barwrap{height:8px;background:#21262d;border-radius:6px;margin:12px 0 8px;overflow:hidden}
+.bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));border-radius:6px;transition:width .6s}
+.mets{display:flex;gap:26px;flex-wrap:wrap}
+.met .k{font-size:11px;color:var(--muted)}
+.met .v{font-size:15px;font-weight:600;margin-top:2px}
+.met .v small{font-weight:400;color:var(--muted)}
+canvas{width:100%;height:90px;margin-top:12px;display:block}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--muted);font-weight:600;font-size:12px}
+td.num{font-variant-numeric:tabular-nums}
+tr:hover td{background:#1c2129}
+.tag{font-size:11px;padding:2px 8px;border-radius:12px}
+.tag.dev{background:#1f3a5f;color:var(--accent)}
+.tag.fixed{background:#2b2b3d;color:var(--purple)}
+.err{background:#3d1d1f;border:1px solid #6e2a2c;color:#ffa198;padding:12px;border-radius:8px;font-size:12px;white-space:pre-wrap;margin-top:16px}
+.gpuraw{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:12px;font-family:Consolas,monospace;font-size:11px;color:var(--muted);white-space:pre;margin-top:12px;max-height:180px;overflow:auto}
+.foot{color:var(--muted);font-size:11px;margin-top:26px;text-align:center}
+.done-badge{color:var(--green);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><span class="dot"></span>Bionic LLM v8 · 发育式 Transformer 扩大实验</h1>
+  <div class="sub">SCNet 海光 DCU · 4 配置 × 3 种子 × 3200 步 · 预分词缓存 + 3 进程并行 · 每 20s 自动刷新</div>
+
+  <div class="grid">
+    <div class="card stat"><div class="l">运行进程</div><div class="v" id="s-procs">–</div><div class="d" id="s-procs-d">并行训练进程数</div></div>
+    <div class="card stat"><div class="l">已完成组</div><div class="v" id="s-done">–</div><div class="d">共 12 组（4 配置 × 3 种子）</div></div>
+    <div class="card stat"><div class="l">显存占用</div><div class="v" id="s-mem">–</div><div class="d" id="s-mem-d">共享 64G 卡，守卫 ≤3 进程</div></div>
+    <div class="card stat"><div class="l">最后刷新</div><div class="v" id="s-time" style="font-size:20px">–</div><div class="d" id="s-time-d">状态来自远端实时采集</div></div>
+  </div>
+
+  <div class="section"><h2>正在训练</h2><div id="runs"></div></div>
+  <div class="section"><h2>已完成组结果</h2>
+    <div class="card" style="padding:6px 12px"><table><thead>
+      <tr><th>配置</th><th>种子</th><th class="num">TF top1 /24</th><th class="num">TF top5 /24</th><th class="num">最佳 val loss</th><th class="num">神经元/层</th><th class="num">耗时(s)</th></tr>
+    </thead><tbody id="tbody"></tbody></table></div>
+  </div>
+  <div class="section"><h2>GPU 原始状态 (hy-smi)</h2><div class="gpuraw" id="gpuraw">等待数据…</div></div>
+  <div id="errbox"></div>
+  <div class="foot">v8_status.py @ SCNet /root/private_data/v8 · poll_status.py @ 本地 · 数据流：远端采集 → 20s 轮询 → 本页面 5s 渲染</div>
+</div>
+
+<script>
+const CFG_TOTAL = {dev:3200, fixed_small:3200, fixed_mid:3200, fixed_large:3200};
+const PHASE_CN = {proliferation:"增殖期", pruning:"修剪期", consolidation:"定型期", done:"完成"};
+
+function fmt(n){return (n===null||n===undefined)?"–":n}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function drawCurve(canvas, hist){
+  if(!hist||hist.length<2){canvas.style.display="none";return}
+  canvas.style.display="block";
+  const ctx=canvas.getContext("2d");
+  const W=canvas.width=canvas.clientWidth*2, H=canvas.height=180;
+  ctx.clearRect(0,0,W,H);
+  const xs=hist.map(h=>h[0]), ys=hist.map(h=>h[1]);
+  const xmin=Math.min(...xs), xmax=Math.max(...xs), ymin=Math.min(...ys), ymax=Math.max(...ys);
+  const px=x=>30+(x-xmin)/(xmax-xmin||1)*(W-50), py=y=>H-25-(y-ymin)/(ymax-ymin||1)*(H-50);
+  ctx.strokeStyle="#21262d";ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=25+i*(H-50)/4;ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(W-20,y);ctx.stroke()}
+  const grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,"rgba(88,166,255,.25)");grad.addColorStop(1,"rgba(88,166,255,0)");
+  ctx.beginPath();ctx.moveTo(px(xs[0]),py(ys[0]));
+  for(let i=1;i<hist.length;i++)ctx.lineTo(px(xs[i]),py(ys[i]));
+  ctx.strokeStyle="#58a6ff";ctx.lineWidth=3;ctx.stroke();
+  ctx.lineTo(px(xs[xs.length-1]),H-25);ctx.lineTo(px(xs[0]),H-25);ctx.closePath();
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.fillStyle="#8b949e";ctx.font="20px Consolas";
+  ctx.fillText("val loss  "+ymin.toFixed(3)+" – "+ymax.toFixed(3),34,24);
+}
+
+function render(d){
+  const now=new Date();
+  document.getElementById("s-time").textContent=now.toLocaleTimeString("zh-CN");
+  document.getElementById("s-time-d").textContent="数据时间戳 "+new Date((d.ts||0)*1000).toLocaleTimeString("zh-CN");
+
+  if(!d.ok){
+    document.getElementById("errbox").innerHTML='<div class="err">拉取远端状态失败：\n'+esc(d.error||"未知错误")+'</div>';
+    return;
+  }
+  document.getElementById("s-procs").textContent=d.n_procs;
+  document.getElementById("s-procs-d").textContent=d.n_procs>0?"训练进行中":"全部进程已结束";
+  const done=(d.groups_done||[]);
+  document.getElementById("s-done").innerHTML='<span class="'+(done.length>=12?"done-badge":"")+'">'+done.length+' / 12</span>';
+  const g=d.gpu||{};
+  document.getElementById("s-mem").textContent=(g.used_gb!=null?g.used_gb+" G":"–");
+  document.getElementById("s-mem-d").textContent=(g.free_gb!=null?("空闲 "+g.free_gb+" G / 共 "+g.total_gb+" G（共享卡）"):"–");
+
+  const runs=document.getElementById("runs");
+  const keys=Object.keys(d.running||{});
+  if(!keys.length){
+    runs.innerHTML='<div class="card" style="color:var(--muted);font-size:13px">当前无正在训练的配置' +(done.length>=12?' —— <span class="done-badge">实验全部完成 🎉</span>':'')+'</div>';
+  } else {
+    runs.innerHTML=keys.map(k=>{
+      const r=d.running[k], pct=Math.round(r.step/r.total*100);
+      const neu=r.neurons||[];
+      return '<div class="run"><div class="head"><div class="name">'+esc(k)+'</div><div class="phase">'+esc(PHASE_CN[r.phase]||r.phase)+'</div></div>'
+      +'<div class="barwrap"><div class="bar" style="width:'+pct+'%"></div></div>'
+      +'<div class="mets">'
+      +'<div class="met"><div class="k">进度</div><div class="v">'+r.step+' <small>/ '+r.total+'（'+pct+'%）</small></div></div>'
+      +'<div class="met"><div class="k">train loss</div><div class="v">'+r.loss.toFixed(4)+'</div></div>'
+      +'<div class="met"><div class="k">val loss</div><div class="v">'+r.val.toFixed(4)+'</div></div>'
+      +'<div class="met"><div class="k">神经元/层</div><div class="v">'+(neu.length?neu.join(" · "):"–")+'</div></div>'
+      +'<div class="met"><div class="k">分裂 / 修剪</div><div class="v">'+r.splits+' <small>/</small> '+r.prunes+'</div></div>'
+      +'</div><canvas></canvas></div>';
+    }).join("");
+    runs.querySelectorAll(".run").forEach((el,i)=>{
+      drawCurve(el.querySelector("canvas"), d.running[keys[i]].val_hist);
+    });
+  }
+
+  const tb=document.getElementById("tbody");
+  if(!done.length){tb.innerHTML='<tr><td colspan="7" style="color:var(--muted)">暂无已落盘的完整组</td></tr>'}
+  else{
+    done.sort((a,b)=>(String(a.cfg).localeCompare(String(b.cfg)))||((a.seed||0)-(b.seed||0)));
+    tb.innerHTML=done.map(g=>{
+      const cls=String(g.cfg).startsWith("fixed")?"fixed":"dev";
+      return '<tr><td><span class="tag '+cls+'">'+esc(g.cfg||"?")+'</span></td><td class="num">'+fmt(g.seed)+'</td>'
+      +'<td class="num"><b>'+fmt(g.top1)+'</b></td><td class="num">'+fmt(g.top5)+'</td>'
+      +'<td class="num">'+(g.val!=null?g.val.toFixed?g.val.toFixed(4):g.val:"–")+'</td>'
+      +'<td class="num">'+fmt(g.neurons)+'</td><td class="num">'+fmt(g.wall)+'</td></tr>';
+    }).join("");
+  }
+  document.getElementById("gpuraw").textContent=(g.raw||"无数据").trim();
+  document.getElementById("errbox").innerHTML="";
+}
+
+async function tick(){
+  try{
+    const r=await fetch("status.json?t="+Date.now());
+    render(await r.json());
+  }catch(e){
+    document.getElementById("s-time").textContent="连接失败";
+  }
+}
+tick();
+setInterval(tick,5000);
+</script>
+</body>
+</html>

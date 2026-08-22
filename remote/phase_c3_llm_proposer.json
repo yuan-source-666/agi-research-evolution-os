@@ -1,0 +1,544 @@
+{
+ "phase": "C3_llm_proposer_bestofk",
+ "ts": "2026-08-22 10:28:41",
+ "model": "/root/private_data/Qwen2.5-1.5B-Instruct",
+ "p_fail": 0.55,
+ "n_tasks": 120,
+ "n_rounds": 5,
+ "k_samples": 6,
+ "families": {
+  "B": {
+   "family": "B",
+   "sr_history": [
+    {
+     "cycle": "C0_baseline",
+     "n": 120,
+     "success_rate": 0.4667,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C1_after_R1",
+     "n": 120,
+     "success_rate": 0.4417,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C2_after_R2",
+     "n": 120,
+     "success_rate": 0.4167,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C3_after_R3",
+     "n": 120,
+     "success_rate": 0.4833,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C4_after_R4",
+     "n": 120,
+     "success_rate": 0.5333,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C5_after_R5",
+     "n": 120,
+     "success_rate": 0.425,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    }
+   ],
+   "proposals": [
+    {
+     "round": 1,
+     "base_sr": 0.4667,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 7.2,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 2,
+       "latency_s": 3.01,
+       "changes": {
+        "verify": true,
+        "retries": 3
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 3,
+       "latency_s": 3.04,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 4,
+       "latency_s": 3.0,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.69,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.56,
+       "changes": {
+        "verify": true,
+        "retries": 3
+       },
+       "note": "VALID"
+      }
+     ],
+     "proposal": {
+      "title": "Improvement Proposal",
+      "rationale": "Implementing automatic re-execution after silent corruption can significantly reduce failures.",
+      "changes": {
+       "verify": true,
+       "retries": 1
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.6833,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.6417 base_sr=0.3417 thr=0.8 avg_calls=2.217",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.6417,
+       "avg_calls": 2.217
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 2,
+     "base_sr": 0.4417,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.74,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 2,
+       "latency_s": 2.51,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.73,
+       "changes": {
+        "verify": false,
+        "retries": 0
+       },
+       "note": "no-op"
+      },
+      {
+       "k": 4,
+       "latency_s": 2.65,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 5,
+       "latency_s": 3.07,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.47,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      }
+     ],
+     "proposal": {
+      "title": "Improving Tool Reliability",
+      "rationale": "Adding verification and increasing retries can help reduce silent corruption.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.7667,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.7583 base_sr=0.3417 thr=0.8 avg_calls=2.675",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.7583,
+       "avg_calls": 2.675
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 3,
+     "base_sr": 0.4167,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.75,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 2,
+       "latency_s": 2.36,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.63,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 4,
+       "latency_s": 3.09,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.91,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 6,
+       "latency_s": 1.45,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "VALID"
+      }
+     ],
+     "proposal": {
+      "title": "Improve Error Detection",
+      "rationale": "The current system misses silent failures where tools return incorrect values.",
+      "changes": {
+       "verify": true,
+       "retries": 0
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.4583,
+     "gate": null,
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 4,
+     "base_sr": 0.4833,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.38,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 2,
+       "latency_s": 2.24,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.55,
+       "changes": {
+        "verify": false,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 4,
+       "latency_s": 2.12,
+       "changes": {
+        "verify": false,
+        "retries": 1
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 5,
+       "latency_s": 1.68,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.19,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "duplicate of rejected"
+      }
+     ],
+     "proposal": {
+      "title": "Increase Retries",
+      "rationale": "Increasing retries allows more attempts before giving up on a task, reducing silent corruption failures.",
+      "changes": {
+       "verify": false,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.8333,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.7583 base_sr=0.3417 thr=0.8 avg_calls=1.917",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.7583,
+       "avg_calls": 1.917
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 5,
+     "base_sr": 0.5333,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.67,
+       "changes": {
+        "verify": false,
+        "retries": 1
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 2,
+       "latency_s": 1.88,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 3,
+       "latency_s": 1.97,
+       "changes": {
+        "verify": false,
+        "retries": 3
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 4,
+       "latency_s": 2.47,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.29,
+       "changes": {
+        "verify": false,
+        "retries": 0
+       },
+       "note": "no-op"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.09,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "duplicate of rejected"
+      }
+     ],
+     "proposal": {
+      "title": "Reduce Retry Count",
+      "rationale": "Increasing retry count may lead to more failures before detection, causing further issues.",
+      "changes": {
+       "verify": false,
+       "retries": 1
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.65,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.6417 base_sr=0.3417 thr=0.8 avg_calls=1.575",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.6417,
+       "avg_calls": 1.575
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    }
+   ],
+   "final_config": {
+    "verify": false,
+    "retries": 0
+   },
+   "n_accepted": 0,
+   "n_parse_ok": 5
+  }
+ },
+ "matrix": [
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.435,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_llm3_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_llm3_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.435,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.945,
+   "avg_calls": 2.142
+  }
+ ],
+ "ok": true
+}

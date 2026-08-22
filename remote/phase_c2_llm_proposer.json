@@ -1,0 +1,556 @@
+{
+ "phase": "C2_llm_proposer_closed_loop",
+ "ts": "2026-08-22 10:24:55",
+ "model": "/root/private_data/Qwen2.5-1.5B-Instruct",
+ "p_fail": 0.55,
+ "n_tasks": 120,
+ "n_rounds": 5,
+ "families": {
+  "A": {
+   "family": "A",
+   "sr_history": [
+    {
+     "cycle": "C0_baseline",
+     "n": 120,
+     "success_rate": 0.4833,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C1_after_R1",
+     "n": 120,
+     "success_rate": 0.8333,
+     "config": {
+      "verify": true,
+      "retries": 2
+     }
+    },
+    {
+     "cycle": "C2_after_R2",
+     "n": 120,
+     "success_rate": 0.8917,
+     "config": {
+      "verify": true,
+      "retries": 3
+     }
+    },
+    {
+     "cycle": "C3_after_R3",
+     "n": 120,
+     "success_rate": 0.95,
+     "config": {
+      "verify": true,
+      "retries": 4
+     }
+    },
+    {
+     "cycle": "C4_after_R4",
+     "n": 120,
+     "success_rate": 0.9917,
+     "config": {
+      "verify": true,
+      "retries": 6
+     }
+    },
+    {
+     "cycle": "C5_after_R5",
+     "n": 120,
+     "success_rate": 0.975,
+     "config": {
+      "verify": true,
+      "retries": 6
+     }
+    }
+   ],
+   "proposals": [
+    {
+     "round": 1,
+     "base_sr": 0.4833,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 8.19,
+       "raw": "```json\n{\n  \"title\": \"Improving Silent Corruption Detection\",\n  \"rationale\": \"The current configuration does not detect silent corruption early enough. Implementing automatic verification can help identify incorrect results before they propagate.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improving Silent Corruption Detection",
+      "rationale": "The current configuration does not detect silent corruption early enough. Implementing automatic verification can help identify incorrect results before they propagate.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": true,
+     "bench_sr": 0.8583,
+     "gate": {
+      "overall": true,
+      "detail": "full-suite trial_sr=0.85 base_sr=0.4 thr=0.8 avg_calls=3.7",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.85,
+       "avg_calls": 3.7
+      }
+     },
+     "parse_ok": true,
+     "evidence": "VERIFIED"
+    },
+    {
+     "round": 2,
+     "base_sr": 0.8333,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.61,
+       "raw": "```json\n{\n  \"title\": \"Increase Retries\",\n  \"rationale\": \"The silent corruption issues suggest that the current retry mechanism might not be sufficient.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 3\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Increase Retries",
+      "rationale": "The silent corruption issues suggest that the current retry mechanism might not be sufficient.",
+      "changes": {
+       "verify": true,
+       "retries": 3
+      }
+     },
+     "accepted": true,
+     "bench_sr": 0.925,
+     "gate": {
+      "overall": true,
+      "detail": "full-suite trial_sr=0.9 base_sr=0.7917 thr=0.8 avg_calls=4.167",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.9,
+       "avg_calls": 4.167
+      }
+     },
+     "parse_ok": true,
+     "evidence": "VERIFIED"
+    },
+    {
+     "round": 3,
+     "base_sr": 0.8917,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.88,
+       "raw": "```json\n{\n  \"title\": \"Increase Retries for 4\",\n  \"rationale\": \"Increasing the retry count can help mitigate silent corruption by allowing more attempts before discarding results.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 4\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Increase Retries for 4",
+      "rationale": "Increasing the retry count can help mitigate silent corruption by allowing more attempts before discarding results.",
+      "changes": {
+       "verify": true,
+       "retries": 4
+      }
+     },
+     "accepted": true,
+     "bench_sr": 0.975,
+     "gate": {
+      "overall": true,
+      "detail": "full-suite trial_sr=0.9417 base_sr=0.875 thr=0.8 avg_calls=4.317",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.9417,
+       "avg_calls": 4.317
+      }
+     },
+     "parse_ok": true,
+     "evidence": "VERIFIED"
+    },
+    {
+     "round": 4,
+     "base_sr": 0.95,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.41,
+       "raw": "```json\n{\n  \"title\": \"Improve Verification Mechanism\",\n  \"rationale\": \"The current verification mechanism is not robust enough to detect silent corruption.\",\n  \"changes\": {\"verify\": true, \"retries\": 4}\n}\n```",
+       "error": "proposal equals current config (no-op); change at least one knob"
+      },
+      {
+       "attempt": 2,
+       "latency_s": 3.25,
+       "raw": "```json\n{\n  \"title\": \"Improve Verification and Retry Mechanism\",\n  \"rationale\": \"The current configuration has high success rate but still fails due to silent corruption. Increasing retries can help handle more silent failures.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 6\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improve Verification and Retry Mechanism",
+      "rationale": "The current configuration has high success rate but still fails due to silent corruption. Increasing retries can help handle more silent failures.",
+      "changes": {
+       "verify": true,
+       "retries": 6
+      }
+     },
+     "accepted": true,
+     "bench_sr": 0.9833,
+     "gate": {
+      "overall": true,
+      "detail": "full-suite trial_sr=0.975 base_sr=0.9417 thr=0.8 avg_calls=4.417",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.975,
+       "avg_calls": 4.417
+      }
+     },
+     "parse_ok": true,
+     "evidence": "VERIFIED"
+    },
+    {
+     "round": 5,
+     "base_sr": 0.9917,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.64,
+       "raw": "```json\n{\n  \"title\": \"Improve Silent Corruption Detection\",\n  \"rationale\": \"The silent corruption issue persists even when retrying multiple times.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 8\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improve Silent Corruption Detection",
+      "rationale": "The silent corruption issue persists even when retrying multiple times.",
+      "changes": {
+       "verify": true,
+       "retries": 8
+      }
+     },
+     "accepted": false,
+     "bench_sr": 1.0,
+     "gate": null,
+     "parse_ok": true,
+     "evidence": "FAILED"
+    }
+   ],
+   "final_config": {
+    "verify": true,
+    "retries": 6
+   },
+   "n_accepted": 4,
+   "n_parse_ok": 5
+  },
+  "B": {
+   "family": "B",
+   "sr_history": [
+    {
+     "cycle": "C0_baseline",
+     "n": 120,
+     "success_rate": 0.4667,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C1_after_R1",
+     "n": 120,
+     "success_rate": 0.4417,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C3_after_R3",
+     "n": 120,
+     "success_rate": 0.4833,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    }
+   ],
+   "proposals": [
+    {
+     "round": 1,
+     "base_sr": 0.4667,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.86,
+       "raw": "```json\n{\n  \"title\": \"Improve Verification and Retry Mechanism\",\n  \"rationale\": \"The current configuration does not effectively detect silent corruption due to incorrect results.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improve Verification and Retry Mechanism",
+      "rationale": "The current configuration does not effectively detect silent corruption due to incorrect results.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.8083,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.7583 base_sr=0.3417 thr=0.8 avg_calls=2.675",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.7583,
+       "avg_calls": 2.675
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 2,
+     "base_sr": 0.4417,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.65,
+       "raw": "```json\n{\n  \"title\": \"Increase Verification Retries\",\n  \"rationale\": \"Increasing the number of retry attempts for verification can help catch silent corruption more effectively.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 2,
+       "latency_s": 2.9,
+       "raw": "```json\n{\n  \"title\": \"Enhance Verification Retry Mechanism\",\n  \"rationale\": \"The current system fails silently in cases where the tool returns incorrect results without proper validation.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 3,
+       "latency_s": 2.94,
+       "raw": "```json\n{\n  \"title\": \"Improve Error Handling and Retry Mechanism\",\n  \"rationale\": \"The current configuration does not effectively handle silent corruption issues, leading to frequent failures.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 4,
+       "latency_s": 2.7,
+       "raw": "```json\n{\n  \"title\": \"Improved Error Handling Strategy\",\n  \"rationale\": \"The current configuration allows silent corruption without proper detection, leading to unreliable results.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      }
+     ],
+     "proposal": null,
+     "accepted": null,
+     "bench_sr": null,
+     "gate": null,
+     "parse_ok": false
+    },
+    {
+     "round": 3,
+     "base_sr": 0.4417,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.46,
+       "raw": "```json\n{\n  \"title\": \"Re-enable Verification\",\n  \"rationale\": \"Enabling verification can help catch silent corruption issues.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 0\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Re-enable Verification",
+      "rationale": "Enabling verification can help catch silent corruption issues.",
+      "changes": {
+       "verify": true,
+       "retries": 0
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.4583,
+     "gate": null,
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 4,
+     "base_sr": 0.4833,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.76,
+       "raw": "```json\n{\n  \"title\": \"Improve Verification and Retry Mechanism\",\n  \"rationale\": \"The current configuration does not effectively detect silent corruption due to incorrect results.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 2,
+       "latency_s": 2.15,
+       "raw": "{\"title\": \"improve robustness through enhanced validation\", \"rationale\": \"The current configuration lacks proper validation mechanisms, leading to silent corruption issues.\", \"changes\": {\"verify\": true, \"retries\": 0}}",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 3,
+       "latency_s": 2.55,
+       "raw": "```json\n{\n  \"title\": \"Increase Verification Frequency\",\n  \"rationale\": \"Increasing the frequency of verification can help catch silent corruption more effectively.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 4,
+       "latency_s": 2.8,
+       "raw": "```json\n{\n  \"title\": \"Improve Failure Detection and Retry Mechanism\",\n  \"rationale\": \"The current configuration does not effectively detect silent corruption due to failures.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      }
+     ],
+     "proposal": null,
+     "accepted": null,
+     "bench_sr": null,
+     "gate": null,
+     "parse_ok": false
+    },
+    {
+     "round": 5,
+     "base_sr": 0.4833,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.06,
+       "raw": "{\"title\": \"Increase Verification Retries\", \"rationale\": \"Increasing the retry count for verification can help catch silent failures more effectively.\", \"changes\": {\"verify\": true, \"retries\": 2}}",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 2,
+       "latency_s": 2.51,
+       "raw": "```json\n{\n  \"title\": \"Improved Error Handling\",\n  \"rationale\": \"The current configuration does not adequately handle silent corruption errors.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 3,
+       "latency_s": 2.6,
+       "raw": "```json\n{\n  \"title\": \"Increase Verification Frequency\",\n  \"rationale\": \"Increasing the frequency of verification can help catch silent failures more effectively.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      },
+      {
+       "attempt": 4,
+       "latency_s": 2.83,
+       "raw": "```json\n{\n  \"title\": \"Improve Verification and Retry Mechanism\",\n  \"rationale\": \"The current configuration does not effectively handle silent corruption due to incomplete validation.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": "proposal was already rejected before; propose something different"
+      }
+     ],
+     "proposal": null,
+     "accepted": null,
+     "bench_sr": null,
+     "gate": null,
+     "parse_ok": false
+    }
+   ],
+   "final_config": {
+    "verify": false,
+    "retries": 0
+   },
+   "n_accepted": 0,
+   "n_parse_ok": 2
+  }
+ },
+ "matrix": [
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.435,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "A_llm2_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 6
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.9817,
+   "avg_calls": 4.357
+  },
+  {
+   "config": "A_llm2_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 6
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.9733,
+   "avg_calls": 3.158
+  },
+  {
+   "config": "B_llm2_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_llm2_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.435,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "A_manual_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.9467,
+   "avg_calls": 4.19
+  },
+  {
+   "config": "A_manual_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.945,
+   "avg_calls": 3.087
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.945,
+   "avg_calls": 2.142
+  }
+ ],
+ "ok": true
+}
