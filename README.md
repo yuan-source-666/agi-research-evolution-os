@@ -1,51 +1,46 @@
-# AGI Research & Evolution OS
+# AGI Research & Evolution OS（实验性个人学习项目）
 
-在 SCNet（国家超算互联网）海光 DCU 上从零构建的自进化 AGI 研究系统。
-以本地小模型（Qwen2.5-1.5B → 7B）为"大脑"，通过程序侧架构（而非单纯堆参数）驱动其
-**工具调用、自主联网学习、反思进化、欲望/恐惧驱动、R1 式长思维链**等能力。
+> **声明：本仓库由 AI 助手在本人指导下生成。** 代码、文档、提交均主要由 AI 完成与整理，
+> 内容仅代表个人的学习探索过程，不构成成熟的研究成果，请谨慎参考。
+> 仓库中所有实例 ID、访问令牌、内网地址已替换为 `REDACTED_*` 占位符。
 
-## 系统架构
+这是一个业余时间在 SCNet（国家超算互联网）海光 DCU 实例上做的自进化 LLM 学习实验。
+思路是：以本地小模型（Qwen2.5-1.5B → 7B）为"大脑"，尝试用程序侧架构
+（工具调用、反思循环、持久记忆、进化提案器）弥补小模型的能力不足。
 
-```
-浏览器 → 本地中继(:8765, chat_relay.py) → SCNet Jupyter 常驻内核 → AGI 大脑
-```
+## 目前做到的（与没做到的）
 
-每条消息走 4 步自我反思循环（reflexion）：
+**做到了：**
 
-1. **DRAFT** — 起草回复（首步逐字引用题干数字，防止前提漂移）
-2. **CRITIQUE** — 自我批评：先核对前提，再验算算术（强制工具计算）
-3. **REVISE** — 结合批评输出终稿（程序侧数字白名单守卫，白名单外数字打回重写）
-4. **LEARN** — 提炼一条自我改进笔记，写入持久记忆（跨会话累积）
+- 一个本地中继（`relay/chat_relay.py`）→ SCNet Jupyter 内核 → 模型的对话链路
+- DRAFT → CRITIQUE → REVISE → LEARN 四步反思循环与持久记忆文件
+- Phase B–E 一系列实验脚本与结果 JSON（进化提案器、旋钮调参、LoRA 微调等）
+- v5.x：借鉴 DeepSeek-R1 公开的思维链范式（前提锚定、自然回溯）做的程序侧数字守卫，
+  在测试题上能拦截大部分数字漂移
+
+**没做到 / 已知问题：**
+
+- 7B 基座存在权重级的数字漂移偏见（最小化实验：无任何脚手架时把 10 记成 11），
+  程序守卫只能拦输出、改不了根源
+- 各 Phase 实验样本量小，结论仅为初步观察，不具备统计意义
+- 代码为快速迭代的实验脚本，缺少测试与规范，多处硬编码路径
 
 ## 目录结构
 
 | 目录 | 内容 |
 |---|---|
-| `relay/` | 本地中继与远程运维脚本（chat_relay.py 为对话门主体，v5.6） |
-| `remote/` | 云端核心：agi_core / agi_engine / evolution_loop / tool_system / memory_system / world_model |
-| `remote/` (根) | Phase B–E 系列实验脚本与结果 JSON（B 火种→C LLM提案器→D 旋钮→E LoRA微调/结构/架构） |
-| `remote/v8/` | 仿生 LLM v7/v8 与 DCU 消融/扩展实验 |
+| `relay/` | 本地中继与远程运维脚本（`chat_relay.py` 为对话门主体） |
+| `remote/` | 云端脚本：agi_core / agi_engine / evolution_loop / tool_system / memory_system / world_model，及 Phase B–E 实验与结果 |
+| `remote/v8/` | 仿生 LLM v7/v8 与 DCU 消融实验 |
 | `remote/agi_phase1/` | 第一阶段演化循环原型 |
 | `docs/` | 环境信息、deepseek-harness commit 锁定 |
-| `RESTORE.md` | 完整复原手册（从零重建整个系统） |
-
-## 关键实验结论
-
-- **Phase C**：LLM 提案器自动生成进化方向，替代随机变异
-- **Phase D**：进化旋钮（种群/温度/记忆窗口）实机调优
-- **Phase E1–E3**：LoRA 微调 → 结构改造 → 架构自进化三连
-- **v5.x 思维链改造**：移植 DeepSeek-R1 范式（前提锚定、无字数上限长思考、自然语言回溯），
-  程序侧数字守卫闭环全链路生效；同时用最小化实验证明 7B 基座存在权重级数字漂移偏见
-  （10 → 11），架构防线拦得住输出、拦不住根源 → 根治需换更大基座
+| `RESTORE.md` | 复原手册（从零重建环境） |
 
 ## 复原
 
-见 `RESTORE.md`。依赖：
+见 `RESTORE.md`。依赖：Python 3.11 / PyTorch 2.9 (ROCm/DCU)、Qwen2.5 系列模型、
+`docs/deepseek_harness_commit.txt` 锁定的 deepseek-harness commit。
 
-- Python 3.11 / PyTorch 2.9 (ROCm/DCU)
-- 模型：Qwen2.5-1.5B-Instruct / Qwen2.5-7B-Instruct
-- deepseek-harness：`docs/deepseek_harness_commit.txt` 锁定的 commit
+## License
 
-## 声明
-
-仓库已全面脱敏：所有实例 ID、访问令牌、内网地址均已替换为 `REDACTED_*` 占位符。
+仅供学习交流，按 MIT 使用（不提供任何担保）。
