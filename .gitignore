@@ -50,3 +50,6 @@ desktop.ini
 *.key
 *id_rsa*
 *id_ed25519*
+
+# 论文本地保留，不入库
+docs/PAPER.md
