@@ -14,6 +14,26 @@ on SCNet (National Supercomputing Internet, China). The idea: use a small local 
 program-side architecture — tool calling, reflection loops, persistent memory, and an
 evolution proposer.
 
+## Version Snapshots: Three Technical Routes (v1–v5)
+
+The repository archives five original snapshots covering **three different technical routes** — see [docs/EVOLUTION.md](docs/EVOLUTION.md) for the full tour:
+
+| Version | Positioning | Route | Requirements |
+|---|---|---|---|
+| **v1** | AGI Research & Evolution OS: LLM-orchestrated self-evolution (the system described in this README) | LLM orchestration | SCNet DCU remote GPU |
+| **v2** | SEED OS v2.2: mean-field primitive society + language cortex | Structure dynamics | Any PC, pure stdlib, no LLM |
+| **v3** | Primitive Society v3.1: energy economy + quorum voting + native safety | Structure dynamics | Same as above |
+| **v4** | PRIMORDIA v4.1: quantified-evidence hardening of the same route | Structure dynamics | Python ≥ 3.8, zero deps |
+| **v5** | Five-piece cognitive architecture reference: continual learning / layered memory / world model / metacognition / motivation | Cognitive architecture | numpy only |
+
+> Lineage: v2 → v3 → v4 are direct iterations; v1 and v5 are independent routes.
+> A detailed three-generation mechanism comparison lives in [v3/对比v1-v2-v3.md](v3/对比v1-v2-v3.md) (Chinese).
+>
+> Snapshots were strictly sanitized and slimmed before upload (5,262 files → 424):
+> runtimes, model weights, datasets, caches and logs were excluded; tokens, cluster
+> identifiers, instance IDs and local paths were replaced with placeholders. Snapshot
+> scripts therefore need their environments rebuilt per their own docs before running.
+
 ## What Was (and Wasn't) Achieved
 
 **Achieved:**
@@ -35,6 +55,10 @@ evolution proposer.
 
 ## Repository Layout
 
+The repo has two zones: a **curated zone** (`relay/`, `remote/`, `docs/` at the root,
+reorganized for readability) and a **raw snapshot zone** (`v1/`–`v5/`, kept in their
+original working-directory shape).
+
 | Directory | Contents |
 |---|---|
 | `relay/` | Local relay core (`chat_relay.py` chat gateway, `rsh.py` remote execution, monitoring page) |
@@ -44,7 +68,12 @@ evolution proposer.
 | `remote/experiments/` | Phase B–E experiment scripts (executed in the cloud) and their result JSONs |
 | `remote/v8/` | Bionic LLM v7/v8 and DCU ablation experiments |
 | `remote/agi_phase1/` | Phase-1 evolution loop prototype |
-| `docs/` | `RESTORE.md` (rebuild-from-scratch manual), environment info, pinned deepseek-harness commit |
+| `docs/` | `RESTORE.md` (rebuild-from-scratch manual), [EVOLUTION.md](docs/EVOLUTION.md) version tour, environment info, pinned deepseek-harness commit |
+| `v1/` | Route A snapshot: `local_scnet_v8/` local scripts archive + `remote_full/` remote workspace backup (runtimes/models/data stripped) |
+| `v2/` | Route B snapshot: SEED OS v2.2 full source + growth-record samples |
+| `v3/` | Route B snapshot: Primitive Society v3.1 + three-generation comparison doc |
+| `v4/` | Route B snapshot: PRIMORDIA v4.1 + demo outputs |
+| `v5/` | Route C snapshot: five-piece cognitive architecture (tests & demos runnable out of the box) |
 
 > Note: the repository layout has been reorganized for readability. Paths inside
 > `docs/RESTORE.md` refer to the original working archive, so they may differ from

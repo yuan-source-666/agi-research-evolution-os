@@ -1,0 +1,52 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+
+# ---- 测试 / 覆盖率 ----
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ---- 模型权重 / 大体积数据（本仓库不分发）----
+*.safetensors
+*.bin
+*.pth
+*.ckpt
+*.pkl
+*.sqlite
+*.sqlite3
+*.csv
+*.tsv
+*.jsonl
+
+# ---- 运行时产物 ----
+*.log
+events.jsonl
+trajectory.jsonl
+monitor/status.json
+
+# ---- 编辑器 / 操作系统 ----
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- 凭据类文件（永远不要提交）----
+.env
+*.pem
+*.key
+*id_rsa*
+*id_ed25519*
