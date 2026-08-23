@@ -1,7 +1,7 @@
 # AGI Research & Evolution OS — 完整成就归档
 归档时间: 2026-08-22 15:20 (GMT+8)
-归档位置: SCNet 实例 /public/home/[REDACTED]/111111
-（注: /root/private_data 与 /public/home/[REDACTED] 为同一 NFS 挂载）
+归档位置: SCNet 实例 [REDACTED-CLUSTER-PATH]/111111
+（注: /root/private_data 与 [REDACTED-CLUSTER-PATH] 为同一 NFS 挂载）
 
 ## 目录结构
 ```

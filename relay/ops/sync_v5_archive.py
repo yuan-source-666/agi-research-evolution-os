@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""增量同步 v5.x 成果到云端归档 /public/home/[REDACTED]/111111/local_scnet_v8/"""
+"""增量同步 v5.x 成果到云端归档 [REDACTED-CLUSTER-PATH]/111111/local_scnet_v8/"""
 import os, base64, requests, hashlib
 
 BASE = "https://REDACTED_JUPYTER_BASE"

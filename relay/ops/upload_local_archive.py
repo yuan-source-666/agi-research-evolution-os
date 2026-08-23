@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""把本地 scnet_v8 全部文件上传到远端归档 /public/home/[REDACTED]/111111/local_scnet_v8/"""
+"""把本地 scnet_v8 全部文件上传到远端归档 [REDACTED-CLUSTER-PATH]/111111/local_scnet_v8/"""
 import os, base64, requests, json, hashlib
 
 BASE = "https://REDACTED_JUPYTER_BASE"
