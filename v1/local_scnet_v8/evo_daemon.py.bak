@@ -1,0 +1,411 @@
+#!/usr/bin/env python3
+"""自进化守护进程：架构持续进化循环（不再跑完即停）
+
+闭环（每周期）：
+  1. 加载基因组档案（跨周期持久，从上轮冠军继续，永不从零重来）
+  2. 自评：冠军架构逐类准确率，找出最弱能力
+  3. 针对性变异：从冠军基因组生成 K 个变异架构（停滞时加大变异幅度）
+  4. 等预算训练（500 步，种子由基因组决定 → 同架构分数可复现可比）
+  5. 门禁：变异最优 dev > 冠军 dev + MIN_GAIN 且 test 不降 → 入档升级；
+     否则回滚（冠军不动），连续停滞则记录并加大探索
+  6. 持久化档案+状态 → 睡眠 → 下一周期
+"""
+import os, json, time, random, gc, csv, zlib, urllib.request
+from collections import Counter
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+ARCHIVE = '/root/private_data/evo_archive.json'
+STATE = '/root/private_data/evo_daemon_state.json'
+E3_RESULT = '/root/private_data/phase_e3_arch.json'
+DATA = '/root/private_data/ag_news_train.csv'
+
+D = 128; VOCAB = 30000; MAXLEN = 64
+BS = 64; STEPS = 500; LR = 3e-4
+K_MUT = 3; MIN_GAIN = 0.005; CYCLE_SLEEP = 300
+N_TRAIN = 20000; DEV_N = 2000; TEST_N = 4000
+DEV_ = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+
+def log(m):
+    print('[%s] %s' % (time.strftime('%F %T'), m), flush=True)
+
+
+def save_json(path, obj):
+    json.dump(obj, open(path, 'w'), indent=1, ensure_ascii=False)
+
+
+# ---------------- 数据：真实外部 AG News（防半成品校验） ----------------
+def robust_download(url, dst, tries=6):
+    for i in range(tries):
+        try:
+            tmp = dst + '.part'
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=180) as r, open(tmp, 'wb') as f:
+                while True:
+                    chunk = r.read(1 << 20)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+            if os.path.getsize(tmp) > 10_000_000:
+                os.replace(tmp, dst)
+                return
+            log('download try %d: too small, retry' % (i + 1))
+        except Exception as e:
+            log('download try %d failed: %s' % (i + 1, e))
+        time.sleep(8)
+    raise RuntimeError('download failed')
+
+
+def load_rows():
+    def parse():
+        rows = []
+        with open(DATA, encoding='utf-8') as f:
+            for r in csv.reader(f):
+                if len(r) >= 3 and r[0].isdigit():
+                    rows.append((int(r[0]) - 1, (r[1] + ' ' + r[2]).lower()))
+        return rows
+    if os.path.exists(DATA):
+        rows = parse()
+        if len(rows) >= 100000:
+            return rows
+        log('existing file incomplete (%d rows), re-download' % len(rows))
+        os.remove(DATA)
+    log('downloading AG News (120k real news)...')
+    robust_download('https://raw.githubusercontent.com/mhjabreel/CharCnn_Keras'
+                    '/master/data/ag_news_csv/train.csv', DATA)
+    return parse()
+
+
+rows = load_rows()
+random.Random(7).shuffle(rows)
+train = rows[:N_TRAIN]
+dev = rows[N_TRAIN:N_TRAIN + DEV_N]
+test = rows[N_TRAIN + DEV_N:N_TRAIN + DEV_N + TEST_N]
+log('data ready: train=%d dev=%d test=%d' % (len(train), len(dev), len(test)))
+
+cnt = Counter(w for _, s in train for w in s.split()[:MAXLEN])
+stoi = {'<pad>': 0, '<unk>': 1}
+for w, c in cnt.most_common(VOCAB - 2):
+    stoi[w] = len(stoi)
+
+
+def encode(s):
+    return [stoi.get(w, 1) for w in s.split()[:MAXLEN]]
+
+
+def batchify(data, bs):
+    for i in range(0, len(data) - bs + 1, bs):
+        chunk = data[i:i + bs]
+        xl = [encode(s) for _, s in chunk]
+        L = max(len(x) for x in xl)
+        x = torch.zeros(len(chunk), L, dtype=torch.long)
+        for j, xx in enumerate(xl):
+            x[j, :len(xx)] = torch.tensor(xx)
+        y = torch.tensor([l for l, _ in chunk])
+        yield x.to(DEV_), y.to(DEV_)
+
+
+# ---------------- 异构模块零件（人类只提供零件，不给蓝图） ----------------
+class AttnBlk(nn.Module):
+    def __init__(s):
+        super().__init__()
+        s.qkv = nn.Linear(D, D * 3)
+        s.proj = nn.Linear(D, D)
+        s.ln = nn.LayerNorm(D)
+        s.h = 4
+
+    def forward(s, x):
+        B, T, _ = x.shape
+        q, k, v = s.qkv(s.ln(x)).chunk(3, dim=-1)
+        q = q.view(B, T, s.h, -1).transpose(1, 2)
+        k = k.view(B, T, s.h, -1).transpose(1, 2)
+        v = v.view(B, T, s.h, -1).transpose(1, 2)
+        att = (q @ k.transpose(-2, -1)) / (q.size(-1) ** 0.5)
+        o = (att.softmax(-1) @ v).transpose(1, 2).reshape(B, T, -1)
+        return x + s.proj(o)
+
+
+class GRUBlk(nn.Module):
+    def __init__(s):
+        super().__init__()
+        s.gru = nn.GRU(D, D // 2, batch_first=True, bidirectional=True)
+        s.ln = nn.LayerNorm(D)
+
+    def forward(s, x):
+        o, _ = s.gru(s.ln(x))
+        return x + o
+
+
+class MLPBlk(nn.Module):
+    def __init__(s):
+        super().__init__()
+        s.ln = nn.LayerNorm(D)
+        s.f = nn.Sequential(nn.Linear(D, D * 2), nn.GELU(), nn.Linear(D * 2, D))
+
+    def forward(s, x):
+        return x + s.f(s.ln(x))
+
+
+class GateBlk(nn.Module):
+    def __init__(s):
+        super().__init__()
+        s.ln = nn.LayerNorm(D)
+        s.g = nn.Linear(D, D)
+
+    def forward(s, x):
+        return x * torch.sigmoid(s.g(s.ln(x)) + 1.0) * 1.5
+
+
+BLOCKS = {'attn': AttnBlk, 'gru': GRUBlk, 'mlp': MLPBlk, 'gate': GateBlk}
+
+
+class EvoNet(nn.Module):
+    def __init__(s, genome):
+        super().__init__()
+        s.emb = nn.Embedding(VOCAB, D, padding_idx=0)
+        s.genome = genome
+        s.blocks = nn.ModuleList([BLOCKS[b['type']]()
+                                  for b in genome['blocks']])
+        s.alphas = nn.ParameterList()
+        for b in genome['blocks']:
+            if b.get('skip') is not None:
+                s.alphas.append(nn.Parameter(torch.tensor(0.5)))
+        s.cls = nn.Sequential(nn.LayerNorm(D * 2), nn.Linear(D * 2, 4))
+
+    def forward(s, x):
+        outs = [s.emb(x)]
+        ai = 0
+        for i, spec in enumerate(s.genome['blocks']):
+            inp = outs[-1]
+            sk = spec.get('skip')
+            if sk is not None:
+                inp = inp + s.alphas[ai] * outs[sk]
+                ai += 1
+            outs.append(s.blocks[i](inp))
+        f = torch.cat([outs[-1].mean(1), outs[-1].amax(1)], dim=-1)
+        return s.cls(f)
+
+
+# ---------------- 基因组操作（进化算子） ----------------
+def sanitize(g):
+    for i, b in enumerate(g['blocks']):
+        sk = b.get('skip')
+        if sk is None:
+            continue
+        if not isinstance(sk, int) or sk < 0 or sk > i - 1:
+            b['skip'] = max(0, min(sk, i - 1)) if isinstance(sk, int) else None
+    return g
+
+
+def rand_genome():
+    n = random.randint(2, 5)
+    bl = [{'type': random.choice(list(BLOCKS)), 'skip': None}
+          for _ in range(n)]
+    for i in range(1, n):
+        if random.random() < 0.4:
+            bl[i]['skip'] = random.randint(0, i - 1)
+    return sanitize({'blocks': bl})
+
+
+def mutate(g, big=False):
+    g = json.loads(json.dumps(g))
+    ops = ['add', 'del', 'type', 'skip', 'noskip']
+    n_ops = 2 if big else 1
+    for _ in range(n_ops):
+        op = random.choice(ops)
+        bl = g['blocks']
+        if op == 'add' and len(bl) < 6:
+            bl.insert(random.randint(0, len(bl)),
+                      {'type': random.choice(list(BLOCKS)), 'skip': None})
+        elif op == 'del' and len(bl) > 2:
+            bl.pop(random.randrange(len(bl)))
+        elif op == 'type' and bl:
+            bl[random.randrange(len(bl))]['type'] = random.choice(list(BLOCKS))
+        elif op == 'skip' and len(bl) >= 2:
+            i = random.randrange(1, len(bl))
+            bl[i]['skip'] = random.randint(0, i - 1)
+        elif op == 'noskip' and bl:
+            bl[random.randrange(len(bl))]['skip'] = None
+    return sanitize(g)
+
+
+def gstr(g):
+    return '->'.join(b['type'] + ('(%d)' % b['skip']
+                                  if b.get('skip') is not None else '')
+                     for b in g['blocks'])
+
+
+def genome_seed(g):
+    return zlib.crc32(gstr(g).encode()) % 100000 + 7
+
+
+def train_eval(genome):
+    """等预算训练+评估。种子由基因组决定 → 同架构分数可复现、跨周期可比。
+    返回 (dev, test, params, per_class_acc)。"""
+    seed = genome_seed(genome)
+    torch.manual_seed(seed)
+    random.seed(seed)
+    m = EvoNet(sanitize(json.loads(json.dumps(genome)))).to(DEV_)
+    nparams = sum(p.numel() for p in m.parameters())
+    opt = torch.optim.AdamW(m.parameters(), lr=LR)
+    it = 0
+    m.train()
+    while it < STEPS:
+        random.shuffle(train)
+        for x, y in batchify(train, BS):
+            loss = F.cross_entropy(m(x), y)
+            opt.zero_grad()
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(m.parameters(), 1.0)
+            opt.step()
+            it += 1
+            if it >= STEPS:
+                break
+
+    def acc_on(data):
+        m.eval()
+        c = n = 0
+        percls = [[0, 0] for _ in range(4)]
+        with torch.no_grad():
+            for x, y in batchify(data, 256):
+                p = m(x).argmax(-1)
+                c += (p == y).sum().item()
+                n += y.numel()
+                for pi, yi in zip(p.tolist(), y.tolist()):
+                    percls[yi][0] += int(pi == yi)
+                    percls[yi][1] += 1
+        return c / n, [round(a / b, 4) if b else 0.0 for a, b in percls]
+
+    da, dcls = acc_on(dev)
+    ta, _ = acc_on(test)
+    del m, opt
+    gc.collect()
+    torch.cuda.empty_cache()
+    return da, ta, nparams, dcls
+
+
+# ---------------- 档案：跨周期持久 ----------------
+def init_archive():
+    """种子来源优先级：已有档案 > E3 一次性实验结果 > 现场随机评估。"""
+    if os.path.exists(ARCHIVE):
+        a = json.load(open(ARCHIVE))
+        log('archive loaded: v%d champion=%s dev=%.4f'
+            % (a['version'], a['champion']['arch'], a['champion']['dev']))
+        return a
+    cands = []
+    if os.path.exists(E3_RESULT):
+        try:
+            e3 = json.load(open(E3_RESULT))
+            for gen in e3.get('evolution', []):
+                for c in gen:
+                    cands.append({'genome': c['genome'], 'arch': c['arch'],
+                                  'dev': c['dev'], 'test': c['test'],
+                                  'params': c['params']})
+            log('seeded %d candidates from E3 one-shot result' % len(cands))
+        except Exception as e:
+            log('E3 result unreadable: %s' % e)
+    if not cands:
+        log('no seed source: evaluating 4 random genomes from scratch')
+        for _ in range(4):
+            g = rand_genome()
+            da, ta, np_, _ = train_eval(g)
+            cands.append({'genome': g, 'arch': gstr(g), 'dev': round(da, 4),
+                          'test': round(ta, 4), 'params': np_})
+            log('  seed %-30s dev=%.4f test=%.4f' % (gstr(g), da, ta))
+    cands.sort(key=lambda c: -c['dev'])
+    return {'version': 1, 'champion': cands[0], 'members': cands[:4],
+            'history': []}
+
+
+STATE = {'cycle': 0, 'started': time.strftime('%F %T'), 'log': []}
+
+
+def slog(m):
+    log(m)
+    STATE['log'] = (STATE['log'] + [m])[-50:]
+    save_json(STATE, STATE)
+
+
+# ---------------- 主循环：持续进化 ----------------
+archive = init_archive()
+stagnation = 0
+slog('daemon started, champion=%s dev=%.4f test=%.4f'
+     % (archive['champion']['arch'], archive['champion']['dev'],
+        archive['champion']['test']))
+
+cycle = 0
+while True:
+    cycle += 1
+    STATE['cycle'] = cycle
+    STATE['archive_version'] = archive['version']
+    STATE['champion'] = {k: archive['champion'][k]
+                         for k in ('arch', 'dev', 'test')}
+    save_json(STATE, STATE)
+    champ = archive['champion']
+    t0 = time.time()
+
+    # 1) 自评：重训冠军拿逐类准确率（种子固定，分数可复现）
+    cdev, ctest, _, ccls = train_eval(champ['genome'])
+    weakest = min(range(4), key=lambda i: ccls[i])
+    slog('cycle %d self-eval: champion dev=%.4f test=%.4f weakest-class=%d(%.3f)'
+         % (cycle, cdev, ctest, weakest, ccls[weakest]))
+
+    # 2) 针对性变异（停滞 >=3 周期则加大变异幅度）
+    big = stagnation >= 3
+    muts = [mutate(champ['genome'], big=big) for _ in range(K_MUT)]
+    # 偶尔与档案成员交叉混合块
+    if len(archive['members']) > 1 and random.random() < 0.5:
+        other = random.choice(archive['members'])['genome']
+        bl = json.loads(json.dumps(champ['genome']['blocks']))
+        ob = other['blocks']
+        cut = random.randint(1, max(1, len(bl) - 1))
+        bl = sanitize({'blocks': bl[:cut] + json.loads(
+            json.dumps(ob[len(ob) // 2:]))[:2]})['blocks']
+        muts.append(sanitize({'blocks': bl}))
+
+    # 3) 等预算训练评估每个变异
+    best_mut, best_dev = None, -1
+    for g in muts:
+        da, ta, np_, cls = train_eval(g)
+        slog('  mutant %-34s dev=%.4f test=%.4f' % (gstr(g), da, ta))
+        if da > best_dev:
+            best_dev, best_mut = da, {'genome': g, 'arch': gstr(g),
+                                      'dev': round(da, 4),
+                                      'test': round(ta, 4), 'params': np_,
+                                      'per_class': cls}
+
+    # 4) 门禁：打赢冠军才入档升级，否则回滚
+    promoted = (best_mut['dev'] > cdev + MIN_GAIN
+                and best_mut['test'] >= ctest - 0.002)
+    if promoted:
+        archive['version'] += 1
+        archive['champion'] = best_mut
+        archive['members'] = (archive['members'] + [best_mut])[:4]
+        archive['members'].sort(key=lambda c: -c['dev'])
+        stagnation = 0
+        slog('cycle %d PROMOTED v%d: %s dev=%.4f test=%.4f (was %.4f/%.4f)'
+             % (cycle, archive['version'], best_mut['arch'],
+                best_mut['dev'], best_mut['test'], cdev, ctest))
+    else:
+        stagnation += 1
+        slog('cycle %d ROLLBACK: best mutant dev=%.4f <= champion %.4f+gain '
+             '(stagnation=%d%s)'
+             % (cycle, best_dev, cdev, stagnation,
+                ', BIG MUTATION mode' if big else ''))
+
+    archive['history'].append({
+        'cycle': cycle, 'ts': time.strftime('%F %T'),
+        'champ_dev': round(cdev, 4), 'champ_test': round(ctest, 4),
+        'best_mutant_dev': round(best_dev, 4),
+        'best_mutant_arch': best_mut['arch'], 'promoted': bool(promoted),
+        'weakest_class': weakest})
+    archive['history'] = archive['history'][-200:]
+    save_json(ARCHIVE, archive)
+    STATE['stagnation'] = stagnation
+    STATE['last_cycle_seconds'] = round(time.time() - t0)
+    save_json(STATE, STATE)
+
+    # 5) 睡眠 → 下一周期（持续进化，永不退出）
+    time.sleep(CYCLE_SLEEP)

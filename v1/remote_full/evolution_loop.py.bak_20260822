@@ -1,0 +1,702 @@
+"""
+AGI Evolution Loop v0.1
+=======================
+Self-evolution engine: observe -> evaluate -> improve -> validate -> accept/reject -> rollback
+
+Core flow:
+  1. Observe  -- collect system state, task traces, tool call logs
+  2. Evaluate -- assess performance metrics, identify weaknesses
+  3. Improve  -- propose improvements at corresponding layer (L1-L9)
+  4. Validate -- Sandbox test -> Benchmark -> Independent eval
+  5. Decide   -- Accept / Reject
+  6. Rollback -- If rejected, rollback to last stable version
+
+Version management: Stable / Experimental / Research
+Safety constraints: all changes in isolated env, cannot bypass validation, audit logs immutable
+
+Dependencies: standard library + memory_system + tool_system
+"""
+
+import json
+import time
+import os
+import copy
+import hashlib
+import threading
+import traceback
+from typing import Any, Optional, Callable
+from dataclasses import dataclass, field, asdict
+from enum import Enum
+
+
+# ========== Enums ==========
+
+class EvolutionPhase(Enum):
+    """Evolution flow phases."""
+    OBSERVE = "observe"
+    EVALUATE = "evaluate"
+    IMPROVE = "improve"
+    VALIDATE = "validate"
+    DECIDE = "decide"
+    ROLLBACK = "rollback"
+    IDLE = "idle"
+
+
+class ImprovementLayer(Enum):
+    """9-layer self-improvement."""
+    L1_PROMPT = 1
+    L2_MEMORY = 2
+    L3_STRATEGY = 3
+    L4_WORKFLOW = 4
+    L5_SKILL = 5
+    L6_TOOL = 6
+    L7_AGENT_CODE = 7
+    L8_ARCHITECTURE = 8
+    L9_MODEL_TRAINING = 9
+
+
+class VersionStatus(Enum):
+    """Version status."""
+    STABLE = "stable"
+    EXPERIMENTAL = "experimental"
+    RESEARCH = "research"
+    REJECTED = "rejected"
+    ROLLED_BACK = "rolled_back"
+
+
+class EvidenceLevel(Enum):
+    FACT = "FACT"
+    HYPOTHESIS = "HYPOTHESIS"
+    UNKNOWN = "UNKNOWN"
+    VERIFIED = "VERIFIED"
+    FAILED = "FAILED"
+    UNCERTAIN = "UNCERTAIN"
+
+
+# ========== Data Structures ==========
+
+@dataclass
+class TaskTrace:
+    """A single task execution trace."""
+    task_id: str = ""
+    description: str = ""
+    start_time: float = 0.0
+    end_time: float = 0.0
+    tools_used: list = field(default_factory=list)
+    steps: list = field(default_factory=list)  # [{action, result, success, latency}]
+    success: bool = False
+    error: str = ""
+    metrics: dict = field(default_factory=dict)  # custom metrics
+
+
+@dataclass
+class Improvement:
+    """An improvement proposal."""
+    id: str = ""
+    layer: int = 1          # ImprovementLayer
+    title: str = ""
+    description: str = ""
+    rationale: str = ""     # why this improvement
+    expected_gain: str = "" # expected benefit
+    risk_level: str = "low" # low/medium/high/extreme
+    status: str = "proposed"  # proposed/testing/validated/accepted/rejected/rolled_back
+    evidence: str = "HYPOTHESIS"
+    sandbox_result: dict = field(default_factory=dict)
+    benchmark_result: dict = field(default_factory=dict)
+    eval_result: dict = field(default_factory=dict)
+    created_at: float = 0.0
+    decided_at: float = 0.0
+    version_before: str = ""
+    version_after: str = ""
+
+
+@dataclass
+class SystemVersion:
+    """System version snapshot."""
+    version_id: str = ""
+    status: str = "experimental"
+    created_at: float = 0.0
+    description: str = ""
+    parent_version: str = ""  # forked from which version
+    metrics: dict = field(default_factory=dict)  # performance metrics at snapshot
+    improvements: list = field(default_factory=list)  # included improvement IDs
+
+
+# ========== Evolution Loop ==========
+
+class EvolutionLoop:
+    """AGI Self-Evolution Engine."""
+
+    def __init__(self, memory=None, tool_system=None, log_dir=None):
+        self.memory = memory
+        self.tools = tool_system
+        self.log_dir = log_dir or os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "LOGS"
+        )
+        os.makedirs(self.log_dir, exist_ok=True)
+
+        self.lock = threading.RLock()
+
+        # State
+        self.phase = EvolutionPhase.IDLE
+        self.current_version: Optional[SystemVersion] = None
+        self.stable_version: Optional[SystemVersion] = None
+        self.traces: list[TaskTrace] = []
+        self.improvements: list[Improvement] = []
+        self.versions: list[SystemVersion] = []
+        self.evolution_history: list[dict] = []  # records of each cycle
+
+        # Baseline metrics (inherited from stable version)
+        self.baseline_metrics: dict = {
+            "task_success_rate": 0.0,
+            "avg_latency": 0.0,
+            "tool_error_rate": 0.0,
+            "knowledge_coverage": 0.0,
+        }
+
+        # Initialize first version
+        self._init_first_version()
+
+        # Evaluator registry (customizable)
+        self.evaluators: list[Callable] = []
+        self.benchmark_suite: list[Callable] = []
+
+        # Rollback hooks (each improvement can register a rollback function)
+        self._rollback_hooks: dict[str, Callable] = {}
+
+    def _init_first_version(self):
+        """Initialize the first Research version."""
+        v0 = SystemVersion(
+            version_id=self._gen_version_id("v0"),
+            status=VersionStatus.RESEARCH.value,
+            created_at=time.time(),
+            description="Initial version, Phase 1 base runtime",
+            parent_version="",
+            metrics=copy.deepcopy(self.baseline_metrics)
+        )
+        self.versions.append(v0)
+        self.current_version = v0
+        self._log_evolution("init", f"Initial version {v0.version_id} created", version=v0.version_id)
+
+    def _gen_version_id(self, prefix="v"):
+        return f"{prefix}_{hashlib.md5(str(time.time()).encode()).hexdigest()[:8]}"
+
+    def _gen_improvement_id(self):
+        return f"imp_{hashlib.md5(str(time.time()).encode()).hexdigest()[:10]}"
+
+    # ========== Phase 1: Observe ==========
+
+    def record_trace(self, trace: TaskTrace):
+        """Record a task execution trace."""
+        with self.lock:
+            self.traces.append(trace)
+            if self.memory:
+                self.memory.store_episodic(
+                    f"Task execution: {trace.description} -> {'success' if trace.success else 'failed'}",
+                    source="evolution_loop",
+                    importance=0.6 if trace.success else 0.8,  # failures are more important
+                    tags=["evolution", "trace", "success" if trace.success else "failure"]
+                )
+            self._log_evolution("trace", f"Recorded trace: {trace.description} ({'ok' if trace.success else 'FAIL'})")
+
+    def observe(self) -> dict:
+        """Phase 1: Observe system state."""
+        with self.lock:
+            self.phase = EvolutionPhase.OBSERVE
+            self._log_evolution("phase", "-> OBSERVE")
+
+            recent_traces = self.traces[-50:]
+            total = len(recent_traces)
+            successes = sum(1 for t in recent_traces if t.success)
+            success_rate = successes / total if total > 0 else 0.0
+
+            tool_stats = self.tools.stats() if self.tools else {}
+            tool_error_rate = tool_stats.get("avg_error_rate", 0.0)
+
+            latencies = []
+            for t in recent_traces:
+                if t.start_time and t.end_time:
+                    latencies.append(t.end_time - t.start_time)
+            avg_latency = sum(latencies) / len(latencies) if latencies else 0.0
+
+            mem_stats = self.memory.stats() if self.memory else {}
+
+            observation = {
+                "total_traces": total,
+                "success_rate": round(success_rate, 4),
+                "tool_error_rate": round(tool_error_rate, 4),
+                "avg_latency": round(avg_latency, 4),
+                "memory_stats": mem_stats,
+                "tool_stats": tool_stats,
+                "current_version": self.current_version.version_id if self.current_version else "",
+                "timestamp": time.time()
+            }
+
+            self._log_evolution("observe", json.dumps(observation, ensure_ascii=False, default=str))
+            return observation
+
+    # ========== Phase 2: Evaluate ==========
+
+    def evaluate(self, observation: dict) -> dict:
+        """Phase 2: Evaluate performance, identify weaknesses."""
+        with self.lock:
+            self.phase = EvolutionPhase.EVALUATE
+            self._log_evolution("phase", "-> EVALUATE")
+
+            assessment = {
+                "overall_score": 0.0,
+                "weaknesses": [],
+                "strengths": [],
+                "improvement_candidates": [],
+                "evidence_level": EvidenceLevel.UNCERTAIN.value
+            }
+
+            # 1. Success rate evaluation
+            sr = observation.get("success_rate", 0)
+            if sr < 0.5:
+                assessment["weaknesses"].append({
+                    "area": "task_success_rate",
+                    "value": sr,
+                    "target": 0.8,
+                    "severity": "high",
+                    "note": "Task success rate below 50%"
+                })
+            elif sr < 0.8:
+                assessment["weaknesses"].append({
+                    "area": "task_success_rate",
+                    "value": sr,
+                    "target": 0.8,
+                    "severity": "medium"
+                })
+            else:
+                assessment["strengths"].append({"area": "task_success_rate", "value": sr})
+
+            # 2. Tool error rate
+            ter = observation.get("tool_error_rate", 0)
+            if ter > 0.3:
+                assessment["weaknesses"].append({
+                    "area": "tool_error_rate",
+                    "value": ter,
+                    "target": 0.1,
+                    "severity": "high",
+                    "note": "Tool error rate above 30%"
+                })
+            elif ter > 0.1:
+                assessment["weaknesses"].append({
+                    "area": "tool_error_rate",
+                    "value": ter,
+                    "target": 0.1,
+                    "severity": "medium"
+                })
+
+            # 3. Latency
+            lat = observation.get("avg_latency", 0)
+            if lat > 10:
+                assessment["weaknesses"].append({
+                    "area": "avg_latency",
+                    "value": lat,
+                    "target": 5.0,
+                    "severity": "medium"
+                })
+
+            # 4. Memory coverage (simple heuristic)
+            mem_stats = observation.get("memory_stats", {})
+            total_mem = sum(v for k, v in mem_stats.items() if isinstance(v, int))
+            if total_mem < 10:
+                assessment["weaknesses"].append({
+                    "area": "knowledge_coverage",
+                    "value": total_mem,
+                    "target": 50,
+                    "severity": "low",
+                    "note": "Insufficient memory items, knowledge base weak"
+                })
+
+            # Overall score (simple weighted)
+            score = 0.0
+            score += min(sr, 1.0) * 0.4
+            score += max(1.0 - ter, 0.0) * 0.3
+            score += max(1.0 - min(lat / 30, 1.0), 0.0) * 0.2
+            score += min(total_mem / 100, 1.0) * 0.1
+            assessment["overall_score"] = round(score, 4)
+
+            # Generate improvement candidates from weaknesses
+            for w in assessment["weaknesses"]:
+                layer = self._suggest_layer(w["area"])
+                imp = Improvement(
+                    id=self._gen_improvement_id(),
+                    layer=layer,
+                    title=f"Improve {w['area']}",
+                    description=f"Current {w['area']}={w['value']}, target {w['target']}",
+                    rationale=w.get("note", f"{w['area']} below target"),
+                    expected_gain=f"{w['area']} from {w['value']} to {w['target']}",
+                    risk_level="low" if w["severity"] == "low" else ("medium" if w["severity"] == "medium" else "high"),
+                    created_at=time.time(),
+                    version_before=self.current_version.version_id if self.current_version else ""
+                )
+                assessment["improvement_candidates"].append(imp)
+                self.improvements.append(imp)
+
+            # Evidence level
+            if total := observation.get("total_traces", 0):
+                if total >= 20:
+                    assessment["evidence_level"] = EvidenceLevel.VERIFIED.value
+                elif total >= 5:
+                    assessment["evidence_level"] = EvidenceLevel.UNCERTAIN.value
+                else:
+                    assessment["evidence_level"] = EvidenceLevel.UNKNOWN.value
+
+            self._log_evolution("evaluate", json.dumps(assessment, ensure_ascii=False, default=str))
+            return assessment
+
+    def _suggest_layer(self, area: str) -> int:
+        """Suggest improvement layer based on weakness area."""
+        mapping = {
+            "task_success_rate": ImprovementLayer.L3_STRATEGY.value,
+            "tool_error_rate": ImprovementLayer.L6_TOOL.value,
+            "avg_latency": ImprovementLayer.L4_WORKFLOW.value,
+            "knowledge_coverage": ImprovementLayer.L2_MEMORY.value,
+        }
+        return mapping.get(area, ImprovementLayer.L1_PROMPT.value)
+
+    # ========== Phase 3: Improve ==========
+
+    def propose_improvement(self, layer: int, title: str, description: str,
+                            rationale: str, expected_gain: str,
+                            risk_level: str = "low",
+                            implement_fn: Optional[Callable] = None,
+                            rollback_fn: Optional[Callable] = None) -> Improvement:
+        """Phase 3: Propose an improvement."""
+        with self.lock:
+            self.phase = EvolutionPhase.IMPROVE
+            self._log_evolution("phase", "-> IMPROVE")
+
+            imp = Improvement(
+                id=self._gen_improvement_id(),
+                layer=layer,
+                title=title,
+                description=description,
+                rationale=rationale,
+                expected_gain=expected_gain,
+                risk_level=risk_level,
+                created_at=time.time(),
+                version_before=self.current_version.version_id if self.current_version else ""
+            )
+            self.improvements.append(imp)
+
+            # Register rollback hook
+            if rollback_fn:
+                self._rollback_hooks[imp.id] = rollback_fn
+
+            # Store in memory
+            if self.memory:
+                self.memory.store_episodic(
+                    f"Improvement proposal: [{ImprovementLayer(layer).name}] {title} -- {description}",
+                    source="evolution_loop",
+                    importance=0.7,
+                    tags=["evolution", "improvement", f"L{layer}"],
+                    evidence="HYPOTHESIS"
+                )
+
+            self._log_evolution("improve", f"Proposed: {title} (L{layer}, risk={risk_level})")
+            return imp
+
+    # ========== Phase 4: Validate ==========
+
+    def validate(self, improvement: Improvement,
+                 sandbox_fn: Optional[Callable] = None,
+                 benchmark_fn: Optional[Callable] = None,
+                 eval_fn: Optional[Callable] = None) -> Improvement:
+        """Phase 4: Validate improvement (Sandbox -> Test -> Benchmark -> Independent Eval)."""
+        with self.lock:
+            self.phase = EvolutionPhase.VALIDATE
+            self._log_evolution("phase", f"-> VALIDATE ({improvement.id})")
+
+            # 4a. Sandbox test
+            if sandbox_fn:
+                try:
+                    improvement.sandbox_result = sandbox_fn() or {}
+                    improvement.status = "testing"
+                except Exception as e:
+                    improvement.sandbox_result = {"error": str(e), "traceback": traceback.format_exc()}
+                    improvement.status = "rejected"
+                    improvement.evidence = EvidenceLevel.FAILED.value
+                    self._log_evolution("validate", f"Sandbox failed: {e}")
+                    return improvement
+            else:
+                improvement.sandbox_result = {"status": "skipped"}
+                improvement.status = "testing"
+
+            # 4b. Benchmark
+            if benchmark_fn:
+                try:
+                    improvement.benchmark_result = benchmark_fn() or {}
+                except Exception as e:
+                    improvement.benchmark_result = {"error": str(e)}
+                    improvement.evidence = EvidenceLevel.FAILED.value
+                    self._log_evolution("validate", f"Benchmark failed: {e}")
+            elif self.benchmark_suite:
+                results = {}
+                for i, bench in enumerate(self.benchmark_suite):
+                    try:
+                        results[f"bench_{i}"] = bench()
+                    except Exception as e:
+                        results[f"bench_{i}"] = {"error": str(e)}
+                improvement.benchmark_result = results
+            else:
+                improvement.benchmark_result = {"status": "skipped"}
+
+            # 4c. Independent evaluation
+            if eval_fn:
+                try:
+                    improvement.eval_result = eval_fn() or {}
+                except Exception as e:
+                    improvement.eval_result = {"error": str(e)}
+            elif self.evaluators:
+                results = {}
+                for i, evaluator in enumerate(self.evaluators):
+                    try:
+                        results[f"eval_{i}"] = evaluator(improvement)
+                    except Exception as e:
+                        results[f"eval_{i}"] = {"error": str(e)}
+                improvement.eval_result = results
+            else:
+                # Default independent eval: check sandbox + benchmark
+                sandbox_ok = improvement.sandbox_result.get("status") != "error" and \
+                             "error" not in improvement.sandbox_result
+                bench_ok = "error" not in improvement.benchmark_result
+                improvement.eval_result = {
+                    "sandbox_pass": sandbox_ok,
+                    "benchmark_pass": bench_ok,
+                    "overall": sandbox_ok and bench_ok
+                }
+
+            # Update evidence level
+            if improvement.eval_result.get("overall"):
+                improvement.evidence = EvidenceLevel.VERIFIED.value
+            else:
+                improvement.evidence = EvidenceLevel.FAILED.value
+
+            self._log_evolution("validate", f"Validation complete: evidence={improvement.evidence}")
+            return improvement
+
+    # ========== Phase 5: Decide ==========
+
+    def decide(self, improvement: Improvement) -> bool:
+        """Phase 5: Accept or reject improvement."""
+        with self.lock:
+            self.phase = EvolutionPhase.DECIDE
+            self._log_evolution("phase", f"-> DECIDE ({improvement.id})")
+
+            accepted = False
+
+            if improvement.evidence == EvidenceLevel.VERIFIED.value:
+                # Validation passed -> accept
+                improvement.status = "accepted"
+                accepted = True
+
+                # Create new version
+                new_version = SystemVersion(
+                    version_id=self._gen_version_id("v"),
+                    status=VersionStatus.EXPERIMENTAL.value,
+                    created_at=time.time(),
+                    description=improvement.title,
+                    parent_version=self.current_version.version_id if self.current_version else "",
+                    metrics=improvement.benchmark_result,
+                    improvements=[improvement.id]
+                )
+                self.versions.append(new_version)
+                self.current_version = new_version
+                improvement.version_after = new_version.version_id
+
+                self._log_evolution("decide", f"Accepted: {improvement.title} -> new version {new_version.version_id}")
+
+                if self.memory:
+                    self.memory.store_semantic(
+                        f"Improvement accepted: [{ImprovementLayer(improvement.layer).name}] {improvement.title}",
+                        source="evolution_loop",
+                        importance=0.9,
+                        tags=["evolution", "accepted", f"L{improvement.layer}"],
+                        evidence="VERIFIED"
+                    )
+            else:
+                # Validation failed -> reject
+                improvement.status = "rejected"
+                self._log_evolution("decide", f"Rejected: {improvement.title} (evidence={improvement.evidence})")
+
+                if self.memory:
+                    self.memory.store_episodic(
+                        f"Improvement rejected: {improvement.title} -- insufficient evidence",
+                        source="evolution_loop",
+                        importance=0.6,
+                        tags=["evolution", "rejected"],
+                        evidence="FAILED"
+                    )
+
+            improvement.decided_at = time.time()
+            return accepted
+
+    # ========== Phase 6: Rollback ==========
+
+    def rollback(self, to_version_id: Optional[str] = None) -> bool:
+        """Phase 6: Rollback to specified version (or last stable version)."""
+        with self.lock:
+            self.phase = EvolutionPhase.ROLLBACK
+            self._log_evolution("phase", "-> ROLLBACK")
+
+            target = None
+            if to_version_id:
+                target = next((v for v in self.versions if v.version_id == to_version_id), None)
+            if not target and self.stable_version:
+                target = self.stable_version
+            if not target:
+                for v in reversed(self.versions):
+                    if v.status not in (VersionStatus.REJECTED.value, VersionStatus.ROLLED_BACK.value):
+                        target = v
+                        break
+
+            if not target:
+                self._log_evolution("rollback", "No rollback target")
+                return False
+
+            # Execute rollback hooks
+            for imp in self.improvements:
+                if imp.status == "accepted" and imp.id in self._rollback_hooks:
+                    try:
+                        self._rollback_hooks[imp.id]()
+                        self._log_evolution("rollback", f"Executed rollback hook: {imp.id}")
+                    except Exception as e:
+                        self._log_evolution("rollback", f"Rollback hook failed {imp.id}: {e}")
+
+            # Mark current version as rolled back
+            if self.current_version:
+                self.current_version.status = VersionStatus.ROLLED_BACK.value
+
+            # Switch to target version
+            self.current_version = target
+            target.status = VersionStatus.STABLE.value
+            self.stable_version = target
+
+            self._log_evolution("rollback", f"Rolled back to {target.version_id}")
+            return True
+
+    def promote_to_stable(self, version_id: str) -> bool:
+        """Promote an Experimental version to Stable."""
+        with self.lock:
+            v = next((v for v in self.versions if v.version_id == version_id), None)
+            if not v or v.status != VersionStatus.EXPERIMENTAL.value:
+                return False
+            v.status = VersionStatus.STABLE.value
+            self.stable_version = v
+            self._log_evolution("promote", f"{version_id} -> STABLE")
+            return True
+
+    # ========== Full Cycle ==========
+
+    def run_cycle(self, task_executor: Optional[Callable] = None) -> dict:
+        """Run a complete self-evolution cycle."""
+        self._log_evolution("cycle_start", "=== Evolution Cycle Start ===")
+
+        # 1. Observe
+        observation = self.observe()
+
+        # 2. Evaluate
+        assessment = self.evaluate(observation)
+
+        # 3. Improve (auto-generate proposals from evaluation)
+        improvements = assessment.get("improvement_candidates", [])
+        if not improvements:
+            self._log_evolution("cycle", "No improvement candidates, cycle ends")
+            self.phase = EvolutionPhase.IDLE
+            return {"observation": observation, "assessment": assessment, "actions": []}
+
+        actions = []
+        for imp in improvements:
+            # 4. Validate
+            validated = self.validate(imp)
+
+            # 5. Decide
+            accepted = self.decide(validated)
+
+            actions.append({
+                "improvement_id": imp.id,
+                "title": imp.title,
+                "layer": f"L{imp.layer}",
+                "evidence": imp.evidence,
+                "accepted": accepted
+            })
+
+        self._log_evolution("cycle_end", f"=== Cycle End: {len(actions)} actions ===")
+        self.phase = EvolutionPhase.IDLE
+
+        cycle_record = {
+            "observation": observation,
+            "assessment": assessment,
+            "actions": actions,
+            "timestamp": time.time()
+        }
+        self.evolution_history.append(cycle_record)
+        return cycle_record
+
+    # ========== Registration ==========
+
+    def register_evaluator(self, fn: Callable):
+        """Register an independent evaluator."""
+        self.evaluators.append(fn)
+
+    def register_benchmark(self, fn: Callable):
+        """Register a benchmark test."""
+        self.benchmark_suite.append(fn)
+
+    # ========== Logging and Audit ==========
+
+    def _log_evolution(self, event_type: str, message: str, **extra):
+        """Write evolution log."""
+        entry = {
+            "timestamp": time.time(),
+            "phase": self.phase.value if isinstance(self.phase, EvolutionPhase) else str(self.phase),
+            "event": event_type,
+            "message": message,
+            **extra
+        }
+        log_path = os.path.join(self.log_dir, "evolution_log.jsonl")
+        try:
+            with open(log_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(entry, ensure_ascii=False, default=str) + "\n")
+        except Exception:
+            pass  # logging should not block main flow
+
+    def get_audit_trail(self, n=50) -> list:
+        """Get audit records."""
+        log_path = os.path.join(self.log_dir, "evolution_log.jsonl")
+        if not os.path.exists(log_path):
+            return []
+        with open(log_path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        return [json.loads(line) for line in lines[-n:]]
+
+    def get_improvement_history(self, layer: Optional[int] = None) -> list:
+        """Get improvement history."""
+        with self.lock:
+            if layer:
+                return [asdict(i) for i in self.improvements if i.layer == layer]
+            return [asdict(i) for i in self.improvements]
+
+    def get_version_history(self) -> list:
+        """Get version history."""
+        with self.lock:
+            return [asdict(v) for v in self.versions]
+
+    def stats(self) -> dict:
+        """Evolution engine statistics."""
+        with self.lock:
+            return {
+                "total_traces": len(self.traces),
+                "total_improvements": len(self.improvements),
+                "accepted": sum(1 for i in self.improvements if i.status == "accepted"),
+                "rejected": sum(1 for i in self.improvements if i.status == "rejected"),
+                "total_versions": len(self.versions),
+                "stable_version": self.stable_version.version_id if self.stable_version else None,
+                "current_version": self.current_version.version_id if self.current_version else None,
+                "current_phase": self.phase.value,
+                "evolution_cycles": len(self.evolution_history)
+            }

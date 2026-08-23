@@ -1,0 +1,238 @@
+{
+ "stage": "gen_2",
+ "ts_start": "2026-08-22 13:48:01",
+ "baselines": {
+  "mlp_x3": {
+   "dev": 0.8347,
+   "test": 0.8402,
+   "params": 4040068
+  },
+  "gru_x3": {
+   "dev": 0.7707,
+   "test": 0.7709,
+   "params": 4065796
+  },
+  "attn_x3": {
+   "dev": 0.7833,
+   "test": 0.783,
+   "params": 4040452
+  },
+  "hybrid": {
+   "dev": 0.7994,
+   "test": 0.8095,
+   "params": 4040196
+  }
+ },
+ "evolution": [
+  [
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "gru",
+       "skip": null
+      },
+      {
+       "type": "mlp",
+       "skip": null
+      },
+      {
+       "type": "gru",
+       "skip": null
+      },
+      {
+       "type": "gru",
+       "skip": null
+      },
+      {
+       "type": "gate",
+       "skip": null
+      }
+     ]
+    },
+    "arch": "gru->mlp->gru->gru->gate",
+    "dev": 0.8105,
+    "test": 0.8143,
+    "params": 4148740
+   },
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "gate",
+       "skip": null
+      },
+      {
+       "type": "attn",
+       "skip": null
+      },
+      {
+       "type": "gate",
+       "skip": null
+      },
+      {
+       "type": "mlp",
+       "skip": null
+      }
+     ]
+    },
+    "arch": "gate->attn->gate->mlp",
+    "dev": 0.8044,
+    "test": 0.8032,
+    "params": 4007556
+   },
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "gate",
+       "skip": null
+      },
+      {
+       "type": "gate",
+       "skip": 0
+      },
+      {
+       "type": "attn",
+       "skip": null
+      },
+      {
+       "type": "gru",
+       "skip": 2
+      },
+      {
+       "type": "gate",
+       "skip": null
+      }
+     ]
+    },
+    "arch": "gate->gate(0)->attn->gru(2)->gate",
+    "dev": 0.7918,
+    "test": 0.8009,
+    "params": 4032902
+   },
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "gru",
+       "skip": null
+      },
+      {
+       "type": "gate",
+       "skip": null
+      },
+      {
+       "type": "gate",
+       "skip": null
+      }
+     ]
+    },
+    "arch": "gru->gate->gate",
+    "dev": 0.7792,
+    "test": 0.7959,
+    "params": 3949828
+   },
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "attn",
+       "skip": null
+      },
+      {
+       "type": "attn",
+       "skip": 0
+      },
+      {
+       "type": "gate",
+       "skip": 1
+      },
+      {
+       "type": "attn",
+       "skip": null
+      },
+      {
+       "type": "attn",
+       "skip": 0
+      }
+     ]
+    },
+    "arch": "attn->attn(0)->gate(1)->attn->attn(0)",
+    "dev": 0.7767,
+    "test": 0.7757,
+    "params": 4123527
+   },
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "gate",
+       "skip": null
+      },
+      {
+       "type": "attn",
+       "skip": null
+      },
+      {
+       "type": "attn",
+       "skip": 0
+      },
+      {
+       "type": "gate",
+       "skip": 0
+      },
+      {
+       "type": "attn",
+       "skip": 0
+      }
+     ]
+    },
+    "arch": "gate->attn->attn(0)->gate(0)->attn(0)",
+    "dev": 0.7727,
+    "test": 0.7812,
+    "params": 4073991
+   },
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "attn",
+       "skip": null
+      },
+      {
+       "type": "gate",
+       "skip": null
+      },
+      {
+       "type": "mlp",
+       "skip": 1
+      }
+     ]
+    },
+    "arch": "attn->gate->mlp(1)",
+    "dev": 0.7681,
+    "test": 0.753,
+    "params": 3990789
+   },
+   {
+    "genome": {
+     "blocks": [
+      {
+       "type": "attn",
+       "skip": null
+      },
+      {
+       "type": "attn",
+       "skip": 0
+      }
+     ]
+    },
+    "arch": "attn->attn(0)",
+    "dev": 0.7198,
+    "test": 0.7185,
+    "params": 3974149
+   }
+  ]
+ ]
+}

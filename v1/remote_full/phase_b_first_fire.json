@@ -1,0 +1,341 @@
+{
+ "ok": true,
+ "sr_history": [
+  {
+   "cycle": "C0_baseline",
+   "seed": 100,
+   "n": 40,
+   "success_rate": 0.5,
+   "config": {
+    "verify": false,
+    "retries": 0
+   }
+  },
+  {
+   "cycle": "C1_after_ImpA",
+   "seed": 200,
+   "n": 40,
+   "success_rate": 0.825,
+   "config": {
+    "verify": true,
+    "retries": 2
+   }
+  },
+  {
+   "cycle": "C2_after_ImpB",
+   "seed": 300,
+   "n": 40,
+   "success_rate": 0.925,
+   "config": {
+    "verify": true,
+    "retries": 4
+   }
+  },
+  {
+   "cycle": "C3_after_ImpD_fullsuite",
+   "seed": 400,
+   "n": 120,
+   "success_rate": 0.8417,
+   "config": {
+    "verify": true,
+    "retries": 2
+   }
+  },
+  {
+   "cycle": "C4_after_rollback",
+   "seed": 500,
+   "n": 120,
+   "success_rate": 0.9667,
+   "config": {
+    "verify": true,
+    "retries": 4
+   }
+  }
+ ],
+ "config_history": [
+  {
+   "config": {
+    "verify": false,
+    "retries": 0
+   },
+   "event": "init"
+  },
+  {
+   "config": {
+    "verify": true,
+    "retries": 2
+   },
+   "event": "accept:Enable checksum verification with retries=2"
+  },
+  {
+   "config": {
+    "verify": true,
+    "retries": 4
+   },
+   "event": "accept:Increase retries 2->4 for higher success rate"
+  },
+  {
+   "config": {
+    "verify": true,
+    "retries": 2
+   },
+   "event": "accept:Reduce retries 4->2 to save compute"
+  },
+  {
+   "config": {
+    "verify": true,
+    "retries": 4
+   },
+   "event": "rollback:Reduce retries 4->2 to save compute"
+  }
+ ],
+ "improvements": [
+  {
+   "id": "imp_8aa6c3a99d",
+   "layer": "L3",
+   "title": "Improve task_success_rate",
+   "status": "proposed",
+   "evidence": "HYPOTHESIS",
+   "sandbox": {},
+   "benchmark": {},
+   "eval": {},
+   "version_before": "v0_c579ecd8",
+   "version_after": ""
+  },
+  {
+   "id": "imp_338440111a",
+   "layer": "L3",
+   "title": "Enable checksum verification with retries=2",
+   "status": "accepted",
+   "evidence": "VERIFIED",
+   "sandbox": {
+    "status": "ok",
+    "trial_sr_10": 0.9
+   },
+   "benchmark": {
+    "n_tasks": 120,
+    "success_rate": 0.8583,
+    "avg_calls": 1.825,
+    "avg_latency_ms": 0.006,
+    "calls_saved_vs_baseline": -0.825,
+    "baseline_sr": 0.5
+   },
+   "eval": {
+    "overall": true,
+    "detail": "bench_sr=0.8583 threshold=0.7"
+   },
+   "version_before": "v0_c579ecd8",
+   "version_after": "v_f5b42545"
+  },
+  {
+   "id": "imp_d2a46b0f50",
+   "layer": "L3",
+   "title": "Improve task_success_rate",
+   "status": "proposed",
+   "evidence": "HYPOTHESIS",
+   "sandbox": {},
+   "benchmark": {},
+   "eval": {},
+   "version_before": "v_f5b42545",
+   "version_after": ""
+  },
+  {
+   "id": "imp_299b358506",
+   "layer": "L3",
+   "title": "Increase retries 2->4 for higher success rate",
+   "status": "accepted",
+   "evidence": "VERIFIED",
+   "sandbox": {
+    "status": "ok",
+    "trial_sr_10": 1.0
+   },
+   "benchmark": {
+    "n_tasks": 120,
+    "success_rate": 0.9833,
+    "avg_calls": 2.033,
+    "avg_latency_ms": 0.006,
+    "calls_saved_vs_baseline": -1.033,
+    "baseline_sr": 0.825
+   },
+   "eval": {
+    "overall": true,
+    "detail": "bench_sr=0.9833 threshold=0.9"
+   },
+   "version_before": "v_f5b42545",
+   "version_after": "v_0aa6030a"
+  },
+  {
+   "id": "imp_3776f17afa",
+   "layer": "L6",
+   "title": "Disable verification to save compute calls",
+   "status": "rejected",
+   "evidence": "FAILED",
+   "sandbox": {
+    "status": "ok",
+    "trial_sr_10": 0.6
+   },
+   "benchmark": {
+    "n_tasks": 120,
+    "success_rate": 0.4583,
+    "avg_calls": 1.0,
+    "avg_latency_ms": 0.003,
+    "calls_saved_vs_baseline": 0.0,
+    "baseline_sr": 0.925
+   },
+   "eval": {
+    "overall": false,
+    "detail": "bench_sr=0.4583 threshold=0.9"
+   },
+   "version_before": "v_0aa6030a",
+   "version_after": ""
+  },
+  {
+   "id": "imp_28c14988a0",
+   "layer": "L4",
+   "title": "Reduce retries 4->2 to save compute",
+   "status": "accepted",
+   "evidence": "VERIFIED",
+   "sandbox": {
+    "status": "ok",
+    "trial_sr_10": 0.9
+   },
+   "benchmark": {
+    "n_tasks": 30,
+    "success_rate": 0.7667,
+    "avg_calls": 1.767,
+    "avg_latency_ms": 0.005,
+    "calls_saved_vs_baseline": -0.767,
+    "baseline_sr": 0.925
+   },
+   "eval": {
+    "overall": true,
+    "detail": "bench_sr=0.7667 threshold=0.75"
+   },
+   "version_before": "v_0aa6030a",
+   "version_after": "v_882ff5e4"
+  }
+ ],
+ "versions": [
+  {
+   "version_id": "v0_c579ecd8",
+   "status": "research",
+   "description": "Initial version, Phase 1 base runtime",
+   "parent": ""
+  },
+  {
+   "version_id": "v_f5b42545",
+   "status": "experimental",
+   "description": "Enable checksum verification with retries=2",
+   "parent": "v0_c579ecd8"
+  },
+  {
+   "version_id": "v_0aa6030a",
+   "status": "stable",
+   "description": "Increase retries 2->4 for higher success rate",
+   "parent": "v_f5b42545"
+  },
+  {
+   "version_id": "v_882ff5e4",
+   "status": "rolled_back",
+   "description": "Reduce retries 4->2 to save compute",
+   "parent": "v_0aa6030a"
+  }
+ ],
+ "rollback": {
+  "triggered": true,
+  "regression": 0.0833
+ },
+ "recovered": true,
+ "stable_version": "v_0aa6030a",
+ "stats": {
+  "total_traces": 360,
+  "total_improvements": 6,
+  "accepted": 3,
+  "rejected": 1,
+  "total_versions": 4,
+  "stable_version": "v_0aa6030a",
+  "current_version": "v_0aa6030a",
+  "current_phase": "idle",
+  "evolution_cycles": 0
+ },
+ "memory_consolidate": {
+  "consolidated": 1,
+  "clusters": 5
+ },
+ "idle_cycle_actions": [],
+ "audit_trail_tail": [
+  {
+   "timestamp": 1787363733.93949,
+   "phase": "rollback",
+   "event": "trace",
+   "message": "Recorded trace: 13-3=10 [C4_after_rollback] (ok)"
+  },
+  {
+   "timestamp": 1787363733.959203,
+   "phase": "rollback",
+   "event": "trace",
+   "message": "Recorded trace: 51*5=255 [C4_after_rollback] (ok)"
+  },
+  {
+   "timestamp": 1787363733.9604628,
+   "phase": "observe",
+   "event": "phase",
+   "message": "-> OBSERVE"
+  },
+  {
+   "timestamp": 1787363733.9763904,
+   "phase": "observe",
+   "event": "observe",
+   "message": "{\"total_traces\": 50, \"success_rate\": 1.0, \"tool_error_rate\": 0.0, \"avg_latency\": 0.0, \"memory_stats\": {\"working\": 0, \"episodic\": 365, \"semantic\": 4, \"procedural\": 0, \"expired\": 0, \"working_in_memory\": 0}, \"tool_stats\": {}, \"current_version\": \"v_0aa6030a\", \"timestamp\": 1787363733.9763627}"
+  },
+  {
+   "timestamp": 1787363733.9778574,
+   "phase": "evaluate",
+   "event": "phase",
+   "message": "-> EVALUATE"
+  },
+  {
+   "timestamp": 1787363733.9790602,
+   "phase": "evaluate",
+   "event": "evaluate",
+   "message": "{\"overall_score\": 1.0, \"weaknesses\": [], \"strengths\": [{\"area\": \"task_success_rate\", \"value\": 1.0}], \"improvement_candidates\": [], \"evidence_level\": \"VERIFIED\"}"
+  },
+  {
+   "timestamp": 1787363733.9802144,
+   "phase": "evaluate",
+   "event": "cycle_start",
+   "message": "=== Evolution Cycle Start ==="
+  },
+  {
+   "timestamp": 1787363733.9812088,
+   "phase": "observe",
+   "event": "phase",
+   "message": "-> OBSERVE"
+  },
+  {
+   "timestamp": 1787363734.321532,
+   "phase": "observe",
+   "event": "observe",
+   "message": "{\"total_traces\": 50, \"success_rate\": 1.0, \"tool_error_rate\": 0.0, \"avg_latency\": 0.0, \"memory_stats\": {\"working\": 0, \"episodic\": 365, \"semantic\": 4, \"procedural\": 0, \"expired\": 0, \"working_in_memory\": 0}, \"tool_stats\": {}, \"current_version\": \"v_0aa6030a\", \"timestamp\": 1787363734.321439}"
+  },
+  {
+   "timestamp": 1787363734.3231483,
+   "phase": "evaluate",
+   "event": "phase",
+   "message": "-> EVALUATE"
+  },
+  {
+   "timestamp": 1787363734.324329,
+   "phase": "evaluate",
+   "event": "evaluate",
+   "message": "{\"overall_score\": 1.0, \"weaknesses\": [], \"strengths\": [{\"area\": \"task_success_rate\", \"value\": 1.0}], \"improvement_candidates\": [], \"evidence_level\": \"VERIFIED\"}"
+  },
+  {
+   "timestamp": 1787363734.3255155,
+   "phase": "evaluate",
+   "event": "cycle",
+   "message": "No improvement candidates, cycle ends"
+  }
+ ],
+ "wall_s": null
+}

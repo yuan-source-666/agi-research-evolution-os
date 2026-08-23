@@ -1,0 +1,13 @@
+[project]
+name = "agi-v5"
+version = "5.0.0"
+description = "AGI v5 — 五件套认知架构参考实现（持续学习/分层记忆/世界模型/元认知/内生动机）"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["agi_v5*"]

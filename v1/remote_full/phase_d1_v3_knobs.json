@@ -1,0 +1,5335 @@
+{
+ "phase": "G1_D1_knobs10_v3",
+ "knob_spec": {
+  "verify_depth": [
+   0,
+   1,
+   2
+  ],
+  "retries": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "task_decompose": [
+   0,
+   1,
+   2
+  ],
+  "multi_path_voting": [
+   0,
+   3,
+   5
+  ],
+  "memory_read": [
+   0,
+   1
+  ],
+  "memory_write": [
+   0,
+   1
+  ],
+  "timeout_budget": [
+   1,
+   2,
+   3,
+   4,
+   6,
+   8
+  ],
+  "early_exit": [
+   0,
+   1
+  ],
+  "tool_choice": [
+   "fast_risky",
+   "slow_safe",
+   "both"
+  ],
+  "diversity_seed": [
+   0,
+   1,
+   2,
+   3
+  ]
+ },
+ "lever_table": {
+  "A": {
+   "strong": [
+    "verify_depth",
+    "retries"
+   ],
+   "mid": [
+    "multi_path_voting",
+    "early_exit",
+    "tool_choice"
+   ],
+   "weak": [
+    "task_decompose",
+    "memory_read",
+    "memory_write",
+    "timeout_budget",
+    "diversity_seed"
+   ]
+  },
+  "B": {
+   "strong": [
+    "retries"
+   ],
+   "mid": [
+    "timeout_budget",
+    "tool_choice"
+   ],
+   "weak": [
+    "verify_depth",
+    "task_decompose",
+    "multi_path_voting",
+    "memory_read",
+    "memory_write",
+    "early_exit",
+    "diversity_seed"
+   ]
+  },
+  "C": {
+   "strong": [
+    "task_decompose",
+    "memory_read",
+    "memory_write"
+   ],
+   "mid": [
+    "verify_depth",
+    "retries",
+    "timeout_budget"
+   ],
+   "weak": [
+    "multi_path_voting",
+    "early_exit",
+    "tool_choice",
+    "diversity_seed"
+   ]
+  },
+  "D": {
+   "strong": [
+    "timeout_budget",
+    "early_exit"
+   ],
+   "mid": [
+    "verify_depth",
+    "retries",
+    "multi_path_voting",
+    "tool_choice"
+   ],
+   "weak": [
+    "task_decompose",
+    "memory_read",
+    "memory_write",
+    "diversity_seed"
+   ]
+  },
+  "E": {
+   "strong": [
+    "multi_path_voting",
+    "diversity_seed"
+   ],
+   "mid": [
+    "retries"
+   ],
+   "weak": [
+    "verify_depth",
+    "task_decompose",
+    "memory_read",
+    "memory_write",
+    "timeout_budget",
+    "early_exit",
+    "tool_choice"
+   ]
+  }
+ },
+ "families": {
+  "A": {
+   "final_cfg": {
+    "verify_depth": 2,
+    "retries": 3,
+    "task_decompose": 0,
+    "multi_path_voting": 0,
+    "memory_read": 0,
+    "memory_write": 0,
+    "timeout_budget": 2,
+    "early_exit": 0,
+    "tool_choice": "slow_safe",
+    "diversity_seed": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "base_sr": 0.2167,
+     "base_score": 0.2167,
+     "candidates": [
+      {
+       "raw": "升静默损坏族成功率\",\n  \"rationale\": \"通过增加多步任务族的验证深度，提高系统性逻辑错误和盲步的检测能力。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 2,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 2,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升静默损坏族成功率",
+       "rationale": "通过增加多步任务族的验证深度，提高系统性逻辑错误和盲步的检测能力。",
+       "gate_sr": 0.8,
+       "gate_score": 0.696
+      },
+      {
+       "raw": "etries\": 0,\n    \"tool_choice\": \"both\"\n  }\n}\n```\n\n这个调整将增加验证深度以更全面地检测问题，并完全避免了重试次数，从而最大限度地减少了故障点的潜在遗漏。同时，切换到\"both\"工具选择意味着在快速探索的同时也确保稳健的安全，这有助于我们在保持速度的同时提升准确性和可靠性。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的效率",
+       "rationale": "通过增加验证深度和减少重试次数，我们可以更好地检测并修复静态损坏的问题。",
+       "gate_sr": 0.625,
+       "gate_score": 0.475
+      },
+      {
+       "raw": "es\": 1,\n    \"timeout_budget\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"multi_path_voting\": 3,\n    \"early_exit\": 1,\n    \"diversity_seed\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "tool_choice": "slow_safe",
+        "retries": 1,
+        "memory_read": 1,
+        "memory_write": 1,
+        "multi_path_voting": 3,
+        "early_exit": 1,
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 1,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 1
+       },
+       "title": "最大化任务族静态损坏性能",
+       "rationale": "通过调整旋钮设置，优化了任务族在不同情况下的表现。",
+       "gate_sr": 0.775,
+       "gate_score": 0.528
+      },
+      {
+       "raw": "anges\": {\n    \"verify_depth\": 1,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```\n\n通过将验证深度设置为1和将工具选择改为\"慢但稳\"(slow_safe), 我们提高了该族的成功率, 并相应地减少了成本。这种调整有助于在较低的探查预算下达到更高的成功率。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过增加验证深度，提升结果校验的准确性，减少因静态损坏导致的误判。",
+       "gate_sr": 0.625,
+       "gate_score": 0.545
+      },
+      {
+       "raw": "h、task_decompose和tool_choice等参数，我们可以在一定程度上减少误判并增加任务的整体可靠度。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"task_decompose\": 1,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "task_decompose": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过调整verify_depth、task_decompose和tool_choice等参数，我们可以在一定程度上减少误判并增加任务的整体可靠度。",
+       "gate_sr": 0.675,
+       "gate_score": 0.525
+      },
+      {
+       "raw": "\"early_exit\": 1\n  }\n}\n```\n\n这个建议针对的是\"快速风险\"(fast_risky)策略,将工具调用改为较慢但更可靠的\"慢安全\"(slow_safe),增加了重试次数以应对更多可能的故障情况,并且在必要时允许提前退出。这些改变可能会减少工具调用概率,从而间接影响验证深度和重试次数,从而提升成功率。",
+       "valid": true,
+       "changes": {
+        "tool_choice": "slow_safe",
+        "retries": 1,
+        "early_exit": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 1,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过调整一些旋钮，我们可以降低工具调用的概率并增加失败重试次数。",
+       "gate_sr": 0.625,
+       "gate_score": 0.583
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 0.8,
+     "gate_score": 0.696,
+     "accepted_changes": {
+      "verify_depth": 1,
+      "retries": 2,
+      "tool_choice": "slow_safe"
+     }
+    },
+    {
+     "round": 2,
+     "base_sr": 0.8,
+     "base_score": 0.696,
+     "candidates": [
+      {
+       "raw": "机制\",\n  \"rationale\": \"通过提高结果校验深度，我们能够更全面地验证任务执行过程中的潜在问题，减少由于错误或故障引起的失效。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 3,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "改进静态损坏检测机制",
+       "rationale": "通过提高结果校验深度，我们能够更全面地验证任务执行过程中的潜在问题，减少由于错误或故障引起的失效。",
+       "gate_sr": 1.0,
+       "gate_score": 0.814
+      },
+      {
+       "raw": "我们希望最大化成功率，并在保证正确性的前提下尽可能降低成本。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"tool_choice\": \"both\",\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"fast_risky\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率和减少成本",
+       "rationale": "通过增加结果校验深度、调整工具选择策略并增强多路径交叉校验，我们希望最大化成功率，并在保证正确性的前提下尽可能降低成本。",
+       "gate_sr": 0.2583,
+       "gate_score": 0.1633
+      },
+      {
+       "raw": " 1 来尝试提高该族的成功率和成本。这个调整旨在通过增加验证步骤来减少错误发生的机会，并通过增加重试次数来确保在遇到故障时能够多次尝试修复。同时，通过拆解任务来应对可能出现的故障点，以及引入内存阅读经验来提升识别正确性和减少误判的概率。此外，使用 \"both\" 类型工具选择意味着优先保证安全性和稳定性，而不是追求速度。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "memory_read": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率和成本",
+       "rationale": "通过调整一些旋钮参数，我们可以提升族的总体表现。",
+       "gate_sr": 0.9167,
+       "gate_score": 0.7047
+      },
+      {
+       "raw": "\": \"提高静默损坏族的成功率\",\n  \"rationale\": \"通过调整验证深度、重试次数和工具选择，减少静默损坏族的误判风险。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 2,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 2,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过调整验证深度、重试次数和工具选择，减少静默损坏族的误判风险。",
+       "gate_sr": 0.7833,
+       "gate_score": 0.6493
+      },
+      {
+       "raw": "提升静默损坏族成功率\",\n  \"rationale\": \"通过调整verify_depth和tool_choice，增加系统性逻辑错误的容错能力，并提高工具选择的速度。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升静默损坏族成功率",
+       "rationale": "通过调整verify_depth和tool_choice，增加系统性逻辑错误的容错能力，并提高工具选择的速度。",
+       "gate_sr": 0.5917,
+       "gate_score": 0.4417
+      },
+      {
+       "raw": "ify_depth\": 2,\n    \"retries\": 1,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}\n```\n\n此建议主要针对“任务分解”、“结果校验深度”、“重试次数”以及“内存读取\"四个旋钮进行调整，旨在增加任务的独立性和灵活性，从而提升该族的成功率。",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "verify_depth": 2,
+        "retries": 1,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族成功率",
+       "rationale": "通过调整参数，增加任务解耦度和减少潜在的重复错误。",
+       "gate_sr": 0.6417,
+       "gate_score": 0.4797
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 1.0,
+     "gate_score": 0.814,
+     "accepted_changes": {
+      "verify_depth": 2,
+      "retries": 3,
+      "tool_choice": "both"
+     }
+    },
+    {
+     "round": 3,
+     "base_sr": 1.0,
+     "base_score": 0.814,
+     "candidates": [
+      {
+       "raw": "pose\": 0,\n    \"multi_path_voting\": 0,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 2,\n    \"early_exit\": 0,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "改进静默损坏族性能",
+       "rationale": "通过调整工具选择、验证深度和重试次数等参数，提高家族的整体性能。",
+       "gate_sr": 1.0,
+       "gate_score": 0.814
+      },
+      {
+       "raw": "次数，我们可以提升任务在面对静默损坏时的表现。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 2,\n    \"tool_choice\": \"both\"\n  }\n}\n```\n\n这个调整旨在增强任务在遇到静默损坏时的适应性和稳定性，从而提升整体的成功率和性能。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过增加结果校验深度和减少重试次数，我们可以提升任务在面对静默损坏时的表现。",
+       "gate_sr": 0.9667,
+       "gate_score": 0.7927
+      },
+      {
+       "raw": "depth`设置为1以减少重复验证次数，并将`retries`设置为3以增加任务执行的灵活性和容错能力。此外，将`tool_choice`从“both\"改为“fast_risky\"，这意味着工具的选择会更加快速但具有更高的错误率。这些改变旨在通过更频繁的尝试来弥补每次尝试可能存在的风险，从而提升静默损坏族的整体成功率。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过调整参数，减少重复验证和增加额外的尝试次数，可以提升任务的稳定性和成功率。",
+       "gate_sr": 0.5667,
+       "gate_score": 0.4907
+      },
+      {
+       "raw": " \"最大化任务族性能，减少静态误差\",\n  \"rationale\": \"通过调整旋钮设置，提高任务族的静态准确性和动态适应能力。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 2,\n    \"tool_choice\": \"fast_risky\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "最大化任务族性能，减少静态误差",
+       "rationale": "通过调整旋钮设置，提高任务族的静态准确性和动态适应能力。",
+       "gate_sr": 0.775,
+       "gate_score": 0.671
+      },
+      {
+       "raw": "静默损坏族的成功率\",\n  \"rationale\": \"通过调整工具选择和任务分解，提高验证深度以减少误判的概率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"tool_choice\": \"fast_risky\",\n    \"task_decompose\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "task_decompose": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升静默损坏族的成功率",
+       "rationale": "通过调整工具选择和任务分解，提高验证深度以减少误判的概率。",
+       "gate_sr": 0.3417,
+       "gate_score": 0.2317
+      },
+      {
+       "raw": "试重新执行失败的任务；以及改变'multi_path_voting'开关，以引入更多的独立路径交叉验证，从而减少单一路径导致的误判概率。这些改动将有助于提高家族静默损坏族的整体性能和可靠性。\",\"changes\":{\"verify_depth\":2,\"retries\":3,\"tool_choice\":\"both\"}}}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "",
+       "rationale": "",
+       "gate_sr": 1.0,
+       "gate_score": 0.814
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 1.0,
+     "gate_score": 0.814,
+     "rejected": {
+      "raw": "pose\": 0,\n    \"multi_path_voting\": 0,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 2,\n    \"early_exit\": 0,\n    \"tool_choice\": \"both\"\n  }\n}",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "retries": 3,
+       "tool_choice": "both"
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 3,
+       "task_decompose": 0,
+       "multi_path_voting": 0,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "both",
+       "diversity_seed": 0
+      },
+      "title": "改进静默损坏族性能",
+      "rationale": "通过调整工具选择、验证深度和重试次数等参数，提高家族的整体性能。",
+      "gate_sr": 1.0,
+      "gate_score": 0.814
+     }
+    },
+    {
+     "round": 4,
+     "base_sr": 1.0,
+     "base_score": 0.814,
+     "candidates": [
+      {
+       "raw": "升静默损坏族的效率\",\n  \"rationale\": \"通过调整验证深度、重试次数和工具选择，增强任务族在静默损坏情况下的检测能力。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 3,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升静默损坏族的效率",
+       "rationale": "通过调整验证深度、重试次数和工具选择，增强任务族在静默损坏情况下的检测能力。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.8057
+      },
+      {
+       "raw": "\n  \"rationale\": \"通过增加结果校验深度和尝试次数，以及在必要时启用多重路径交叉验证，可以显著提升静态安全性和可靠性。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 4,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 4,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 4,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族静态安全性",
+       "rationale": "通过增加结果校验深度和尝试次数，以及在必要时启用多重路径交叉验证，可以显著提升静态安全性和可靠性。",
+       "gate_sr": 1.0,
+       "gate_score": 0.802
+      },
+      {
+       "raw": "测成本\",\n  \"rationale\": \"通过调整验证深度、重复尝试次数和工具选择，增强系统对静态检测误差的容忍度，并减少误判导致的成本。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 3,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静态检测准确性和减少探测成本",
+       "rationale": "通过调整验证深度、重复尝试次数和工具选择，增强系统对静态检测误差的容忍度，并减少误判导致的成本。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.8057
+      },
+      {
+       "raw": "静默损坏族性能\",\n  \"rationale\": \"通过调整验证深度、重试次数和工具选择，提高静态检测的准确性并减少误报。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 3,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升静默损坏族性能",
+       "rationale": "通过调整验证深度、重试次数和工具选择，提高静态检测的准确性并减少误报。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.8357
+      },
+      {
+       "raw": " 3,\n    \"retries\": 2,\n    \"tool_choice\": \"both\"\n  }\n}\n```\n\n这个方案通过将验证深度从2增加到3，并将重试次数从3减少到2，以及将工具选择改为\"双路\"(both)，提高了任务家族的整体性能和稳定性。这有助于减少因静态检查故障而需要重试的风险，从而最大化score。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升静态检查可靠性的策略",
+       "rationale": "通过增加验证深度和减少重试次数，提高任务家族的可靠性。",
+       "gate_sr": 0.975,
+       "gate_score": 0.801
+      },
+      {
+       "raw": "族的成功率\",\n  \"rationale\": \"通过调整验证深度、重试次数和工具选择，我们可以减少故障模式，并增加任务执行的可靠性。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 3,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静态损坏族的成功率",
+       "rationale": "通过调整验证深度、重试次数和工具选择，我们可以减少故障模式，并增加任务执行的可靠性。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.8057
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 0.9917,
+     "gate_score": 0.8357,
+     "accepted_changes": {
+      "verify_depth": 2,
+      "retries": 3,
+      "tool_choice": "slow_safe"
+     }
+    },
+    {
+     "round": 5,
+     "base_sr": 0.9917,
+     "base_score": 0.8357,
+     "candidates": [
+      {
+       "raw": "入路径多样性来提高家族的成功率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 3,\n    \"tool_choice\": \"slow_safe\",\n    \"memory_read\": 0,\n    \"memory_write\": 0\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升家族成功率",
+       "rationale": "通过调整验证深度和重试次数，增加工具的选择灵活性，以及引入路径多样性来提高家族的成功率。",
+       "gate_sr": 1.0,
+       "gate_score": 0.844
+      },
+      {
+       "raw": "n\n{\n  \"title\": \"提升静态检查覆盖率和重试机制\",\n  \"rationale\": \"通过提高验证深度和增加重试次数，可以更全面地检测潜在问题，减少因小错积累导致的整体失败。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 4\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 4,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升静态检查覆盖率和重试机制",
+       "rationale": "通过提高验证深度和增加重试次数，可以更全面地检测潜在问题，减少因小错积累导致的整体失败。",
+       "gate_sr": 0.8917,
+       "gate_score": 0.7637
+      },
+      {
+       "raw": "`verify_depth`)**: 设置为3，以增强对潜在问题的检测能力。\n2. **减少重试次数 (`retries`)**: 设置为2，以减少不必要的尝试，避免浪费资源。\n3. **调整工具选择 (`tool_choice`)**: 更改为“fast_risky”，虽然速度更快，但在出现错误时会更积极地采取行动。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升静态损坏族性能",
+       "rationale": "通过调整旋钮，提高验证深度和错误容忍度，减少重复尝试，从而最大化score。",
+       "gate_sr": 0.7167,
+       "gate_score": 0.6127
+      },
+      {
+       "raw": "{\n  \"title\": \"提高静默损坏族的成功率\",\n  \"rationale\": \"通过增加验证深度和减少重试次数，我们可以更好地检测到隐藏的故障点，从而提高成功率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 2\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过增加验证深度和减少重试次数，我们可以更好地检测到隐藏的故障点，从而提高成功率。",
+       "gate_sr": 0.7167,
+       "gate_score": 0.6127
+      },
+      {
+       "raw": "\": \"提高静默损坏族的成功率\",\n  \"rationale\": \"通过增加结果校验深度和减少失败重试次数，我们可以更有效地识别和修复问题。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 2,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高静默损坏族的成功率",
+       "rationale": "通过增加结果校验深度和减少失败重试次数，我们可以更有效地识别和修复问题。",
+       "gate_sr": 0.975,
+       "gate_score": 0.801
+      },
+      {
+       "raw": "故障的能力。最后，由于静默损坏族的特性，我们将内存读取设置为1，以减轻每次迭代对资源的消耗。\", \"changes\": {\"verify_depth\": 2, \"retries\": 3, \"tool_choice\": \"both\", \"multi_path_voting\": 3, \"memory_read\": 1}}}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "tool_choice": "both",
+        "multi_path_voting": 3,
+        "memory_read": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "",
+       "rationale": "",
+       "gate_sr": 0.9833,
+       "gate_score": 0.6573
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 1.0,
+     "gate_score": 0.844,
+     "rejected": {
+      "raw": "入路径多样性来提高家族的成功率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 3,\n    \"tool_choice\": \"slow_safe\",\n    \"memory_read\": 0,\n    \"memory_write\": 0\n  }\n}\n```",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "retries": 3,
+       "tool_choice": "slow_safe"
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 3,
+       "task_decompose": 0,
+       "multi_path_voting": 0,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "slow_safe",
+       "diversity_seed": 0
+      },
+      "title": "提升家族成功率",
+      "rationale": "通过调整验证深度和重试次数，增加工具的选择灵活性，以及引入路径多样性来提高家族的成功率。",
+      "gate_sr": 1.0,
+      "gate_score": 0.844
+     }
+    }
+   ],
+   "history": [
+    {
+     "round": 1,
+     "changes": {
+      "verify_depth": 1,
+      "retries": 2,
+      "tool_choice": "slow_safe"
+     },
+     "accepted": true,
+     "sr": 0.8,
+     "score": 0.696,
+     "reason": "gate pass"
+    },
+    {
+     "round": 2,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 3,
+      "tool_choice": "both"
+     },
+     "accepted": true,
+     "sr": 1.0,
+     "score": 0.814,
+     "reason": "gate pass"
+    },
+    {
+     "round": 3,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 3,
+      "tool_choice": "both"
+     },
+     "accepted": false,
+     "sr": 1.0,
+     "score": 0.814,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 4,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 3,
+      "tool_choice": "slow_safe"
+     },
+     "accepted": true,
+     "sr": 0.9917,
+     "score": 0.8357,
+     "reason": "gate pass"
+    },
+    {
+     "round": 5,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 3,
+      "tool_choice": "slow_safe"
+     },
+     "accepted": false,
+     "sr": 1.0,
+     "score": 0.844,
+     "reason": "gate score below min_gain"
+    }
+   ]
+  },
+  "B": {
+   "final_cfg": {
+    "verify_depth": 0,
+    "retries": 1,
+    "task_decompose": 0,
+    "multi_path_voting": 0,
+    "memory_read": 0,
+    "memory_write": 0,
+    "timeout_budget": 2,
+    "early_exit": 0,
+    "tool_choice": "slow_safe",
+    "diversity_seed": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "base_sr": 0.5083,
+     "base_score": 0.5083,
+     "candidates": [
+      {
+       "raw": "果；将 `retries` 设置为1，允许在工具调用失败时重新尝试；将 `task_decompose` 设定为1，拆分任务以减少潜在的故障点；将 `timeout_budget` 减少到3，确保即使在有限的时间内也能有效地探测可能的错误。\n\n这些更改旨在减少显性报错族中的故障点，并通过增加灵活性来应对可能出现的错误。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高显性报错族的成功率",
+       "rationale": "通过调整验证深度、重试次数和任务分解等参数，我们可以增加显性报错族的成功率。",
+       "gate_sr": 0.775,
+       "gate_score": 0.678
+      },
+      {
+       "raw": "**：增加了每次失败后的重试机会，以提高修复隐性问题的能力。\n3. **增加内存读取次数设为1\"**：提高了对历史数据的依赖，有助于识别和学习潜在的问题模式。\n4. **将超时预算设置为3\"**：延长了探测过程中的等待时间，增加了找到问题的机会。\n\n这些调整旨在减轻显性报错族的风险，并通过增加尝试次数和依赖过去的经验来",
+       "valid": true,
+       "changes": {
+        "tool_choice": "slow_safe",
+        "retries": 1,
+        "memory_read": 1,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族成功概率",
+       "rationale": "通过增加工具调用的可靠性，减少显性错误的概率。",
+       "gate_sr": 0.9417,
+       "gate_score": 0.8547
+      },
+      {
+       "raw": "\n  \"title\": \"提升显性报错族的可靠性和效率\",\n  \"rationale\": \"通过改进任务分解和多路径交叉校验策略，我们可以提高显性报错族的成功率。\",\n  \"changes\": {\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "multi_path_voting": 3
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族的可靠性和效率",
+       "rationale": "通过改进任务分解和多路径交叉校验策略，我们可以提高显性报错族的成功率。",
+       "gate_sr": 0.2167,
+       "gate_score": 0.0667
+      },
+      {
+       "raw": " \"rationale\": \"通过增加任务分解和多样化路径，我们可以减少显性错误的发生，并提高系统的鲁棒性。\",\n  \"changes\": {\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "改进失败报错机制",
+       "rationale": "通过增加任务分解和多样化路径，我们可以减少显性错误的发生，并提高系统的鲁棒性。",
+       "gate_sr": 0.4667,
+       "gate_score": 0.2467
+      },
+      {
+       "raw": "错族的成功率\",\n  \"rationale\": \"通过调整工具选择、增加多样化和减少重复检查，可以提高显性报错族的成功率。\",\n  \"changes\": {\n    \"tool_choice\": \"both\",\n    \"timeout_budget\": 4,\n    \"diversity_seed\": 2\n  }\n}",
+       "valid": true,
+       "changes": {
+        "tool_choice": "both",
+        "timeout_budget": 4,
+        "diversity_seed": 2
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "title": "提升显性报错族的成功率",
+       "rationale": "通过调整工具选择、增加多样化和减少重复检查，可以提高显性报错族的成功率。",
+       "gate_sr": 0.65,
+       "gate_score": 0.54
+      },
+      {
+       "raw": "可以提高任务的成功率。\",\n  \"changes\": {\n    \"retries\": 1,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```\n\n这个解决方案的目标是在保持原有成本的基础上，通过调整 `retries` 和 `tool_choice` 的设置来提高显性报错族的任务成功率。",
+       "valid": true,
+       "changes": {
+        "retries": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族的成功率",
+       "rationale": "在显性报错族中，工具调用失败后会明确报错，且每次失败都会尝试重试直到成功，这会导致一定的失败率。通过减少重试次数和增加额外的检查步骤，可以提高任务的成功率。",
+       "gate_sr": 0.9417,
+       "gate_score": 0.8897
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 0.9417,
+     "gate_score": 0.8897,
+     "accepted_changes": {
+      "retries": 1,
+      "tool_choice": "slow_safe"
+     }
+    },
+    {
+     "round": 2,
+     "base_sr": 0.9417,
+     "base_score": 0.8897,
+     "candidates": [
+      {
+       "raw": ") 来平衡快速且准确、慢速但稳妥两种情况。\n2. 将 `retries` 设置为 3, 增加重试次数以应对工具调用失败的问题。\n3. 将 `task_decompose` 改为 1, 取消任务分解，减少每次尝试时的任务数量，降低复杂度。\n4. 将 `memory_read` 和 `memory_write` 分别设置为",
+       "valid": true,
+       "changes": {
+        "tool_choice": "both",
+        "retries": 3,
+        "task_decompose": 1,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 3,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高显性报错族的成功率",
+       "rationale": "通过调整工具选择和任务分解等参数，可以增加显性报错族的成功率。",
+       "gate_sr": 1.0,
+       "gate_score": 0.824
+      },
+      {
+       "raw": "。\"}\n\n{\"changes\":{\"verify_depth\":2,\"retries\":2,\"tool_choice\":\"both\",\"task_decompose\":1,\"multi_path_voting\":3,\"memory_write\":1,\"timeout_budget\":6,\"early_exit\":1}}",
+       "valid": false,
+       "why": "no_op_or_illegal",
+       "parsed": {
+        "title": "最大化任务成功概率",
+        "rationale": "通过调整旋转钮以优化显性报错族的成功率，我们可以提升score。例如，提高验证深度和重试次数可能有助于减少临时故障，而增加任务分解、多路径交叉校验或引入更多探索机会可能会改善结果的一致性。此外，根据具体情况，我们还可以考虑改变工具选择、设定更宽松的超时预算或引入更多的路径多样性来进一步改进性能。"
+       }
+      },
+      {
+       "raw": "le\": \"提升显性报错族的成功率\",\n  \"rationale\": \"通过提高显性报错族的任务分解和多路径交叉校验，我们可以减少由于工具调用失败导致的整体风险。\",\n  \"changes\": {\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "multi_path_voting": 3
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族的成功率",
+       "rationale": "通过提高显性报错族的任务分解和多路径交叉校验，我们可以减少由于工具调用失败导致的整体风险。",
+       "gate_sr": 0.2333,
+       "gate_score": 0.0833
+      },
+      {
+       "raw": "{\"title\": \"提高显性报错族的成功率\", \"rationale\": \"通过增加retry次数和减少verify_depth，我们可以提高显性报错族的成功率，并在一定程度上修复工具调用失败的问题。\", \"changes\": {\"retries\": 2, \"verify_depth\": 0}}}",
+       "valid": true,
+       "changes": {
+        "retries": 2
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "",
+       "rationale": "",
+       "gate_sr": 0.925,
+       "gate_score": 0.901
+      },
+      {
+       "raw": "*：将 `retries` 设置为 2 可以显著增加尝试探测错误的概率，特别是在工具调用失败的情况下。\n- **拆解任务**：将 `task_decompose` 设为 1 可以将任务分解成更小的部分进行测试，从而降低单一错误导致整体失败的风险。\n- **增强内存读取**：设置 `memory_read` 为 1 可以",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 1,
+        "memory_read": 1,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族的成功率",
+       "rationale": "通过增加验证深度和重试次数，我们可以提高显性报错族的检测能力。",
+       "gate_sr": 0.925,
+       "gate_score": 0.796
+      },
+      {
+       "raw": "path_voting**: 引入了更多路径交叉验证，提高了发现和修复错误的能力。\n3. **memory_read** 和 **memory_write**: 存储更多的历史数据和经验教训，帮助在未来的任务中更快找到正确答案。\n4. **timeout_budget**: 增加时间预算，确保在必要时有足够的资源来探测",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族的成功率",
+       "rationale": "通过增加任务分解和引入更多样化的方法，我们提高了显性报错族在工具调用失败时的修复能力。",
+       "gate_sr": 0.425,
+       "gate_score": 0.15
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.925,
+     "gate_score": 0.901,
+     "rejected": {
+      "raw": "{\"title\": \"提高显性报错族的成功率\", \"rationale\": \"通过增加retry次数和减少verify_depth，我们可以提高显性报错族的成功率，并在一定程度上修复工具调用失败的问题。\", \"changes\": {\"retries\": 2, \"verify_depth\": 0}}}",
+      "valid": true,
+      "changes": {
+       "retries": 2
+      },
+      "cfg": {
+       "verify_depth": 0,
+       "retries": 2,
+       "task_decompose": 0,
+       "multi_path_voting": 0,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 0
+      },
+      "title": "",
+      "rationale": "",
+      "gate_sr": 0.925,
+      "gate_score": 0.901
+     }
+    },
+    {
+     "round": 3,
+     "base_sr": 0.9417,
+     "base_score": 0.8897,
+     "candidates": [
+      {
+       "raw": "{\n  \"title\": \"提高显性报错族的成功率\",\n  \"rationale\": \"通过增加任务分解和减少验证深度，可以减少显性报错族的概率。\",\n  \"changes\": {\n    \"task_decompose\": 1,\n    \"verify_depth\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "verify_depth": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高显性报错族的成功率",
+       "rationale": "通过增加任务分解和减少验证深度，可以减少显性报错族的概率。",
+       "gate_sr": 0.4,
+       "gate_score": 0.33
+      },
+      {
+       "raw": "{\"title\":\"最大化任务族的成功率\",\"rationale\":\"通过调整验证深度、重试次数、任务分解等参数，我们希望提高显性报错族的准确性。\",\"changes\":{\"verify_depth\": 1,\"retries\": 1,\"task_decompose\": 1}}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "最大化任务族的成功率",
+       "rationale": "通过调整验证深度、重试次数、任务分解等参数，我们希望提高显性报错族的准确性。",
+       "gate_sr": 0.7583,
+       "gate_score": 0.6763
+      },
+      {
+       "raw": "性报错族的成功率\",\n  \"rationale\": \"通过增加工具调用失败时的重试次数和调整内存读写策略，可以显著提高显性报错族的任务成功率。\",\n  \"changes\": {\n    \"retries\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "retries": 2,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族的成功率",
+       "rationale": "通过增加工具调用失败时的重试次数和调整内存读写策略，可以显著提高显性报错族的任务成功率。",
+       "gate_sr": 0.9,
+       "gate_score": 0.836
+      },
+      {
+       "raw": "升显性报错族成功率\",\n  \"rationale\": \"通过增加验证深度、调整重试策略和优化工具选择，减少显性报错族在复杂任务中的失败概率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 1,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族成功率",
+       "rationale": "通过增加验证深度、调整重试策略和优化工具选择，减少显性报错族在复杂任务中的失败概率。",
+       "gate_sr": 0.925,
+       "gate_score": 0.763
+      },
+      {
+       "raw": "B显性报错族的成功率\",\n  \"rationale\": \"通过调整验证深度、重试次数和工具选择，减少隐性报错的发生，并提高任务族的整体表现。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 0,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高任务族B显性报错族的成功率",
+       "rationale": "通过调整验证深度、重试次数和工具选择，减少隐性报错的发生，并提高任务族的整体表现。",
+       "gate_sr": 0.65,
+       "gate_score": 0.54
+      },
+      {
+       "raw": " \"title\": \"改进工具选择以提高显性报错族的成功率\",\n  \"rationale\": \"通过使用更谨慎的选择，如 'slow_safe', 我们减少了不必要的风险, 这将显著提高显性报错族的整体成功概率。\",\n  \"changes\": {\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "改进工具选择以提高显性报错族的成功率",
+       "rationale": "通过使用更谨慎的选择，如 'slow_safe', 我们减少了不必要的风险, 这将显著提高显性报错族的整体成功概率。",
+       "gate_sr": 0.65,
+       "gate_score": 0.61
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.9,
+     "gate_score": 0.836,
+     "rejected": {
+      "raw": "性报错族的成功率\",\n  \"rationale\": \"通过增加工具调用失败时的重试次数和调整内存读写策略，可以显著提高显性报错族的任务成功率。\",\n  \"changes\": {\n    \"retries\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}\n```",
+      "valid": true,
+      "changes": {
+       "retries": 2,
+       "memory_read": 1,
+       "memory_write": 1
+      },
+      "cfg": {
+       "verify_depth": 0,
+       "retries": 2,
+       "task_decompose": 0,
+       "multi_path_voting": 0,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 0
+      },
+      "title": "提升显性报错族的成功率",
+      "rationale": "通过增加工具调用失败时的重试次数和调整内存读写策略，可以显著提高显性报错族的任务成功率。",
+      "gate_sr": 0.9,
+      "gate_score": 0.836
+     }
+    },
+    {
+     "round": 4,
+     "base_sr": 0.9417,
+     "base_score": 0.8897,
+     "candidates": [
+      {
+       "raw": "th\", \"retries\": 2, \"task_decompose\": 0, \"multi_path_voting\": 3, \"memory_read\": 1, \"memory_write\": 1, \"timeout_budget\": 1, \"early_exit\": 0, \"diversity_seed\": 1}}",
+       "valid": true,
+       "changes": {
+        "tool_choice": "both",
+        "retries": 2,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 1,
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 1,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 1
+       },
+       "title": "提高显性报错族的成功率",
+       "rationale": "通过调整工具选择、任务分解和多重路径交叉验证等参数，我们可以更有效地识别和修复显性报错问题，从而显著提升显性报错族的成功率。",
+       "gate_sr": 1.0,
+       "gate_score": 0.741
+      },
+      {
+       "raw": "族的成功率\",\n\"rationale\":\"通过增加内存读取和写入，利用先前的经验来预测潜在的错误路径，并在遇到问题时能够更快地进行故障排除。\",\n\"changes\":{\"memory_read\": 1, \"memory_write\": 1},\n\"gains\":{\"score\": 0.05, \"cost\": 0.06}}",
+       "valid": true,
+       "changes": {
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高显性报错族的成功率",
+       "rationale": "通过增加内存读取和写入，利用先前的经验来预测潜在的错误路径，并在遇到问题时能够更快地进行故障排除。",
+       "gate_sr": 0.4083,
+       "gate_score": 0.3683
+      },
+      {
+       "raw": "\"提高显性报错族的成功率\",\n  \"rationale\": \"通过增加多次尝试和读取历史任务经验，可以显著提升任务族在显性报错情况下的成功率。\",\n  \"changes\": {\n    \"retries\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "retries": 3,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高显性报错族的成功率",
+       "rationale": "通过增加多次尝试和读取历史任务经验，可以显著提升任务族在显性报错情况下的成功率。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.9073
+      },
+      {
+       "raw": "耗。在提高成功率的同时，我们应优先考虑降低成本，以最大化实际的净效益。\",\n\"changes\": {\"retries\": 2, \"task_decompose\": 0, \"timeout_budget\": 2,\n            \"memory_write\": 1, \"tool_choice\": \"both\"}}",
+       "valid": true,
+       "changes": {
+        "retries": 2,
+        "memory_write": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "最大化任务族的成功率和效率",
+       "rationale": "通过调整参数，我们将增加任务族的整体成功概率，并减少所需的资源消耗。在提高成功率的同时，我们应优先考虑降低成本，以最大化实际的净效益。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.8693
+      },
+      {
+       "raw": ",\n  \"rationale\": \"通过调整旋钮，我们可以在保持较低成本的前提下提高显性报错族的成功率。\",\n  \"changes\": {\n    \"retries\": 2,\n    \"verify_depth\": 1,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "retries": 2,
+        "verify_depth": 1,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族的成功率",
+       "rationale": "通过调整旋钮，我们可以在保持较低成本的前提下提高显性报错族的成功率。",
+       "gate_sr": 0.9,
+       "gate_score": 0.796
+      },
+      {
+       "raw": "确保无论哪种情况都能尽量减少错误。将\"retries\"设置为2，增加了重试次数以应对更高的错误概率。同时，开启\"memory_read\"和\"memory_write\"，利用已有的任务经验和知识进行决策，从而提高了预测准确性和结果质量。这样做的目的是在保持快速可靠的同时，尽可能减少任务执行中的风险，从而最大化score。",
+       "valid": true,
+       "changes": {
+        "tool_choice": "both",
+        "retries": 2,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族任务成功率",
+       "rationale": "通过调整工具选择和重复尝试机制，提高显性报错族的任务成功率。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.8493
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.9833,
+     "gate_score": 0.9073,
+     "rejected": {
+      "raw": "\"提高显性报错族的成功率\",\n  \"rationale\": \"通过增加多次尝试和读取历史任务经验，可以显著提升任务族在显性报错情况下的成功率。\",\n  \"changes\": {\n    \"retries\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}\n```",
+      "valid": true,
+      "changes": {
+       "retries": 3,
+       "memory_read": 1,
+       "memory_write": 1
+      },
+      "cfg": {
+       "verify_depth": 0,
+       "retries": 3,
+       "task_decompose": 0,
+       "multi_path_voting": 0,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 0
+      },
+      "title": "提高显性报错族的成功率",
+      "rationale": "通过增加多次尝试和读取历史任务经验，可以显著提升任务族在显性报错情况下的成功率。",
+      "gate_sr": 0.9833,
+      "gate_score": 0.9073
+     }
+    },
+    {
+     "round": 5,
+     "base_sr": 0.9417,
+     "base_score": 0.8897,
+     "candidates": [
+      {
+       "raw": " \"rationale\": \"通过增加验证深度和多次尝试来提高任务的稳定性，减少重复错误的发生。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族成功概率",
+       "rationale": "通过增加验证深度和多次尝试来提高任务的稳定性，减少重复错误的发生。",
+       "gate_sr": 0.8917,
+       "gate_score": 0.7477
+      },
+      {
+       "raw": "失败重试次数，提高任务族的整体稳定性和鲁棒性。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 1,\n    \"task_decompose\": 0,\n    \"memory_read\": 1,\n    \"memory_write\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "memory_read": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族任务族的成功率",
+       "rationale": "通过增加验证深度和减少失败重试次数，提高任务族的整体稳定性和鲁棒性。",
+       "gate_sr": 0.7583,
+       "gate_score": 0.6263
+      },
+      {
+       "raw": "。\",\n  \"changes\": {\n    \"tool_choice\": \"both\",  // 改变工具选择为“双路”以提高准确性\n    \"retries\": 2,          // 增加失败重试次数至2次\n    \"timeout_budget\": 2   // 提高探测时间预算至2次\n  }\n}\n```",
+       "valid": false,
+       "why": "no_json"
+      },
+      {
+       "raw": "试次数和引入任务分解，我们可以显著减少工具调用失败的概率，并且在必要时能有效修复错误。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 3,\n    \"task_decompose\": 1,\n    \"timeout_budget\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 3,
+        "task_decompose": 1,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 3,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升显性报错族成功率",
+       "rationale": "通过提高验证深度、增加重试次数和引入任务分解，我们可以显著减少工具调用失败的概率，并且在必要时能有效修复错误。",
+       "gate_sr": 0.9667,
+       "gate_score": 0.8457
+      },
+      {
+       "raw": "tionale\": \"通过增加任务分解、记忆写入和多样性种子，我们可以在保持稳定成本的同时显著提高显性报错族的任务成功率。\",\n  \"changes\": {\n    \"task_decompose\": 1,\n    \"memory_write\": 1,\n    \"diversity_seed\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "memory_write": 1,
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 1
+       },
+       "title": "提高显性报错族的成功率",
+       "rationale": "通过增加任务分解、记忆写入和多样性种子，我们可以在保持稳定成本的同时显著提高显性报错族的任务成功率。",
+       "gate_sr": 0.475,
+       "gate_score": 0.42
+      },
+      {
+       "raw": "retries\":2,\"task_decompose\":1,\"multi_path_voting\":3,\"memory_read\":1,\"memory_write\":1,\"timeout_budget\":3,\"early_exit\":1,\"tool_choice\":\"both\",\"diversity_seed\":2}}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "early_exit": 1,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "early_exit": 1,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "title": "最大化显性报错族的成功率和可靠性",
+       "rationale": "通过增加验证深度、重试次数和任务分解，我们可以提高显性报错族的任务执行准确性和稳定性。同时，引入任务分解可以减少单次尝试的失败风险，并提升整体的容错能力。此外，结合多种解码方式（如多样化种子）也能有效防止路径依赖带来的问题，从而进一步提升显性报错族的成功率和可靠性。",
+       "gate_sr": 1.0,
+       "gate_score": 0.661
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.9667,
+     "gate_score": 0.8457,
+     "rejected": {
+      "raw": "试次数和引入任务分解，我们可以显著减少工具调用失败的概率，并且在必要时能有效修复错误。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 3,\n    \"task_decompose\": 1,\n    \"timeout_budget\": 3\n  }\n}\n```",
+      "valid": true,
+      "changes": {
+       "verify_depth": 1,
+       "retries": 3,
+       "task_decompose": 1,
+       "timeout_budget": 3
+      },
+      "cfg": {
+       "verify_depth": 1,
+       "retries": 3,
+       "task_decompose": 1,
+       "multi_path_voting": 0,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 3,
+       "early_exit": 0,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 0
+      },
+      "title": "提升显性报错族成功率",
+      "rationale": "通过提高验证深度、增加重试次数和引入任务分解，我们可以显著减少工具调用失败的概率，并且在必要时能有效修复错误。",
+      "gate_sr": 0.9667,
+      "gate_score": 0.8457
+     }
+    }
+   ],
+   "history": [
+    {
+     "round": 1,
+     "changes": {
+      "retries": 1,
+      "tool_choice": "slow_safe"
+     },
+     "accepted": true,
+     "sr": 0.9417,
+     "score": 0.8897,
+     "reason": "gate pass"
+    },
+    {
+     "round": 2,
+     "changes": {
+      "retries": 2
+     },
+     "accepted": false,
+     "sr": 0.925,
+     "score": 0.901,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 3,
+     "changes": {
+      "retries": 2,
+      "memory_read": 1,
+      "memory_write": 1
+     },
+     "accepted": false,
+     "sr": 0.9,
+     "score": 0.836,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 4,
+     "changes": {
+      "retries": 3,
+      "memory_read": 1,
+      "memory_write": 1
+     },
+     "accepted": false,
+     "sr": 0.9833,
+     "score": 0.9073,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 5,
+     "changes": {
+      "verify_depth": 1,
+      "retries": 3,
+      "task_decompose": 1,
+      "timeout_budget": 3
+     },
+     "accepted": false,
+     "sr": 0.9667,
+     "score": 0.8457,
+     "reason": "gate score below min_gain"
+    }
+   ]
+  },
+  "C": {
+   "final_cfg": {
+    "verify_depth": 2,
+    "retries": 2,
+    "task_decompose": 1,
+    "multi_path_voting": 0,
+    "memory_read": 0,
+    "memory_write": 0,
+    "timeout_budget": 2,
+    "early_exit": 0,
+    "tool_choice": "fast_risky",
+    "diversity_seed": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "base_sr": 0.3083,
+     "base_score": 0.3083,
+     "candidates": [
+      {
+       "raw": "decompose`）:** 将任务分解设置为1，允许将复杂的任务分解成更小、更易于处理的部分，从而提高系统的健壮性和容错性。\n\n2. **增加内存写入（`memory_write`）:** 将内存写入设置为1，有助于将实验结果记录到记忆库，使得未来可以根据这些信息来调整和改进算法，进一步提升系统的学习能力和适应能力。",
+       "valid": true,
+       "changes": {
+        "task_decompose": 1,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "优化多步依赖族",
+       "rationale": "通过增加任务分解和内存写入，提高多步依赖族的容错能力和学习能力。",
+       "gate_sr": 0.4083,
+       "gate_score": 0.3583
+      },
+      {
+       "raw": "changes\": {\n    \"timeout_budget\": 4,\n    \"tool_choice\": \"both\",\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"diversity_seed\": 2,\n    \"retries\": 2\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "timeout_budget": 4,
+        "tool_choice": "both",
+        "memory_read": 1,
+        "memory_write": 1,
+        "diversity_seed": 2,
+        "retries": 2
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "title": "提高多步依赖族的成功率",
+       "rationale": "通过调整某些关键参数，我们可以减少系统性逻辑错误，增加失败重试次数，并增强任务分解和路径多样性的能力。",
+       "gate_sr": 0.4,
+       "gate_score": 0.226
+      },
+      {
+       "raw": "ionale\": \"通过减少验证深度，我们减少了不必要的重复检查，从而降低了系统性逻辑错误带来的损失。同时，增加多路径交叉校验有助于提高多步计算的整体准确性和鲁棒性。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"multi_path_voting\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "multi_path_voting": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 3,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "减少验证深度并增加多路径交叉校验",
+       "rationale": "通过减少验证深度，我们减少了不必要的重复检查，从而降低了系统性逻辑错误带来的损失。同时，增加多路径交叉校验有助于提高多步计算的整体准确性和鲁棒性。",
+       "gate_sr": 0.0667,
+       "gate_score": -0.0933
+      },
+      {
+       "raw": "新尝试次数和任务分解，我们可以减少错误的发生，并且在发生错误时提供更多的机会来修复或继续执行。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 1,\n    \"task_decompose\": 1,\n    \"timeout_budget\": 4\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高多步依赖族的成功率",
+       "rationale": "通过改进验证深度、重新尝试次数和任务分解，我们可以减少错误的发生，并且在发生错误时提供更多的机会来修复或继续执行。",
+       "gate_sr": 0.7833,
+       "gate_score": 0.6713
+      },
+      {
+       "raw": "和噪音时有足够的机会探测它们。\n3. 打开内存读取功能（memory_read）和写入功能（memory_write），这有助于从过去的任务中学习，从而减少错误的发生。\n4. 开启早期退出机制（early_exit），这将允许我们在高置信度的情况下结束计算，而不会因为继续探查可能产生更多错误。\n\n这些改变旨在减少系统的",
+       "valid": true,
+       "changes": {
+        "tool_choice": "both",
+        "timeout_budget": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "early_exit": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "early_exit": 1,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高族成功率",
+       "rationale": "通过调整不同参数，我们可以减少逻辑错误并增加成功概率。",
+       "gate_sr": 0.4,
+       "gate_score": 0.285
+      },
+      {
+       "raw": "\n{\n  \"title\": \"提升多步依赖族效率\",\n  \"rationale\": \"通过增加验证深度和减少重试次数，提高结果的可靠性。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 2,\n    \"timeout_budget\": 4\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 2,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族效率",
+       "rationale": "通过增加验证深度和减少重试次数，提高结果的可靠性。",
+       "gate_sr": 0.275,
+       "gate_score": 0.181
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 0.7833,
+     "gate_score": 0.6713,
+     "accepted_changes": {
+      "verify_depth": 1,
+      "retries": 1,
+      "task_decompose": 1,
+      "timeout_budget": 4
+     }
+    },
+    {
+     "round": 2,
+     "base_sr": 0.7833,
+     "base_score": 0.6713,
+     "candidates": [
+      {
+       "raw": "_depth\": 2,\n    \"retries\": 0,\n    \"task_decompose\": 1,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "task_decompose": 1,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族的效率",
+       "rationale": "通过改进验证深度、重试次数和任务分解等参数，可以在保持低误率的同时大幅减少成本。",
+       "gate_sr": 0.675,
+       "gate_score": 0.44
+      },
+      {
+       "raw": "h\": 2,\n  \"retries\": 2,\n  \"task_decompose\": 0,\n  \"memory_read\": 0,\n  \"memory_write\": 0,\n  \"timeout_budget\": 6,\n  \"tool_choice\": \"both\",\n  \"diversity_seed\": 2\n}}\"",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "timeout_budget": 6,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 6,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "title": "提升多步依赖族性能",
+       "rationale": "通过调整多个关键旋钮，我们希望提高族的成功率和效率。",
+       "gate_sr": 0.375,
+       "gate_score": 0.131
+      },
+      {
+       "raw": "{\"title\":\"提高多步依赖族的成功率\",\"rationale\":\"通过增加验证深度和重试次数，以及调整任务分解模式，可以有效减少逻辑错误，从而提升成功率\",\"changes\":{\"verify_depth\":2,\"retries\":2,\"task_decompose\":1}}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高多步依赖族的成功率",
+       "rationale": "通过增加验证深度和重试次数，以及调整任务分解模式，可以有效减少逻辑错误，从而提升成功率",
+       "gate_sr": 0.9917,
+       "gate_score": 0.8577
+      },
+      {
+       "raw": "成功率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族成功率",
+       "rationale": "通过增加结果校验深度和适当调整其他旋钮，可以提高多步依赖族的成功率。",
+       "gate_sr": 0.25,
+       "gate_score": -0.04
+      },
+      {
+       "raw": "_depth\": 2,\n    \"retries\": 0,\n    \"task_decompose\": 0,\n    \"timeout_budget\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "memory_read": 1,
+        "memory_write": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升成功率和减少成本",
+       "rationale": "通过调整某些参数，我们可以更有效地减少逻辑错误和提高成功率。",
+       "gate_sr": 0.5333,
+       "gate_score": 0.3433
+      },
+      {
+       "raw": "pose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 5,\n    \"early_exit\": 1,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高多步依赖族的成功率",
+       "rationale": "通过引入更复杂的验证和重试机制，以及增加任务分解的灵活性，我们可以有效提升多步依赖族的任务执行成功率。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.5993
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 0.9917,
+     "gate_score": 0.8577,
+     "accepted_changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 1
+     }
+    },
+    {
+     "round": 3,
+     "base_sr": 0.9917,
+     "base_score": 0.8577,
+     "candidates": [
+      {
+       "raw": "快地发现并处理错误。\n2. **增加 `retries`**：由2增加至1，增加了失败后的重试次数，提高了系统的鲁棒性。\n3. **提高 `task_decompose`**：从1提高至1，虽然可能增加一些开销，但在多步任务族中能够显著改善错误检测效果。\n4. **调整 `timeout_budget`**：由4增加至",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "timeout_budget": 4,
+        "memory_read": 1,
+        "memory_write": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族成功率",
+       "rationale": "通过调整参数，使任务在更少的错误和成本下达到更高的成功率。",
+       "gate_sr": 0.975,
+       "gate_score": 0.753
+      },
+      {
+       "raw": "e\": \"提升多步串行计算族的整体成功率\",\n  \"rationale\": \"通过增加结果校验深度和减少重试次数，我们可以提高任务家族的成功率。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 1,\n    \"task_decompose\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升多步串行计算族的整体成功率",
+       "rationale": "通过增加结果校验深度和减少重试次数，我们可以提高任务家族的成功率。",
+       "gate_sr": 0.925,
+       "gate_score": 0.803
+      },
+      {
+       "raw": "ionale\": \"通过增加验证深度和重试次数，我们可以更全面地检测问题，减少逻辑错误的发生。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 3,\n    \"task_decompose\": 0,\n    \"timeout_budget\": 5\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高多步依赖族的成功率",
+       "rationale": "通过增加验证深度和重试次数，我们可以更全面地检测问题，减少逻辑错误的发生。",
+       "gate_sr": 0.3083,
+       "gate_score": 0.1623
+      },
+      {
+       "raw": "le\": \"通过增加任务分解和设置更高的验证深度，可以显著提高多步依赖族的整体成功率。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"task_decompose\": 1,\n    \"retries\": 2,\n    \"timeout_budget\": 4\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "task_decompose": 1,
+        "retries": 2,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高多步依赖族的成功率",
+       "rationale": "通过增加任务分解和设置更高的验证深度，可以显著提高多步依赖族的整体成功率。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.8193
+      },
+      {
+       "raw": "pose\": 1,\n    \"multi_path_voting\": 0,\n    \"memory_read\": 1,\n    \"memory_write\": 0,\n    \"timeout_budget\": 4,\n    \"early_exit\": 1,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "memory_read": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高多步依赖族的成功率",
+       "rationale": "通过调整参数，我们希望增强多步依赖族的整体性能。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.7393
+      },
+      {
+       "raw": "\n  \"rationale\": \"通过对多步依赖族进行针对性调整，我们能够有效提升其综合性能。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"timeout_budget\": 3\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 1,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高多步依赖族的综合性能",
+       "rationale": "通过对多步依赖族进行针对性调整，我们能够有效提升其综合性能。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.8743
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.9833,
+     "gate_score": 0.8743,
+     "rejected": {
+      "raw": "\n  \"rationale\": \"通过对多步依赖族进行针对性调整，我们能够有效提升其综合性能。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"timeout_budget\": 3\n  }\n}",
+      "valid": true,
+      "changes": {
+       "verify_depth": 1,
+       "retries": 2,
+       "task_decompose": 1,
+       "timeout_budget": 3
+      },
+      "cfg": {
+       "verify_depth": 1,
+       "retries": 2,
+       "task_decompose": 1,
+       "multi_path_voting": 0,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 3,
+       "early_exit": 0,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 0
+      },
+      "title": "提高多步依赖族的综合性能",
+      "rationale": "通过对多步依赖族进行针对性调整，我们能够有效提升其综合性能。",
+      "gate_sr": 0.9833,
+      "gate_score": 0.8743
+     }
+    },
+    {
+     "round": 4,
+     "base_sr": 0.9917,
+     "base_score": 0.8577,
+     "candidates": [
+      {
+       "raw": "rify_depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 2,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 2,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "最大化score",
+       "rationale": "通过调整不同旋钮参数，优化各族的成功率和成本。",
+       "gate_sr": 1.0,
+       "gate_score": 0.711
+      },
+      {
+       "raw": "retries\": 2,\n    \"task_decompose\": 0,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 4,\n    \"early_exit\": 1,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族成功率",
+       "rationale": "通过调整多步依赖族中的关键参数，我们可以提高成功率，减少成本。",
+       "gate_sr": 0.3667,
+       "gate_score": 0.1727
+      },
+      {
+       "raw": "\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 0,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "timeout_budget": 3,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族成功概率",
+       "rationale": "通过增加验证深度和减少重复尝试次数，可以在保证正确性的同时显著提高多步依赖族的成功率。",
+       "gate_sr": 0.7833,
+       "gate_score": 0.4663
+      },
+      {
+       "raw": "统性逻辑错误的检测能力；减少重试次数以避免不必要的资源浪费；启用任务分解以应对可能出现的随机错误并允许重试；引入多路径交叉校验以确保不同路径上的错误相互抵消；激活内存写功能以存储经验以便后续参考；延长时间预算以增加概率发现隐藏的逻辑错误；以及启用多样化种子以创建更多独立路径，从而在不牺牲成本的情况下大幅提高族的成功率。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 2,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 2,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高族成功率",
+       "rationale": "通过增加验证深度、减少重试次数和启用任务分解，我们可以在不影响总体成本的前提下显著提升族的成功率。",
+       "gate_sr": 0.9667,
+       "gate_score": 0.6247
+      },
+      {
+       "raw": "{\n  \"title\": \"最大化单步成功率\",\n  \"rationale\": \"通过提高单步的校验和重试机制，减少系统的总错误率。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 1,\n    \"task_decompose\": 0\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "最大化单步成功率",
+       "rationale": "通过提高单步的校验和重试机制，减少系统的总错误率。",
+       "gate_sr": 0.3667,
+       "gate_score": 0.3147
+      },
+      {
+       "raw": "\"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 1,\n    \"task_decompose\": 1,\n    \"timeout_budget\": 4,\n    \"tool_choice\": \"both\",\n    \"diversity_seed\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "timeout_budget": 4,
+        "tool_choice": "both",
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 1
+       },
+       "title": "提高多步依赖族性能",
+       "rationale": "通过调整多个旋钮，我们提高了族的整体性能。",
+       "gate_sr": 0.8667,
+       "gate_score": 0.6797
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 1.0,
+     "gate_score": 0.711,
+     "rejected": {
+      "raw": "rify_depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"both\"\n  }\n}",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 2,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 3,
+       "tool_choice": "both"
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 2,
+       "multi_path_voting": 0,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 3,
+       "early_exit": 0,
+       "tool_choice": "both",
+       "diversity_seed": 0
+      },
+      "title": "最大化score",
+      "rationale": "通过调整不同旋钮参数，优化各族的成功率和成本。",
+      "gate_sr": 1.0,
+      "gate_score": 0.711
+     }
+    },
+    {
+     "round": 5,
+     "base_sr": 0.9917,
+     "base_score": 0.8577,
+     "candidates": [
+      {
+       "raw": "\"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 1,\n    \"task_decompose\": 0,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1,
+        "memory_read": 1,
+        "memory_write": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族的成功率",
+       "rationale": "通过调整验证深度、重试次数和任务分解等参数，减少系统性逻辑错误并增加重试机会，从而提高多步依赖族的成功率。",
+       "gate_sr": 0.45,
+       "gate_score": 0.318
+      },
+      {
+       "raw": "\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 2,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 2,
+        "memory_read": 1,
+        "memory_write": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 2,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族的成功率",
+       "rationale": "通过对一些旋钮进行调整，我们可以提高多步依赖族的成功率。",
+       "gate_sr": 1.0,
+       "gate_score": 0.726
+      },
+      {
+       "raw": " 1,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"slow_safe\",\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"early_exit\": 0,\n    \"diversity_seed\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "timeout_budget": 3,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 1
+       },
+       "title": "提升家族成功概率",
+       "rationale": "通过调整参数设置，增强任务族的整体性能。",
+       "gate_sr": 0.9333,
+       "gate_score": 0.7513
+      },
+      {
+       "raw": "depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族性能",
+       "rationale": "通过增加验证深度和减少重试次数，以及启用多路径交叉校验来提高成功率。",
+       "gate_sr": 0.9833,
+       "gate_score": 0.6593
+      },
+      {
+       "raw": ": 1,\n    \"multi_path_voting\": 0,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 2,\n    \"early_exit\": 0,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "优化多步依赖族以提高成功率",
+       "rationale": "通过调整多个参数，特别是verify_depth、retries和task_decompose等，我们可以减少逻辑错误的发生，并增加重试的成功几率。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.8177
+      },
+      {
+       "raw": "从1改为2，这意味着每一步都会进行校验，从而显著减少重复校验的情况。这有助于减少系统性逻辑错误的累积影响。\n\n2. **多路径交叉校验 (`multi_path_voting`)**：将多路径交叉校验从1增加到5。这一改变增加了多条路径之间的冗余验证，使得系统更难同时在多个位置出现错误，从而提高了系统鲁棒性和容错能力。",
+       "valid": true,
+       "changes": {
+        "task_decompose": 2,
+        "multi_path_voting": 5
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 2,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升多步依赖族性能",
+       "rationale": "通过调整任务分解和多路径交叉校验，降低了系统的重复校验负担，提高了多步任务的成功率。",
+       "gate_sr": 0.6583,
+       "gate_score": 0.3983
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.9917,
+     "gate_score": 0.8177,
+     "rejected": {
+      "raw": ": 1,\n    \"multi_path_voting\": 0,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 2,\n    \"early_exit\": 0,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 1,
+       "tool_choice": "slow_safe"
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 1,
+       "multi_path_voting": 0,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "slow_safe",
+       "diversity_seed": 0
+      },
+      "title": "优化多步依赖族以提高成功率",
+      "rationale": "通过调整多个参数，特别是verify_depth、retries和task_decompose等，我们可以减少逻辑错误的发生，并增加重试的成功几率。",
+      "gate_sr": 0.9917,
+      "gate_score": 0.8177
+     }
+    }
+   ],
+   "history": [
+    {
+     "round": 1,
+     "changes": {
+      "verify_depth": 1,
+      "retries": 1,
+      "task_decompose": 1,
+      "timeout_budget": 4
+     },
+     "accepted": true,
+     "sr": 0.7833,
+     "score": 0.6713,
+     "reason": "gate pass"
+    },
+    {
+     "round": 2,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 1
+     },
+     "accepted": true,
+     "sr": 0.9917,
+     "score": 0.8577,
+     "reason": "gate pass"
+    },
+    {
+     "round": 3,
+     "changes": {
+      "verify_depth": 1,
+      "retries": 2,
+      "task_decompose": 1,
+      "timeout_budget": 3
+     },
+     "accepted": false,
+     "sr": 0.9833,
+     "score": 0.8743,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 4,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 2,
+      "memory_read": 1,
+      "memory_write": 1,
+      "timeout_budget": 3,
+      "tool_choice": "both"
+     },
+     "accepted": false,
+     "sr": 1.0,
+     "score": 0.711,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 5,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 1,
+      "tool_choice": "slow_safe"
+     },
+     "accepted": false,
+     "sr": 0.9917,
+     "score": 0.8177,
+     "reason": "gate score below min_gain"
+    }
+   ]
+  },
+  "D": {
+   "final_cfg": {
+    "verify_depth": 2,
+    "retries": 2,
+    "task_decompose": 1,
+    "multi_path_voting": 3,
+    "memory_read": 1,
+    "memory_write": 1,
+    "timeout_budget": 4,
+    "early_exit": 1,
+    "tool_choice": "fast_risky",
+    "diversity_seed": 0
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "base_sr": 0.3,
+     "base_score": 0.3,
+     "candidates": [
+      {
+       "raw": "out_budget` 设置为 2，这会提供更多的机会去探测并验证潜在的错误。\n3. **使用双路工具 (`tool_choice`: \"both\")**：切换到“双路\"模式意味着系统在遇到问题时可以选择继续尝试或采取其他措施（如回退至旧版本），从而提高了系统的适应能力和容错能力。\n\n这些改变旨在增强系统的鲁棒性，减少",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高部分可观测族的成功率",
+       "rationale": "通过调整旋钮参数，增加系统的鲁棒性和容错能力。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.1317
+      },
+      {
+       "raw": "观测族的成功率\",\n  \"rationale\": \"通过增加验证深度和减少重试次数，我们可以提高结果的准确性，从而提高score。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 0,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升部分可观测族的成功率",
+       "rationale": "通过增加验证深度和减少重试次数，我们可以提高结果的准确性，从而提高score。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.1617
+      },
+      {
+       "raw": "low_safe\",\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"diversity_seed\": 2,\n    \"retries\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "timeout_budget": 1,
+        "tool_choice": "slow_safe",
+        "memory_read": 1,
+        "memory_write": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "diversity_seed": 2,
+        "retries": 3
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 3,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 1,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 2
+       },
+       "title": "提升家族成功率",
+       "rationale": "通过调整参数，减少盲步错误并提高任务分解和多路径交叉验证的有效性。",
+       "gate_sr": 0.025,
+       "gate_score": -0.251
+      },
+      {
+       "raw": "out_budget\": 4,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```\n\n这个方案的主要目的是提高验证深度以应对更多潜在的问题，并将超时预算增加到最大可能的值。此外，我们选择了慢而安全（slow_safe）的工具选择策略，这在一定程度上减少了风险，但仍能保持一定的速度和稳定性。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 4,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高静态概率",
+       "rationale": "通过增加验证深度，我们可以提升对隐藏错误的检测能力。",
+       "gate_sr": 0.7417,
+       "gate_score": 0.5917
+      },
+      {
+       "raw": "```json\n{\n  \"title\": \"提高验证深度和重试次数\",\n  \"rationale\": \"增加验证深度能更全面地检测错误，而加大重试次数则提高了应对随机或潜在故障的能力。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高验证深度和重试次数",
+       "rationale": "增加验证深度能更全面地检测错误，而加大重试次数则提高了应对随机或潜在故障的能力。",
+       "gate_sr": 0.275,
+       "gate_score": 0.223
+      },
+      {
+       "raw": "es\": {\n    \"verify_depth\": 1,\n    \"retries\": 0,\n    \"timeout_budget\": 2\n  }\n}\n```\n\n通过增加校验深度、禁用重试和将时间预算限制在最短可能值，我们可以显著提升这个家族的成功率。这一步骤不仅减少了误判的风险，还提高了效率，使探索过程更加可靠。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高概率校验深度",
+       "rationale": "增加校验深度有助于发现更深层次的问题，从而提高成功率。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.2017
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 0.7417,
+     "gate_score": 0.5917,
+     "accepted_changes": {
+      "verify_depth": 2,
+      "timeout_budget": 4,
+      "tool_choice": "slow_safe"
+     }
+    },
+    {
+     "round": 2,
+     "base_sr": 0.7417,
+     "base_score": 0.5917,
+     "candidates": [
+      {
+       "raw": "性能\",\n  \"rationale\": \"通过调整验证深度、超时预算和工具选择，减少冗余探针，并增强多种路径校验机制。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"timeout_budget\": 4,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 4,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升族性能",
+       "rationale": "通过调整验证深度、超时预算和工具选择，减少冗余探针，并增强多种路径校验机制。",
+       "gate_sr": 0.7833,
+       "gate_score": 0.6033
+      },
+      {
+       "raw": "{\n  \"title\": \"提升部分可观测族的成功率\",\n  \"rationale\": \"通过调整验证深度和探测预算，我们可以提高这部分族的任务成功率。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"timeout_budget\": 3\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升部分可观测族的成功率",
+       "rationale": "通过调整验证深度和探测预算，我们可以提高这部分族的任务成功率。",
+       "gate_sr": 0.4417,
+       "gate_score": 0.3867
+      },
+      {
+       "raw": "son\n{\n  \"title\": \"提升静态概率\",\n  \"rationale\": \"通过增加验证深度和提高工具选择质量，我们可以更准确地评估风险并减少系统性逻辑错误。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提升静态概率",
+       "rationale": "通过增加验证深度和提高工具选择质量，我们可以更准确地评估风险并减少系统性逻辑错误。",
+       "gate_sr": 0.2833,
+       "gate_score": 0.1333
+      },
+      {
+       "raw": "ries\": 0,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 5,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"early_exit\": 0,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "timeout_budget": 4,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高score并优化成本",
+       "rationale": "通过调整关键旋钮，最大化提升家族的整体性能。",
+       "gate_sr": 0.875,
+       "gate_score": 0.465
+      },
+      {
+       "raw": "成本。通过将验证深度从2增加到3，增加了任务在每一层上的探测频次；将重试次数从0增加到1，增加了重试次数以应对潜在问题；将任务分解设置为1，增加了每个步骤的独立性，有助于分散错误的影响范围；最后，开启内存读取功能，可以帮助任务更准确地获取历史数据，进一步降低故障点。这些变化综合起来，不仅提高了成功率，也有效减少了成本。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "memory_read": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升部分可观测族的成功率",
+       "rationale": "通过调整验证深度、重试次数和任务分解等参数，增加任务在不同步骤上的探测频率和机会，减少盲步错误的发生。",
+       "gate_sr": 0.3417,
+       "gate_score": 0.1997
+      },
+      {
+       "raw": "\",\n  \"rationale\": \"通过提高静态检查覆盖率，我们可以更全面地发现潜在问题，减少盲步错误的发生概率。同时，增加任务分解可以使错误更加分散，增加了被重试挽回的可能性。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"task_decompose\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "task_decompose": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升静态检查覆盖率和增加任务分解",
+       "rationale": "通过提高静态检查覆盖率，我们可以更全面地发现潜在问题，减少盲步错误的发生概率。同时，增加任务分解可以使错误更加分散，增加了被重试挽回的可能性。",
+       "gate_sr": 0.2833,
+       "gate_score": 0.1733
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.7833,
+     "gate_score": 0.6033,
+     "rejected": {
+      "raw": "性能\",\n  \"rationale\": \"通过调整验证深度、超时预算和工具选择，减少冗余探针，并增强多种路径校验机制。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"timeout_budget\": 4,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "timeout_budget": 4,
+       "tool_choice": "both"
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 0,
+       "task_decompose": 0,
+       "multi_path_voting": 0,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 4,
+       "early_exit": 0,
+       "tool_choice": "both",
+       "diversity_seed": 0
+      },
+      "title": "提升族性能",
+      "rationale": "通过调整验证深度、超时预算和工具选择，减少冗余探针，并增强多种路径校验机制。",
+      "gate_sr": 0.7833,
+      "gate_score": 0.6033
+     }
+    },
+    {
+     "round": 3,
+     "base_sr": 0.7417,
+     "base_score": 0.5917,
+     "candidates": [
+      {
+       "raw": " \"changes\": {\n    \"verify_depth\": 3,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```\n\n通过增加验证深度并选择慢而安全的工具，我们提高了族的成功率，并降低了成本。这样既增强了系统的稳健性，又在一定程度上平衡了风险和收益，从而达到了最佳的性能与经济性。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升验证深度和使用工具",
+       "rationale": "提高验证深度可以增强结果的准确性，减少错误的发生；采用工具选择‘慢而安全’有助于平衡风险与收益。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.1217
+      },
+      {
+       "raw": "```json\n{\n  \"title\": \"提升部分可观测族score\",\n  \"rationale\": \"通过增加验证深度和延长probe预算，减少错误发生的概率。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"timeout_budget\": 5\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升部分可观测族score",
+       "rationale": "通过增加验证深度和延长probe预算，减少错误发生的概率。",
+       "gate_sr": 0.675,
+       "gate_score": 0.565
+      },
+      {
+       "raw": "\n{\n  \"title\": \"提高验证深度以增强安全性\",\n  \"rationale\": \"增加验证深度能够提升结果校验的准确性，从而减少潜在的静默损坏风险。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高验证深度以增强安全性",
+       "rationale": "增加验证深度能够提升结果校验的准确性，从而减少潜在的静默损坏风险。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.1217
+      },
+      {
+       "raw": "e\": \"通过提高验证深度和设置更高的探测预算来提升静态故障检测的有效性和可靠性，从而在保证一定成功率的同时尽可能地降低成本。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"timeout_budget\": 5,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 4,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "最大化score，减少成本",
+       "rationale": "通过提高验证深度和设置更高的探测预算来提升静态故障检测的有效性和可靠性，从而在保证一定成功率的同时尽可能地降低成本。",
+       "gate_sr": 0.675,
+       "gate_score": 0.495
+      },
+      {
+       "raw": "verify_depth**: 增加到3，以提高结果校验的可靠性。\n2. **retries**: 减少到2，以减少不必要的重试次数，避免浪费资源。\n3. **task_decompose**: 更改为1（拆步），有助于在错误发生时更快地进行修复。\n4. **multi_path_voting**: 更改为3，以增强多",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升score最大化",
+       "rationale": "通过增加验证深度和减少重试次数，可以提高系统的鲁棒性和容错能力。",
+       "gate_sr": 1.0,
+       "gate_score": 0.686
+      },
+      {
+       "raw": "rationale\": \"通过调整参数，提高验证深度和预算，同时减少重试次数和工具选择风险，以优化失败步长。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"timeout_budget\": 4,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 4,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升部分可观测族score",
+       "rationale": "通过调整参数，提高验证深度和预算，同时减少重试次数和工具选择风险，以优化失败步长。",
+       "gate_sr": 0.675,
+       "gate_score": 0.525
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 1.0,
+     "gate_score": 0.686,
+     "accepted_changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 1,
+      "multi_path_voting": 3,
+      "memory_read": 1,
+      "memory_write": 1,
+      "timeout_budget": 4,
+      "early_exit": 1
+     }
+    },
+    {
+     "round": 4,
+     "base_sr": 1.0,
+     "base_score": 0.686,
+     "candidates": [
+      {
+       "raw": "以减少探测误差\",\n  \"rationale\": \"通过增加验证深度，我们可以更全面地检查每个步骤的结果，从而减少由于单步验证不足而导致的误判。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 2,\n    \"timeout_budget\": 3\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升验证深度以减少探测误差",
+       "rationale": "通过增加验证深度，我们可以更全面地检查每个步骤的结果，从而减少由于单步验证不足而导致的误判。",
+       "gate_sr": 0.5667,
+       "gate_score": 0.4477
+      },
+      {
+       "raw": "```json\n{\n  \"title\": \"提升全族成功率\",\n  \"rationale\": \"通过调整验证深度和内存写入，我们可以提高全族的成功率。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"memory_write\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升全族成功率",
+       "rationale": "通过调整验证深度和内存写入，我们可以提高全族的成功率。",
+       "gate_sr": 0.2167,
+       "gate_score": 0.1167
+      },
+      {
+       "raw": " \"title\": \"提升静态验证深度和增加重复尝试次数\",\n  \"rationale\": \"通过提高静态验证深度，确保在更早期阶段就发现并纠正潜在问题；增加重复尝试次数可以增强系统的容错能力。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 3\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 3,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升静态验证深度和增加重复尝试次数",
+       "rationale": "通过提高静态验证深度，确保在更早期阶段就发现并纠正潜在问题；增加重复尝试次数可以增强系统的容错能力。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.1257
+      },
+      {
+       "raw": "ify_depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "最大化族的成功率和效率",
+       "rationale": "通过调整参数，增加任务分解、多路径交叉校验和内存读写，提高族的整体性能。",
+       "gate_sr": 1.0,
+       "gate_score": 0.676
+      },
+      {
+       "raw": "ore)\",\n  \"rationale\": \"通过减少验证深度、增加重试次数以及改进任务分解，我们能够在保证结果正确性的前提下显著降低检测成本。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"retries\": 1,\n    \"task_decompose\": 0\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "retries": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 1,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高部分可观测族(score)",
+       "rationale": "通过减少验证深度、增加重试次数以及改进任务分解，我们能够在保证结果正确性的前提下显著降低检测成本。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.1897
+      },
+      {
+       "raw": "了系统的稳定性并减少了不必要的探查。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"retries\": 1,\n    \"task_decompose\": 1,\n    \"memory_write\": 1,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "memory_write": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高当前族score的有效方案",
+       "rationale": "通过增加验证深度和内存写入，以及调整工具选择策略，提高了系统的稳定性并减少了不必要的探查。",
+       "gate_sr": 0.2417,
+       "gate_score": 0.0297
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 1.0,
+     "gate_score": 0.676,
+     "rejected": {
+      "raw": "ify_depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4\n  }\n}",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 1,
+       "multi_path_voting": 3,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 4
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 1,
+       "multi_path_voting": 3,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 4,
+       "early_exit": 0,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 0
+      },
+      "title": "最大化族的成功率和效率",
+      "rationale": "通过调整参数，增加任务分解、多路径交叉校验和内存读写，提高族的整体性能。",
+      "gate_sr": 1.0,
+      "gate_score": 0.676
+     }
+    },
+    {
+     "round": 5,
+     "base_sr": 1.0,
+     "base_score": 0.686,
+     "candidates": [
+      {
+       "raw": "ify_depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升部分可观测族性能",
+       "rationale": "通过调整验证深度、重试次数、任务分解和多路径交叉校验，以及增加内存读写经验的使用，我们能够减少探测盲步的错误，并提高整个任务族的成功率。",
+       "gate_sr": 1.0,
+       "gate_score": 0.676
+      },
+      {
+       "raw": "ify_depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "最大化score",
+       "rationale": "通过调整验证深度、重试次数、任务分解等旋钮，提升任务族的整体成功率和效率。",
+       "gate_sr": 1.0,
+       "gate_score": 0.676
+      },
+      {
+       "raw": "ompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4,\n    \"early_exit\": 1,\n    \"diversity_seed\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 1
+       },
+       "title": "提高部分可观测族score的有效方法",
+       "rationale": "通过调整验证深度、重试次数、任务分解、多路径交叉校验以及内存读写，我们能够更有效地减少盲步错误，从而最大化score。",
+       "gate_sr": 1.0,
+       "gate_score": 0.681
+      },
+      {
+       "raw": "depth\": 2,\n    \"retries\": 2,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "优化score = sr - cost",
+       "rationale": "通过调整参数，提高任务族的整体性能。",
+       "gate_sr": 1.0,
+       "gate_score": 0.676
+      },
+      {
+       "raw": "\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4,\n    \"early_exit\": 1,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 4,
+        "early_exit": 1,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升家族平均成功率",
+       "rationale": "通过调整多项参数，提高家族的整体性能。",
+       "gate_sr": 1.0,
+       "gate_score": 0.646
+      },
+      {
+       "raw": "分\",\n  \"rationale\": \"通过调整一些旋钮参数，我们可以更好地平衡静态故障检测和动态错误处理的能力。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"fast_risky\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升家族得分",
+       "rationale": "通过调整一些旋钮参数，我们可以更好地平衡静态故障检测和动态错误处理的能力。",
+       "gate_sr": 0.475,
+       "gate_score": 0.38
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 1.0,
+     "gate_score": 0.681,
+     "rejected": {
+      "raw": "ompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 4,\n    \"early_exit\": 1,\n    \"diversity_seed\": 1\n  }\n}",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 1,
+       "multi_path_voting": 3,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 4,
+       "early_exit": 1,
+       "diversity_seed": 1
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 2,
+       "task_decompose": 1,
+       "multi_path_voting": 3,
+       "memory_read": 1,
+       "memory_write": 1,
+       "timeout_budget": 4,
+       "early_exit": 1,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 1
+      },
+      "title": "提高部分可观测族score的有效方法",
+      "rationale": "通过调整验证深度、重试次数、任务分解、多路径交叉校验以及内存读写，我们能够更有效地减少盲步错误，从而最大化score。",
+      "gate_sr": 1.0,
+      "gate_score": 0.681
+     }
+    }
+   ],
+   "history": [
+    {
+     "round": 1,
+     "changes": {
+      "verify_depth": 2,
+      "timeout_budget": 4,
+      "tool_choice": "slow_safe"
+     },
+     "accepted": true,
+     "sr": 0.7417,
+     "score": 0.5917,
+     "reason": "gate pass"
+    },
+    {
+     "round": 2,
+     "changes": {
+      "verify_depth": 2,
+      "timeout_budget": 4,
+      "tool_choice": "both"
+     },
+     "accepted": false,
+     "sr": 0.7833,
+     "score": 0.6033,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 3,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 1,
+      "multi_path_voting": 3,
+      "memory_read": 1,
+      "memory_write": 1,
+      "timeout_budget": 4,
+      "early_exit": 1
+     },
+     "accepted": true,
+     "sr": 1.0,
+     "score": 0.686,
+     "reason": "gate pass"
+    },
+    {
+     "round": 4,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 1,
+      "multi_path_voting": 3,
+      "memory_read": 1,
+      "memory_write": 1,
+      "timeout_budget": 4
+     },
+     "accepted": false,
+     "sr": 1.0,
+     "score": 0.676,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 5,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 2,
+      "task_decompose": 1,
+      "multi_path_voting": 3,
+      "memory_read": 1,
+      "memory_write": 1,
+      "timeout_budget": 4,
+      "early_exit": 1,
+      "diversity_seed": 1
+     },
+     "accepted": false,
+     "sr": 1.0,
+     "score": 0.681,
+     "reason": "gate score below min_gain"
+    }
+   ]
+  },
+  "E": {
+   "final_cfg": {
+    "verify_depth": 0,
+    "retries": 0,
+    "task_decompose": 0,
+    "multi_path_voting": 5,
+    "memory_read": 0,
+    "memory_write": 0,
+    "timeout_budget": 2,
+    "early_exit": 0,
+    "tool_choice": "fast_risky",
+    "diversity_seed": 1
+   },
+   "rounds": [
+    {
+     "round": 1,
+     "base_sr": 0.45,
+     "base_score": 0.45,
+     "candidates": [
+      {
+       "raw": "\": \"通过增加多路径交叉校验的独立性，提高系统性逻辑错误和噪音容忍度。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"multi_path_voting\": 5,\n    \"memory_read\": 1,\n    \"timeout_budget\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "优化多路径交叉校验策略",
+       "rationale": "通过增加多路径交叉校验的独立性，提高系统性逻辑错误和噪音容忍度。",
+       "gate_sr": 0.6083,
+       "gate_score": 0.2933
+      },
+      {
+       "raw": "i_path_voting`:** 设置为5，增加了多条路径之间的对比度，使得系统能更好地识别和纠正可能出错的路径。\n3. **`tool_choice`:** 更改为“both”，意味着在快速探索的同时也追求稳妥，这样可以在保证速度的前提下尽量避免风险。\n\n这些改动旨在增强系统的鲁棒性和可靠性，从而提升整体的成功率。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高执行错误率并增加多路径交叉校验",
+       "rationale": "通过调整旋钮，我们提高了执行错误率，并增加了多路径交叉校验的数量，从而减少了单个路径的失败概率，提升了整体系统的稳定性。",
+       "gate_sr": 0.6083,
+       "gate_score": 0.2583
+      },
+      {
+       "raw": "的容忍度，从而提升执行错误率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 1,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 5,\n    \"diversity_seed\": 2\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "diversity_seed": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 2
+       },
+       "title": "提高执行错误率和校验信号可靠性",
+       "rationale": "通过增加验证深度、减少重试次数、调整任务分解策略以及引入路径多样性，增强系统对噪声和错误的容忍度，从而提升执行错误率。",
+       "gate_sr": 1.0,
+       "gate_score": 0.668
+      },
+      {
+       "raw": ",\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 5,\n    \"memory_read\": 1,\n    \"memory_write\": 1,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高家族成功率",
+       "rationale": "通过调整多路径交叉校验和任务分解等参数，增加多路径交叉校验的数量和路径多样性，从而提高故障检测的准确性。",
+       "gate_sr": 0.6083,
+       "gate_score": 0.1733
+      },
+      {
+       "raw": "时，调整读取历史数据的经验量，避免不必要的重试。\",\n    \"changes\": {\n        \"verify_depth\": 1,\n        \"memory_read\": 1,\n        \"multi_path_voting\": 4,\n        \"early_exit\": 1\n    }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "memory_read": 1,
+        "multi_path_voting": 3,
+        "early_exit": 1
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 1,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高噪点处理能力并减少冗余尝试",
+       "rationale": "通过增加多路径交叉校验的独立性，减少单一路径错误导致的整个族的失败概率。同时，调整读取历史数据的经验量，避免不必要的重试。",
+       "gate_sr": 0.325,
+       "gate_score": 0.155
+      },
+      {
+       "raw": "校验信号可靠性\",\n  \"rationale\": \"通过增加校验信号的可靠性，可以减少由于噪声引起的误判，从而提升族的成功率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "timeout_budget": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高族执行错误率和校验信号可靠性",
+       "rationale": "通过增加校验信号的可靠性，可以减少由于噪声引起的误判，从而提升族的成功率。",
+       "gate_sr": 0.6083,
+       "gate_score": 0.4433
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 1.0,
+     "gate_score": 0.668,
+     "accepted_changes": {
+      "verify_depth": 2,
+      "retries": 1,
+      "task_decompose": 1,
+      "multi_path_voting": 5,
+      "diversity_seed": 2
+     }
+    },
+    {
+     "round": 2,
+     "base_sr": 1.0,
+     "base_score": 0.668,
+     "candidates": [
+      {
+       "raw": "度\", \"rationale\": \"通过增加verify_depth和multi_path_voting，允许更多步次的检查，并在出现错误时进行更复杂的投票机制，从而提高在静态性和噪音类故障中的检测能力。\", \"changes\": {\"verify_depth\": 3, \"multi_path_voting\": 7}}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高静态和噪音类故障容忍度",
+       "rationale": "通过增加verify_depth和multi_path_voting，允许更多步次的检查，并在出现错误时进行更复杂的投票机制，从而提高在静态性和噪音类故障中的检测能力。",
+       "gate_sr": 0.5083,
+       "gate_score": 0.2283
+      },
+      {
+       "raw": "\n  \"task_decompose\": 1,\n  \"multi_path_voting\": 5,\n  \"memory_read\": 1,\n  \"memory_write\": 1,\n  \"timeout_budget\": 2,\n  \"early_exit\": 1,\n  \"tool_choice\": \"both\"\n}\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 1,
+        "early_exit": 1,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 1,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高最大化score的目标",
+       "rationale": "通过改变一些旋钮参数，我们可以最大化score和减少总成本。",
+       "gate_sr": 0.5083,
+       "gate_score": 0.0863
+      },
+      {
+       "raw": "增加验证深度有助于更准确地检测错误，从而提高成功率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"multi_path_voting\": 5,\n    \"timeout_budget\": 2,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高噪音标签族执行错误率和校验信号可靠性",
+       "rationale": "通过提升校验信号的可靠性，我们可以减少由于错误标签导致的成本损失。增加验证深度有助于更准确地检测错误，从而提高成功率。",
+       "gate_sr": 0.5083,
+       "gate_score": 0.1883
+      },
+      {
+       "raw": "\": 1,\n    \"multi_path_voting\": 5,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 2,\n    \"early_exit\": 0,\n    \"tool_choice\": \"both\"\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高验证深度",
+       "rationale": "增加验证深度可以减少误报，从而提高成功概率。",
+       "gate_sr": 0.5083,
+       "gate_score": 0.1163
+      },
+      {
+       "raw": ",\n    \"early_exit\": 0,\n    \"tool_choice\": \"both\",\n    \"diversity_seed\": 2\n}\n```\n\n这个提案通过增加`multi_path_voting`和`task_decompose`的权重，并将验证深度设为2来减少不必要的开销，从而最大化了score。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 2
+       },
+       "title": "",
+       "rationale": "",
+       "gate_sr": 0.9917,
+       "gate_score": 0.5897
+      },
+      {
+       "raw": "增强多路径校验\",\n  \"rationale\": \"通过增加多路径交叉校验的数量和多样性，可以提升在复杂噪声环境下的可靠性。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"multi_path_voting\": 7,\n    \"diversity_seed\": 3\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "diversity_seed": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 3
+       },
+       "title": "提高错误容忍度，增强多路径校验",
+       "rationale": "通过增加多路径交叉校验的数量和多样性，可以提升在复杂噪声环境下的可靠性。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.6967
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 0.9917,
+     "gate_score": 0.6967,
+     "accepted_changes": {
+      "verify_depth": 2,
+      "multi_path_voting": 5,
+      "diversity_seed": 3
+     }
+    },
+    {
+     "round": 3,
+     "base_sr": 0.9917,
+     "base_score": 0.6967,
+     "candidates": [
+      {
+       "raw": "\"rationale\": \"通过减少验证深度，我们可以避免不必要的校验，从而降低系统的开销。同时，增加路径多样性有助于确保不同路径在故障时能够相互补充，进一步提升家族的整体稳定性。\",\n  \"changes\": {\n    \"verify_depth\": 1,\n    \"diversity_seed\": 3\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 1,
+        "diversity_seed": 3
+       },
+       "cfg": {
+        "verify_depth": 1,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 3
+       },
+       "title": "提高家族性能：减少验证步骤和增加路径多样性",
+       "rationale": "通过减少验证深度，我们可以避免不必要的校验，从而降低系统的开销。同时，增加路径多样性有助于确保不同路径在故障时能够相互补充，进一步提升家族的整体稳定性。",
+       "gate_sr": 0.5667,
+       "gate_score": 0.5117
+      },
+      {
+       "raw": "\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 2,\n    \"tool_choice\": \"both\",\n    \"diversity_seed\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "tool_choice": "both",
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 1
+       },
+       "title": "提高族的成功率和成本效率",
+       "rationale": "通过调整参数，我们能够更有效地利用有限的资源来最大化族的成功率和降低总体成本。",
+       "gate_sr": 0.975,
+       "gate_score": 0.658
+      },
+      {
+       "raw": "ompose\": 1, \"multi_path_voting\": 5, \"memory_read\": 1, \"memory_write\": 0, \"timeout_budget\": 2, \"early_exit\": 0, \"tool_choice\": \"slow_safe\", \"diversity_seed\": 3}}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 3
+       },
+       "title": "提高噪声标签族效率",
+       "rationale": "通过调整多个关键参数，我们可以提升该族的成功率和成本比",
+       "gate_sr": 0.9917,
+       "gate_score": 0.5947
+      },
+      {
+       "raw": "率和校验深度\",\n  \"rationale\": \"通过增加错误率，使得系统更容易识别和修复潜在的问题，从而提高家族的成功率。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"multi_path_voting\": 7,\n    \"timeout_budget\": 3\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "timeout_budget": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提高家族错误率和校验深度",
+       "rationale": "通过增加错误率，使得系统更容易识别和修复潜在的问题，从而提高家族的成功率。",
+       "gate_sr": 0.5417,
+       "gate_score": 0.2467
+      },
+      {
+       "raw": " \"提升多路径交叉校验和记忆写经验\",\n  \"rationale\": \"通过增加多路径交叉校验的使用，以及增强任务分解以减少冗余计算，可以显著提高可靠性并降低故障点。\",\n  \"changes\": {\n    \"multi_path_voting\": 5,\n    \"memory_write\": 1\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "multi_path_voting": 5,
+        "memory_write": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 1,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升多路径交叉校验和记忆写经验",
+       "rationale": "通过增加多路径交叉校验的使用，以及增强任务分解以减少冗余计算，可以显著提高可靠性并降低故障点。",
+       "gate_sr": 0.45,
+       "gate_score": 0.23
+      },
+      {
+       "raw": "{\n  \"title\": \"提高最大化score的有效方法\",\n  \"rationale\": \"通过调整不同旋钮，我们可以找到最优组合，以最大化族的成功率并减少成本。\",\n  \"changes\": {\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"both\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "timeout_budget": 3,
+        "tool_choice": "both"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 0,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "both",
+        "diversity_seed": 0
+       },
+       "title": "提高最大化score的有效方法",
+       "rationale": "通过调整不同旋钮，我们可以找到最优组合，以最大化族的成功率并减少成本。",
+       "gate_sr": 0.475,
+       "gate_score": 0.39
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.975,
+     "gate_score": 0.658,
+     "rejected": {
+      "raw": "\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 0,\n    \"memory_write\": 0,\n    \"timeout_budget\": 2,\n    \"tool_choice\": \"both\",\n    \"diversity_seed\": 1\n  }\n}",
+      "valid": true,
+      "changes": {
+       "verify_depth": 2,
+       "retries": 1,
+       "task_decompose": 1,
+       "multi_path_voting": 3,
+       "tool_choice": "both",
+       "diversity_seed": 1
+      },
+      "cfg": {
+       "verify_depth": 2,
+       "retries": 1,
+       "task_decompose": 1,
+       "multi_path_voting": 3,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "both",
+       "diversity_seed": 1
+      },
+      "title": "提高族的成功率和成本效率",
+      "rationale": "通过调整参数，我们能够更有效地利用有限的资源来最大化族的成功率和降低总体成本。",
+      "gate_sr": 0.975,
+      "gate_score": 0.658
+     }
+    },
+    {
+     "round": 4,
+     "base_sr": 0.9917,
+     "base_score": 0.6967,
+     "candidates": [
+      {
+       "raw": "out_budget\": 2,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```\n\n此提案将 `multi_path_voting` 和 `timeout_budget` 改为更高值以增强多路径交叉校验，并改为 `slow_safe` 的工具选择，这有助于在必要时延迟执行以避免过早出错。",
+       "valid": true,
+       "changes": {
+        "multi_path_voting": 3,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 3,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升多路径交叉校验效果",
+       "rationale": "通过增加多路径交叉校验，提高独立多路径交叉校验的有效性，从而减少显性报错和误判的概率。",
+       "gate_sr": 0.2833,
+       "gate_score": 0.1233
+      },
+      {
+       "raw": "以及调整多路径交叉校验数量，可以显著提高静态噪声家族（噪音标签族）的性能。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"retries\": 0,\n    \"multi_path_voting\": 3,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 3,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 3,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高静态噪声家族的成功率",
+       "rationale": "通过增加验证深度、减少重试次数以及调整多路径交叉校验数量，可以显著提高静态噪声家族（噪音标签族）的性能。",
+       "gate_sr": 0.3417,
+       "gate_score": 0.1017
+      },
+      {
+       "raw": "{\n  \"title\": \"提升误判族成功率\",\n  \"rationale\": \"通过增加多路径交叉校验的数量，提高故障检测和定位的可靠性。\",\n  \"changes\": {\n    \"verify_depth\": 3,\n    \"multi_path_voting\": 6\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "提升误判族成功率",
+       "rationale": "通过增加多路径交叉校验的数量，提高故障检测和定位的可靠性。",
+       "gate_sr": 0.5667,
+       "gate_score": 0.2867
+      },
+      {
+       "raw": "es\": {\n    \"verify_depth\": 2,\n    \"multi_path_voting\": 6,\n    \"diversity_seed\": 2\n  }\n}\n```\n\n这个提案旨在通过增加多路径交叉校验数量以及设置更高的多样化种子数值来最大化 score = sr - cost，并减少系统的误判风险。",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "diversity_seed": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 2
+       },
+       "title": "提升多路径交叉校验和多样化种子的结合效果",
+       "rationale": "通过增加多路径交叉校验的数量（如从5路增加到5路或更多）并设定较高的多样化种子数值，能显著提高系统应对复杂噪音环境的能力。",
+       "gate_sr": 1.0,
+       "gate_score": 0.71
+      },
+      {
+       "raw": "  \"rationale\": \"通过增加多路径交叉验证的数量以及引入路径多样性，我们可以提高系统的鲁棒性和容错能力。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"multi_path_voting\": 5,\n    \"diversity_seed\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "diversity_seed": 3
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 3
+       },
+       "title": "改进多重交叉验证和路径多样化",
+       "rationale": "通过增加多路径交叉验证的数量以及引入路径多样性，我们可以提高系统的鲁棒性和容错能力。",
+       "gate_sr": 1.0,
+       "gate_score": 0.705
+      },
+      {
+       "raw": " \"title\": \"提高误判族的检测效率\",\n  \"rationale\": \"通过增加多路径交叉校验和增强路径多样性，减少单一错误导致的整体失败概率，从而提升检测精度。\",\n  \"changes\": {\n    \"multi_path_voting\": 5,\n    \"diversity_seed\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "multi_path_voting": 5,
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 1
+       },
+       "title": "提高误判族的检测效率",
+       "rationale": "通过增加多路径交叉校验和增强路径多样性，减少单一错误导致的整体失败概率，从而提升检测精度。",
+       "gate_sr": 1.0,
+       "gate_score": 0.795
+      }
+     ],
+     "accepted": true,
+     "gate_sr": 1.0,
+     "gate_score": 0.795,
+     "accepted_changes": {
+      "multi_path_voting": 5,
+      "diversity_seed": 1
+     }
+    },
+    {
+     "round": 5,
+     "base_sr": 1.0,
+     "base_score": 0.795,
+     "candidates": [
+      {
+       "raw": "\": 2,\n    \"retries\": 1,\n    \"task_decompose\": 1,\n    \"multi_path_voting\": 3,\n    \"memory_read\": 1,\n    \"timeout_budget\": 3,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "timeout_budget": 3,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 1,
+        "task_decompose": 1,
+        "multi_path_voting": 3,
+        "memory_read": 1,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提升族的成功率",
+       "rationale": "通过调整多个关键参数，增强跨路径校验和多样化策略的有效性。",
+       "gate_sr": 0.275,
+       "gate_score": -0.042
+      },
+      {
+       "raw": "路径交叉校验并启用路径多样性\",\n  \"rationale\": \"通过引入多路径交叉校验和路径多样性，我们可以显著提高异步执行的可靠性，并减少单次探测的误判风险。\",\n  \"changes\": {\n    \"multi_path_voting\": 5,\n    \"diversity_seed\": 3\n  }\n}\n```",
+       "valid": true,
+       "changes": {
+        "multi_path_voting": 5,
+        "diversity_seed": 3
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 3
+       },
+       "title": "增加多路径交叉校验并启用路径多样性",
+       "rationale": "通过引入多路径交叉校验和路径多样性，我们可以显著提高异步执行的可靠性，并减少单次探测的误判风险。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.7767
+      },
+      {
+       "raw": "le\": \"通过调整多路径交叉校验（`multi_path_voting`）和独立路径多样性（`diversity_seed`），增强错误检测能力，减少因噪音导致的错误。\",\n  \"changes\": {\n    \"multi_path_voting\": 5,\n    \"diversity_seed\": 1\n  }\n}",
+       "valid": true,
+       "changes": {
+        "multi_path_voting": 5,
+        "diversity_seed": 1
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 1
+       },
+       "title": "提高噪声标签族的执行准确性和可靠性",
+       "rationale": "通过调整多路径交叉校验（`multi_path_voting`）和独立路径多样性（`diversity_seed`），增强错误检测能力，减少因噪音导致的错误。",
+       "gate_sr": 0.9917,
+       "gate_score": 0.7867
+      },
+      {
+       "raw": "e\": \"通过增加多路径交叉校验的数量和提升任务分解的粒度，我们可以更有效地识别和修正错误，并减少重复探查的时间和资源消耗。\",\n  \"changes\": {\n    \"multi_path_voting\": 5,\n    \"task_decompose\": 1,\n    \"verify_depth\": 2\n  }\n}",
+       "valid": true,
+       "changes": {
+        "multi_path_voting": 5,
+        "task_decompose": 1,
+        "verify_depth": 2
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 1,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "fast_risky",
+        "diversity_seed": 0
+       },
+       "title": "改进噪声标签族以提高执行正确率",
+       "rationale": "通过增加多路径交叉校验的数量和提升任务分解的粒度，我们可以更有效地识别和修正错误，并减少重复探查的时间和资源消耗。",
+       "gate_sr": 0.575,
+       "gate_score": 0.265
+      },
+      {
+       "raw": "功率\",\n  \"rationale\": \"通过减少误判和增加多路径交叉校验，降低故障点数，从而提升整体成功率。\",\n  \"changes\": {\n    \"verify_depth\": 2,\n    \"multi_path_voting\": 5,\n    \"tool_choice\": \"slow_safe\"\n  }\n}",
+       "valid": true,
+       "changes": {
+        "verify_depth": 2,
+        "multi_path_voting": 5,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 2,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 2,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高家族成功率",
+       "rationale": "通过减少误判和增加多路径交叉校验，降低故障点数，从而提升整体成功率。",
+       "gate_sr": 0.575,
+       "gate_score": 0.255
+      },
+      {
+       "raw": "  \"timeout_budget\": 3,\n    \"tool_choice\": \"slow_safe\"\n  }\n}\n```\n\n这个调整方案旨在通过增加多路径交叉校验的数量来提升可靠性，并在必要时延长探查时间预算，减少探测风险。此外，切换到较慢但稳健的工具选择“slow_safe”也有助于确保系统的稳定性和容错能力。",
+       "valid": true,
+       "changes": {
+        "multi_path_voting": 5,
+        "timeout_budget": 3,
+        "tool_choice": "slow_safe"
+       },
+       "cfg": {
+        "verify_depth": 0,
+        "retries": 0,
+        "task_decompose": 0,
+        "multi_path_voting": 5,
+        "memory_read": 0,
+        "memory_write": 0,
+        "timeout_budget": 3,
+        "early_exit": 0,
+        "tool_choice": "slow_safe",
+        "diversity_seed": 0
+       },
+       "title": "提高噪声标签族执行错误率30%，校验信号不可靠（verify/retries基本无效）的得分和成本",
+       "rationale": "通过增加多路径交叉校验数量，引入更多冗余路径以应对单一路径故障，从而显著提高可靠性。",
+       "gate_sr": 0.4333,
+       "gate_score": 0.1783
+      }
+     ],
+     "accepted": false,
+     "gate_sr": 0.9917,
+     "gate_score": 0.7867,
+     "rejected": {
+      "raw": "le\": \"通过调整多路径交叉校验（`multi_path_voting`）和独立路径多样性（`diversity_seed`），增强错误检测能力，减少因噪音导致的错误。\",\n  \"changes\": {\n    \"multi_path_voting\": 5,\n    \"diversity_seed\": 1\n  }\n}",
+      "valid": true,
+      "changes": {
+       "multi_path_voting": 5,
+       "diversity_seed": 1
+      },
+      "cfg": {
+       "verify_depth": 0,
+       "retries": 0,
+       "task_decompose": 0,
+       "multi_path_voting": 5,
+       "memory_read": 0,
+       "memory_write": 0,
+       "timeout_budget": 2,
+       "early_exit": 0,
+       "tool_choice": "fast_risky",
+       "diversity_seed": 1
+      },
+      "title": "提高噪声标签族的执行准确性和可靠性",
+      "rationale": "通过调整多路径交叉校验（`multi_path_voting`）和独立路径多样性（`diversity_seed`），增强错误检测能力，减少因噪音导致的错误。",
+      "gate_sr": 0.9917,
+      "gate_score": 0.7867
+     }
+    }
+   ],
+   "history": [
+    {
+     "round": 1,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 1,
+      "task_decompose": 1,
+      "multi_path_voting": 5,
+      "diversity_seed": 2
+     },
+     "accepted": true,
+     "sr": 1.0,
+     "score": 0.668,
+     "reason": "gate pass"
+    },
+    {
+     "round": 2,
+     "changes": {
+      "verify_depth": 2,
+      "multi_path_voting": 5,
+      "diversity_seed": 3
+     },
+     "accepted": true,
+     "sr": 0.9917,
+     "score": 0.6967,
+     "reason": "gate pass"
+    },
+    {
+     "round": 3,
+     "changes": {
+      "verify_depth": 2,
+      "retries": 1,
+      "task_decompose": 1,
+      "multi_path_voting": 3,
+      "tool_choice": "both",
+      "diversity_seed": 1
+     },
+     "accepted": false,
+     "sr": 0.975,
+     "score": 0.658,
+     "reason": "gate score below min_gain"
+    },
+    {
+     "round": 4,
+     "changes": {
+      "multi_path_voting": 5,
+      "diversity_seed": 1
+     },
+     "accepted": true,
+     "sr": 1.0,
+     "score": 0.795,
+     "reason": "gate pass"
+    },
+    {
+     "round": 5,
+     "changes": {
+      "multi_path_voting": 5,
+      "diversity_seed": 1
+     },
+     "accepted": false,
+     "sr": 0.9917,
+     "score": 0.7867,
+     "reason": "gate score below min_gain"
+    }
+   ]
+  }
+ },
+ "baselines": {
+  "default": {
+   "A": 0.21666666666666667,
+   "B": 0.5083333333333333,
+   "C": 0.30833333333333335,
+   "D": 0.3,
+   "E": 0.45,
+   "mean": 0.35666666666666663,
+   "cost": 0.0,
+   "score": 0.3567
+  },
+  "random_best": {
+   "sr": {
+    "A": 1.0,
+    "B": 1.0,
+    "C": 1.0,
+    "D": 1.0,
+    "E": 0.9666666666666667,
+    "mean": 0.9933333333333334,
+    "cost": 0.344,
+    "score": 0.6493
+   },
+   "cfg": {
+    "verify_depth": 2,
+    "retries": 7,
+    "task_decompose": 1,
+    "multi_path_voting": 3,
+    "memory_read": 1,
+    "memory_write": 0,
+    "timeout_budget": 3,
+    "early_exit": 1,
+    "tool_choice": "fast_risky",
+    "diversity_seed": 1
+   }
+  },
+  "random_trace_top": [
+   {
+    "i": 31,
+    "score": 0.6493,
+    "mean": 0.9933
+   },
+   {
+    "i": 176,
+    "score": 0.6417,
+    "mean": 0.9667
+   },
+   {
+    "i": 71,
+    "score": 0.639,
+    "mean": 0.885
+   },
+   {
+    "i": 120,
+    "score": 0.633,
+    "mean": 0.99
+   },
+   {
+    "i": 85,
+    "score": 0.6287,
+    "mean": 0.7967
+   },
+   {
+    "i": 27,
+    "score": 0.6257,
+    "mean": 0.8517
+   },
+   {
+    "i": 18,
+    "score": 0.625,
+    "mean": 0.8
+   },
+   {
+    "i": 95,
+    "score": 0.6207,
+    "mean": 0.9917
+   },
+   {
+    "i": 130,
+    "score": 0.6163,
+    "mean": 0.8333
+   },
+   {
+    "i": 21,
+    "score": 0.613,
+    "mean": 0.905
+   }
+  ],
+  "twoknob_best": {
+   "sr": {
+    "A": 0.4666666666666667,
+    "B": 1.0,
+    "C": 0.30833333333333335,
+    "D": 0.3416666666666667,
+    "E": 0.5333333333333333,
+    "mean": 0.53,
+    "cost": 0.076,
+    "score": 0.454
+   },
+   "cfg": {
+    "verify_depth": 1,
+    "retries": 3,
+    "task_decompose": 0,
+    "multi_path_voting": 0,
+    "memory_read": 0,
+    "memory_write": 0,
+    "timeout_budget": 2,
+    "early_exit": 0,
+    "tool_choice": "fast_risky",
+    "diversity_seed": 0
+   }
+  }
+ },
+ "final": {
+  "default": {
+   "A": 0.225,
+   "B": 0.4417,
+   "C": 0.35,
+   "D": 0.1667,
+   "E": 0.5083,
+   "mean": 0.3383,
+   "cost": 0.0,
+   "score": 0.3383
+  },
+  "random_best": {
+   "A": 1.0,
+   "B": 1.0,
+   "C": 1.0,
+   "D": 1.0,
+   "E": 0.9667,
+   "mean": 0.9933,
+   "cost": 0.344,
+   "score": 0.6493
+  },
+  "twoknob_best": {
+   "A": 0.475,
+   "B": 0.95,
+   "C": 0.35,
+   "D": 0.225,
+   "E": 0.5417,
+   "mean": 0.5083,
+   "cost": 0.076,
+   "score": 0.4323
+  },
+  "evo_A": {
+   "A": 1.0,
+   "B": 1.0,
+   "C": 0.35,
+   "D": 0.225,
+   "E": 0.5417,
+   "mean": 0.6233,
+   "cost": 0.156,
+   "score": 0.4673
+  },
+  "evo_B": {
+   "A": 0.5583,
+   "B": 0.9,
+   "C": 0.35,
+   "D": 0.1667,
+   "E": 0.5083,
+   "mean": 0.4967,
+   "cost": 0.052,
+   "score": 0.4447
+  },
+  "evo_C": {
+   "A": 0.8083,
+   "B": 0.9083,
+   "C": 0.9583,
+   "D": 0.225,
+   "E": 0.5417,
+   "mean": 0.6883,
+   "cost": 0.134,
+   "score": 0.5543
+  },
+  "evo_D": {
+   "A": 0.6833,
+   "B": 0.7833,
+   "C": 0.9667,
+   "D": 1.0,
+   "E": 0.3167,
+   "mean": 0.75,
+   "cost": 0.314,
+   "score": 0.436
+  },
+  "evo_E": {
+   "A": 0.1,
+   "B": 0.3083,
+   "C": 0.2,
+   "D": 0.0833,
+   "E": 1.0,
+   "mean": 0.3383,
+   "cost": 0.205,
+   "score": 0.1333
+  }
+ },
+ "verdict": {
+  "A": {
+   "evo_score": 0.844,
+   "random_best_score": 0.656,
+   "twoknob_best_score": 0.399,
+   "default_score": 0.225,
+   "evo_sr": 1.0,
+   "evo_cost": 0.156,
+   "pass_rand": true,
+   "pass_2knob": true
+  },
+  "B": {
+   "evo_score": 0.848,
+   "random_best_score": 0.656,
+   "twoknob_best_score": 0.874,
+   "default_score": 0.4417,
+   "evo_sr": 0.9,
+   "evo_cost": 0.052,
+   "pass_rand": true,
+   "pass_2knob": false
+  },
+  "C": {
+   "evo_score": 0.8243,
+   "random_best_score": 0.656,
+   "twoknob_best_score": 0.274,
+   "default_score": 0.35,
+   "evo_sr": 0.9583,
+   "evo_cost": 0.134,
+   "pass_rand": true,
+   "pass_2knob": true
+  },
+  "D": {
+   "evo_score": 0.686,
+   "random_best_score": 0.656,
+   "twoknob_best_score": 0.149,
+   "default_score": 0.1667,
+   "evo_sr": 1.0,
+   "evo_cost": 0.314,
+   "pass_rand": true,
+   "pass_2knob": true
+  },
+  "E": {
+   "evo_score": 0.795,
+   "random_best_score": 0.6227,
+   "twoknob_best_score": 0.4657,
+   "default_score": 0.5083,
+   "evo_sr": 1.0,
+   "evo_cost": 0.205,
+   "pass_rand": true,
+   "pass_2knob": true
+  }
+ },
+ "g1_gate": {
+  "families_passed": 4,
+  "total": 5,
+  "gate_pass": true,
+  "metric": "score=sr-cost"
+ }
+}

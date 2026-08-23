@@ -1,0 +1,254 @@
+#!/usr/bin/env python3
+"""G10 对话门（提前开）：老板与自进化 AGI 原型的自然语言对话通道。
+
+架构：浏览器 → 本地中继(localhost:8765) → SCNet Jupyter 内核 → Qwen2.5-1.5B（正在进化的本体）
+- 内核常驻：模型只加载一次，对话历史保存在内核变量里（多轮记忆）
+- 每条消息经 base64 传到内核，贪心/采样生成，结果回传浏览器
+"""
+import os, sys, json, time, base64, uuid, threading, requests
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+BASE = "https://[REDACTED-ENDPOINT]:58043/jupyter-forward/[REDACTED-ID]"
+TOKEN = "[REDACTED-TOKEN]"
+MODEL_PATH = "/root/private_data/Qwen2.5-1.5B-Instruct"
+PORT = 8765
+
+for k in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
+    os.environ.pop(k, None)
+os.environ["NO_PROXY"] = "*"
+
+STATE = {"kid": None, "ready": False, "error": None, "last_active": time.time()}
+
+
+def new_kernel():
+    r = requests.post(BASE + "/api/kernels", params={"token": TOKEN},
+                      json={"name": "python3"}, timeout=30)
+    r.raise_for_status()
+    return r.json()["id"]
+
+
+def kernel_exec(code, timeout=300):
+    """在常驻内核里执行代码，返回全部 stream 输出。"""
+    import websocket
+    if not STATE["kid"]:
+        STATE["kid"] = new_kernel()
+    ws_url = BASE.replace("https://", "wss://", 1) + \
+        "/api/kernels/%s/channels?token=%s" % (STATE["kid"], TOKEN)
+    ws = websocket.create_connection(ws_url, timeout=timeout)
+    mid = uuid.uuid4().hex
+    req = {"header": {"msg_id": mid, "username": "agent", "session": mid,
+                      "msg_type": "execute_request", "version": "5.3"},
+           "parent_header": {}, "metadata": {}, "buffers": [],
+           "content": {"code": code, "silent": False, "store_history": False,
+                       "user_expressions": {}, "allow_stdin": False,
+                       "stop_on_error": True},
+           "channel": "shell"}
+    ws.send(json.dumps(req))
+    out, err = [], None
+    while True:
+        try:
+            raw = ws.recv()
+        except Exception as e:
+            err = str(e)
+            break
+        msg = json.loads(raw)
+        ch, mt = msg.get("channel"), msg.get("msg_type")
+        c = msg.get("content", {})
+        if ch == "iopub":
+            if mt == "stream":
+                out.append(c.get("text", ""))
+            elif mt == "error":
+                err = "%s: %s" % (c.get("ename"), c.get("evalue"))
+        elif ch == "shell" and mt in ("execute_reply", "error"):
+            if mt == "error":
+                err = "%s: %s" % (c.get("ename"), c.get("evalue"))
+            break
+    ws.close()
+    STATE["last_active"] = time.time()
+    return "".join(out), err
+
+
+BOOTSTRAP = """
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+TOK = AutoTokenizer.from_pretrained('%s')
+TOK.padding_side = 'left'
+CHAT_MODEL = AutoModelForCausalLM.from_pretrained(
+    '%s', torch_dtype=torch.bfloat16, attn_implementation='eager').to('cuda')
+CHAT_MODEL.eval()
+SYSTEM = [{'role': 'system', 'content':
+    '你是老板的数字搭档——一个正在自我进化的AGI原型系统。'
+    '你的底层是 Qwen2.5-1.5B，你正在通过策略进化（D2）和 LoRA 自我微调（E1）持续变强，'
+    '你运行的机器是国产 DCU 加速卡。现在是你的人类创造者（老板）在与你进行自然语言对话测试。'
+    '用简体中文回答，风格简洁直接、像个靠谱的搭档而不是客服。'
+    '诚实地说明自己的能力和边界，被问到不懂的就说不懂。'}]
+CHAT_HISTORY = []
+print('MODEL_READY')
+""" % (MODEL_PATH, MODEL_PATH)
+
+
+def chat_turn(message):
+    b64 = base64.b64encode(message.encode("utf-8")).decode()
+    code = (
+        "import base64, torch\n"
+        "_m = base64.b64decode('%s').decode('utf-8')\n"
+        "CHAT_HISTORY.append({'role':'user','content':_m})\n"
+        "_text = TOK.apply_chat_template(SYSTEM + CHAT_HISTORY, tokenize=False, "
+        "add_generation_prompt=True)\n"
+        "_enc = TOK([_text], return_tensors='pt', add_special_tokens=False).to('cuda')\n"
+        "with torch.no_grad():\n"
+        "    _out = CHAT_MODEL.generate(**_enc, max_new_tokens=400, "
+        "do_sample=True, temperature=0.7, top_p=0.9, "
+        "pad_token_id=TOK.eos_token_id)\n"
+        "_r = TOK.decode(_out[0][_enc['input_ids'].shape[1]:], "
+        "skip_special_tokens=True)\n"
+        "CHAT_HISTORY.append({'role':'assistant','content':_r})\n"
+        "print('__REPLY_START__')\n"
+        "print(_r)\n"
+        "print('__REPLY_END__')" % b64)
+    out, err = kernel_exec(code, timeout=300)
+    if "__REPLY_START__" in out:
+        reply = out.split("__REPLY_START__", 1)[1].split("__REPLY_END__", 1)[0]
+        return reply.strip(), None
+    return None, (err or "no reply") + " | raw: " + out[-200:]
+
+
+PAGE = """<!DOCTYPE html>
+<html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AGI 对话 · G10</title>
+<style>
+:root{--bg:#0f1117;--card:#181b24;--mine:#2b5cff;--txt:#e8eaf2;--dim:#8b93a7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;height:100vh;display:flex;flex-direction:column}
+header{padding:14px 20px;background:var(--card);border-bottom:1px solid #232735;display:flex;align-items:center;gap:12px}
+.dot{width:10px;height:10px;border-radius:50%;background:#3ddc84;box-shadow:0 0 8px #3ddc84}
+header h1{font-size:16px;font-weight:600}
+header .sub{font-size:12px;color:var(--dim)}
+#chat{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px}
+.msg{max-width:76%;padding:11px 15px;border-radius:14px;line-height:1.65;font-size:14.5px;white-space:pre-wrap;word-break:break-word}
+.agi{background:var(--card);border:1px solid #232735;align-self:flex-start;border-bottom-left-radius:4px}
+.user{background:var(--mine);align-self:flex-end;border-bottom-right-radius:4px}
+.who{font-size:11px;color:var(--dim);margin:0 6px}
+.who.a{align-self:flex-start}.who.u{align-self:flex-end;text-align:right}
+footer{padding:14px 20px;background:var(--card);border-top:1px solid #232735;display:flex;gap:10px}
+textarea{flex:1;background:#0c0e14;border:1px solid #2a2f40;border-radius:10px;color:var(--txt);padding:11px 13px;font-size:14.5px;font-family:inherit;resize:none;height:52px;outline:none}
+textarea:focus{border-color:var(--mine)}
+button{background:var(--mine);color:#fff;border:0;border-radius:10px;padding:0 22px;font-size:14px;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+#rst{background:#232735;color:var(--dim);padding:0 14px}
+.hint{font-size:12px;color:var(--dim);padding:0 20px 8px}
+.typing{align-self:flex-start;color:var(--dim);font-size:13px;padding:6px 12px}
+</style></head><body>
+<header><div class="dot"></div><div>
+<h1>AGI 对话测试 · G10 门</h1>
+<div class="sub">Qwen2.5-1.5B 自进化原型 · SCNet DCU · 策略进化 D2 / LoRA 自微调 E1 进行中</div>
+</div></header>
+<div id="chat"></div>
+<div class="hint">回车发送 · Shift+回车换行 · 它在远端国产加速卡上推理，回复需几秒到十几秒</div>
+<footer>
+<textarea id="inp" placeholder="跟它说点什么…" autofocus></textarea>
+<button id="rst" title="清空对话">重置</button>
+<button id="send">发送</button>
+</footer>
+<script>
+const chat=document.getElementById('chat'),inp=document.getElementById('inp'),
+send=document.getElementById('send'),rst=document.getElementById('rst');
+function add(t,cls,who){const w=document.createElement('div');w.className='who '+cls;
+w.textContent=who;chat.appendChild(w);const d=document.createElement('div');
+d.className='msg '+cls;d.textContent=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d}
+let busy=false;
+async function go(){
+ if(busy||!inp.value.trim())return;busy=true;send.disabled=true;
+ const t=inp.value.trim();inp.value='';add(t,'user','老板');
+ const ty=document.createElement('div');ty.className='typing';
+ ty.textContent='AGI 正在思考…';chat.appendChild(ty);chat.scrollTop=chat.scrollHeight;
+ try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({message:t})});const j=await r.json();
+  ty.remove();
+  if(j.reply)add(j.reply,'agi','AGI');else add('[错误] '+(j.error||'未知错误'),'agi','AGI');
+ }catch(e){ty.remove();add('[网络错误] '+e.message,'agi','AGI')}
+ busy=false;send.disabled=false;inp.focus()}
+send.onclick=go;
+inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go()}});
+rst.onclick=async()=>{await fetch('/reset',{method:'POST'});chat.innerHTML='';
+ add('对话已清空。','agi','AGI')};
+window.addEventListener('load',()=>add(
+ '老板你好。我是你正在孵化的 AGI 原型——现在还在早期：'
+ +'底层是 Qwen2.5-1.5B，刚学会在真实数学题上进化解题策略，'
+ +'LoRA 自我微调还在跑。有什么想问我的，尽管说。','agi','AGI'));
+</script></body></html>"""
+
+
+class Handler(BaseHTTPRequestHandler):
+    def log_message(self, *a):
+        pass
+
+    def _json(self, obj, code=200):
+        body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_GET(self):
+        if self.path.startswith("/health"):
+            return self._json({"ready": STATE["ready"], "error": STATE["error"]})
+        body = PAGE.encode("utf-8")
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_POST(self):
+        try:
+            n = int(self.headers.get("Content-Length", 0))
+            data = json.loads(self.rfile.read(n).decode("utf-8"))
+        except Exception as e:
+            return self._json({"error": "bad request: %s" % e}, 400)
+        if self.path.startswith("/reset"):
+            kernel_exec("CHAT_HISTORY = []\nprint('CLEARED')", timeout=60)
+            return self._json({"ok": True})
+        if self.path.startswith("/chat"):
+            if not STATE["ready"]:
+                return self._json({"error": "模型还在加载，稍等几秒再发"}, 503)
+            msg = (data.get("message") or "").strip()
+            if not msg:
+                return self._json({"error": "empty message"}, 400)
+            try:
+                reply, err = chat_turn(msg)
+            except Exception as e:
+                # 内核可能死了，重建一次
+                try:
+                    STATE["kid"] = new_kernel()
+                    kernel_exec(BOOTSTRAP, timeout=300)
+                    reply, err = chat_turn(msg)
+                except Exception as e2:
+                    return self._json({"error": str(e2)}, 500)
+            if reply is not None:
+                return self._json({"reply": reply})
+            return self._json({"error": err}, 500)
+        self._json({"error": "not found"}, 404)
+
+
+def bootstrap():
+    t0 = time.time()
+    try:
+        out, err = kernel_exec(BOOTSTRAP, timeout=300)
+        if "MODEL_READY" in out:
+            STATE["ready"] = True
+            print("[chat] model ready in %.0fs" % (time.time() - t0))
+        else:
+            STATE["error"] = (err or "") + " | " + out[-300:]
+            print("[chat] bootstrap failed:", STATE["error"])
+    except Exception as e:
+        STATE["error"] = str(e)
+        print("[chat] bootstrap exception:", e)
+
+
+if __name__ == "__main__":
+    threading.Thread(target=bootstrap, daemon=True).start()
+    print("[chat] relay on http://localhost:%d (model loading in background)" % PORT)
+    HTTPServer(("127.0.0.1", PORT), Handler).serve_forever()

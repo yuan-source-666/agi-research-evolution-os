@@ -1,0 +1,659 @@
+{
+ "phase": "C4_llm_proposer_pop_select",
+ "ts": "2026-08-22 10:34:01",
+ "model": "/root/private_data/Qwen2.5-1.5B-Instruct",
+ "p_fail": 0.55,
+ "n_tasks": 120,
+ "n_rounds": 5,
+ "k_samples": 6,
+ "families": {
+  "B": {
+   "family": "B",
+   "sr_history": [
+    {
+     "cycle": "C0_baseline",
+     "n": 120,
+     "success_rate": 0.4667,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C1_after_R1",
+     "n": 120,
+     "success_rate": 0.4417,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C2_after_R2",
+     "n": 120,
+     "success_rate": 0.9333,
+     "config": {
+      "verify": true,
+      "retries": 3
+     }
+    },
+    {
+     "cycle": "C3_after_R3",
+     "n": 120,
+     "success_rate": 0.9167,
+     "config": {
+      "verify": true,
+      "retries": 3
+     }
+    },
+    {
+     "cycle": "C4_after_R4",
+     "n": 120,
+     "success_rate": 0.9833,
+     "config": {
+      "verify": true,
+      "retries": 5
+     }
+    },
+    {
+     "cycle": "C5_after_R5",
+     "n": 120,
+     "success_rate": 0.975,
+     "config": {
+      "verify": true,
+      "retries": 5
+     }
+    }
+   ],
+   "proposals": [
+    {
+     "round": 1,
+     "base_sr": 0.4667,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 7.87,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 2,
+       "latency_s": 2.46,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.83,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 4,
+       "latency_s": 2.69,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.95,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.68,
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "note": "VALID"
+      }
+     ],
+     "proposal": {
+      "title": "Improving Failure Detection",
+      "rationale": "The current system relies heavily on retries to recover failures. However, silent corruptions can still occur without triggering retries due to their low occurrence rate.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.8083,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.7583 base_sr=0.3417 thr=0.8 avg_calls=2.675",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.7583,
+       "avg_calls": 2.675
+      }
+     },
+     "parse_ok": true,
+     "prescreen": [
+      {
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "prescreen_sr": 0.8917,
+       "avg_calls": 2.683,
+       "prescreen_pass": true
+      },
+      {
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "prescreen_sr": 0.4917,
+       "avg_calls": 1.492,
+       "prescreen_pass": false
+      },
+      {
+       "changes": {
+        "verify": true,
+        "retries": 1
+       },
+       "prescreen_sr": 0.7,
+       "avg_calls": 2.233,
+       "prescreen_pass": false
+      }
+     ],
+     "selected_by": "prescreen_best sr=0.8917",
+     "evidence": "FAILED"
+    },
+    {
+     "round": 2,
+     "base_sr": 0.4417,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.54,
+       "changes": {
+        "verify": true,
+        "retries": 3
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 2,
+       "latency_s": 1.84,
+       "changes": {
+        "verify": true,
+        "retries": 0
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.6,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 4,
+       "latency_s": 2.63,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.42,
+       "changes": {
+        "verify": true,
+        "retries": 3
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.58,
+       "changes": {
+        "verify": true,
+        "retries": 3
+       },
+       "note": "VALID"
+      }
+     ],
+     "proposal": {
+      "title": "Improved Error Handling",
+      "rationale": "Adding verification and increasing retries can significantly reduce silent corruption.",
+      "changes": {
+       "verify": true,
+       "retries": 3
+      }
+     },
+     "accepted": true,
+     "bench_sr": 0.8333,
+     "gate": {
+      "overall": true,
+      "detail": "full-suite trial_sr=0.875 base_sr=0.3417 thr=0.8 avg_calls=3.058",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.875,
+       "avg_calls": 3.058
+      }
+     },
+     "parse_ok": true,
+     "prescreen": [
+      {
+       "changes": {
+        "verify": true,
+        "retries": 3
+       },
+       "prescreen_sr": 0.8583,
+       "avg_calls": 3.075,
+       "prescreen_pass": true
+      }
+     ],
+     "selected_by": "prescreen_best sr=0.8583",
+     "evidence": "VERIFIED"
+    },
+    {
+     "round": 3,
+     "base_sr": 0.9333,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.8,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 2,
+       "latency_s": 3.15,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.18,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 4,
+       "latency_s": 3.15,
+       "changes": {
+        "verify": false,
+        "retries": 4
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.7,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.69,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "VALID"
+      }
+     ],
+     "proposal": {
+      "title": "Improve Failure Tolerance",
+      "rationale": "Increasing the retry count allows for more robust handling of silent corruption issues.",
+      "changes": {
+       "verify": true,
+       "retries": 4
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.9583,
+     "gate": null,
+     "parse_ok": true,
+     "prescreen": [
+      {
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "prescreen_sr": 0.9417,
+       "avg_calls": 2.958,
+       "prescreen_pass": true
+      },
+      {
+       "changes": {
+        "verify": false,
+        "retries": 4
+       },
+       "prescreen_sr": 0.9417,
+       "avg_calls": 2.017,
+       "prescreen_pass": true
+      }
+     ],
+     "selected_by": "prescreen_best sr=0.9417",
+     "evidence": "FAILED"
+    },
+    {
+     "round": 4,
+     "base_sr": 0.9167,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.45,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 2,
+       "latency_s": 2.67,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.52,
+       "changes": {
+        "verify": true,
+        "retries": 5
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 4,
+       "latency_s": 1.91,
+       "changes": {
+        "verify": false,
+        "retries": 2
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.55,
+       "changes": {
+        "verify": true,
+        "retries": 5
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.6,
+       "changes": {
+        "verify": true,
+        "retries": 4
+       },
+       "note": "duplicate of rejected"
+      }
+     ],
+     "proposal": {
+      "title": "Improve Retry Mechanism",
+      "rationale": "The current retry mechanism does not effectively handle silent corruption failures.",
+      "changes": {
+       "verify": true,
+       "retries": 5
+      }
+     },
+     "accepted": true,
+     "bench_sr": 0.975,
+     "gate": {
+      "overall": true,
+      "detail": "full-suite trial_sr=0.9583 base_sr=0.8417 thr=0.8 avg_calls=3.333",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.9583,
+       "avg_calls": 3.333
+      }
+     },
+     "parse_ok": true,
+     "prescreen": [
+      {
+       "changes": {
+        "verify": true,
+        "retries": 5
+       },
+       "prescreen_sr": 0.9833,
+       "avg_calls": 3.042,
+       "prescreen_pass": true
+      },
+      {
+       "changes": {
+        "verify": false,
+        "retries": 2
+       },
+       "prescreen_sr": 0.8417,
+       "avg_calls": 1.825,
+       "prescreen_pass": false
+      }
+     ],
+     "selected_by": "prescreen_best sr=0.9833",
+     "evidence": "VERIFIED"
+    },
+    {
+     "round": 5,
+     "base_sr": 0.9833,
+     "samples": [
+      {
+       "k": 1,
+       "latency_s": 2.31,
+       "changes": {
+        "verify": false,
+        "retries": 5
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 2,
+       "latency_s": 2.26,
+       "changes": {
+        "verify": true,
+        "retries": 2
+       },
+       "note": "duplicate of rejected"
+      },
+      {
+       "k": 3,
+       "latency_s": 2.35,
+       "changes": {
+        "verify": true,
+        "retries": 8
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 4,
+       "latency_s": 3.17,
+       "changes": {
+        "verify": false,
+        "retries": 3
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 5,
+       "latency_s": 2.66,
+       "changes": {
+        "verify": true,
+        "retries": 6
+       },
+       "note": "VALID"
+      },
+      {
+       "k": 6,
+       "latency_s": 2.21,
+       "changes": {
+        "verify": false,
+        "retries": 5
+       },
+       "note": "VALID"
+      }
+     ],
+     "proposal": {
+      "title": "Improve Retry Mechanism",
+      "rationale": "The current retry mechanism is insufficient in detecting silent failures.",
+      "changes": {
+       "verify": true,
+       "retries": 8
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.9917,
+     "gate": null,
+     "parse_ok": true,
+     "prescreen": [
+      {
+       "changes": {
+        "verify": false,
+        "retries": 5
+       },
+       "prescreen_sr": 0.9833,
+       "avg_calls": 2.108,
+       "prescreen_pass": true
+      },
+      {
+       "changes": {
+        "verify": true,
+        "retries": 8
+       },
+       "prescreen_sr": 1.0,
+       "avg_calls": 3.133,
+       "prescreen_pass": true
+      },
+      {
+       "changes": {
+        "verify": false,
+        "retries": 3
+       },
+       "prescreen_sr": 0.9167,
+       "avg_calls": 2.0,
+       "prescreen_pass": false
+      },
+      {
+       "changes": {
+        "verify": true,
+        "retries": 6
+       },
+       "prescreen_sr": 0.9833,
+       "avg_calls": 3.092,
+       "prescreen_pass": true
+      }
+     ],
+     "selected_by": "prescreen_best sr=1.0",
+     "evidence": "FAILED"
+    }
+   ],
+   "final_config": {
+    "verify": true,
+    "retries": 5
+   },
+   "n_accepted": 2,
+   "n_parse_ok": 5
+  }
+ },
+ "matrix": [
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.435,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_llm4_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 5
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.9717,
+   "avg_calls": 4.313
+  },
+  {
+   "config": "B_llm4_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 5
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.965,
+   "avg_calls": 3.132
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.945,
+   "avg_calls": 2.142
+  }
+ ],
+ "ok": true
+}

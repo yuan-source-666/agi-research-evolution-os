@@ -1,0 +1,403 @@
+{
+ "phase": "C_llm_proposer",
+ "ts": "2026-08-22 10:18:55",
+ "model": "/root/private_data/Qwen2.5-1.5B-Instruct",
+ "p_fail": 0.55,
+ "n_tasks": 120,
+ "n_rounds": 3,
+ "families": {
+  "A": {
+   "family": "A",
+   "sr_history": [
+    {
+     "cycle": "C0_baseline",
+     "n": 120,
+     "success_rate": 0.4833,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C1_after_R1",
+     "n": 120,
+     "success_rate": 0.8333,
+     "config": {
+      "verify": true,
+      "retries": 2
+     }
+    },
+    {
+     "cycle": "C2_after_R2",
+     "n": 120,
+     "success_rate": 0.8,
+     "config": {
+      "verify": true,
+      "retries": 2
+     }
+    },
+    {
+     "cycle": "C3_after_R3",
+     "n": 120,
+     "success_rate": 0.8083,
+     "config": {
+      "verify": true,
+      "retries": 2
+     }
+    }
+   ],
+   "proposals": [
+    {
+     "round": 1,
+     "base_sr": 0.4833,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 7.12,
+       "raw": "```json\n{\n  \"title\": \"Improving Silent Corruption Detection\",\n  \"rationale\": \"Silent corruption can lead to incorrect results in critical calculations.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improving Silent Corruption Detection",
+      "rationale": "Silent corruption can lead to incorrect results in critical calculations.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": true,
+     "bench_sr": 0.8583,
+     "gate": {
+      "overall": true,
+      "detail": "full-suite trial_sr=0.85 base_sr=0.4 thr=0.8 avg_calls=3.7",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.85,
+       "avg_calls": 3.7
+      }
+     },
+     "parse_ok": true,
+     "evidence": "VERIFIED"
+    },
+    {
+     "round": 2,
+     "base_sr": 0.8333,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.93,
+       "raw": "```json\n{\n  \"title\": \"Improving Silent Corruption Detection\",\n  \"rationale\": \"The current configuration does not effectively detect silent corruption due to incorrect values being returned.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improving Silent Corruption Detection",
+      "rationale": "The current configuration does not effectively detect silent corruption due to incorrect values being returned.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.8167,
+     "gate": null,
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 3,
+     "base_sr": 0.8,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.75,
+       "raw": "```json\n{\n  \"title\": \"Improving Silent Corruption Detection\",\n  \"rationale\": \"The current configuration does not effectively detect silent corruption due to incorrect results.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improving Silent Corruption Detection",
+      "rationale": "The current configuration does not effectively detect silent corruption due to incorrect results.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.8083,
+     "gate": null,
+     "parse_ok": true,
+     "evidence": "FAILED"
+    }
+   ],
+   "final_config": {
+    "verify": true,
+    "retries": 2
+   },
+   "n_accepted": 1,
+   "n_parse_ok": 3
+  },
+  "B": {
+   "family": "B",
+   "sr_history": [
+    {
+     "cycle": "C0_baseline",
+     "n": 120,
+     "success_rate": 0.4667,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C1_after_R1",
+     "n": 120,
+     "success_rate": 0.4417,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C2_after_R2",
+     "n": 120,
+     "success_rate": 0.4167,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    },
+    {
+     "cycle": "C3_after_R3",
+     "n": 120,
+     "success_rate": 0.4833,
+     "config": {
+      "verify": false,
+      "retries": 0
+     }
+    }
+   ],
+   "proposals": [
+    {
+     "round": 1,
+     "base_sr": 0.4667,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.71,
+       "raw": "```json\n{\n  \"title\": \"Improving Error Handling\",\n  \"rationale\": \"The current configuration does not effectively handle silent corruption due to incorrect results.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improving Error Handling",
+      "rationale": "The current configuration does not effectively handle silent corruption due to incorrect results.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.8083,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.7583 base_sr=0.3417 thr=0.8 avg_calls=2.675",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.7583,
+       "avg_calls": 2.675
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 2,
+     "base_sr": 0.4417,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.82,
+       "raw": "```json\n{\n  \"title\": \"Improve Error Handling and Verification\",\n  \"rationale\": \"The current configuration does not effectively detect silent corruption due to incorrect computations.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improve Error Handling and Verification",
+      "rationale": "The current configuration does not effectively detect silent corruption due to incorrect computations.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.7667,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.7583 base_sr=0.3417 thr=0.8 avg_calls=2.675",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.7583,
+       "avg_calls": 2.675
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    },
+    {
+     "round": 3,
+     "base_sr": 0.4167,
+     "llm_rounds": [
+      {
+       "attempt": 1,
+       "latency_s": 2.82,
+       "raw": "```json\n{\n  \"title\": \"Improving Verification and Retry Mechanism\",\n  \"rationale\": \"The current configuration fails to detect silent corruption due to incorrect results.\",\n  \"changes\": {\n    \"verify\": true,\n    \"retries\": 2\n  }\n}\n```",
+       "error": null
+      }
+     ],
+     "proposal": {
+      "title": "Improving Verification and Retry Mechanism",
+      "rationale": "The current configuration fails to detect silent corruption due to incorrect results.",
+      "changes": {
+       "verify": true,
+       "retries": 2
+      }
+     },
+     "accepted": false,
+     "bench_sr": 0.8417,
+     "gate": {
+      "overall": false,
+      "detail": "full-suite trial_sr=0.7583 base_sr=0.3417 thr=0.8 avg_calls=2.675",
+      "trial_bench": {
+       "n_tasks": 120,
+       "success_rate": 0.7583,
+       "avg_calls": 2.675
+      }
+     },
+     "parse_ok": true,
+     "evidence": "FAILED"
+    }
+   ],
+   "final_config": {
+    "verify": false,
+    "retries": 0
+   },
+   "n_accepted": 0,
+   "n_parse_ok": 3
+  }
+ },
+ "matrix": [
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "base",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.435,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "A_llm_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 2
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.835,
+   "avg_calls": 3.647
+  },
+  {
+   "config": "A_llm_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 2
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.835,
+   "avg_calls": 2.75
+  },
+  {
+   "config": "B_llm_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_llm_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 0
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.435,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "A_manual_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.9467,
+   "avg_calls": 4.19
+  },
+  {
+   "config": "A_manual_star",
+   "config_dict": {
+    "verify": true,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.945,
+   "avg_calls": 3.087
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "A",
+   "n": 600,
+   "success_rate": 0.4533,
+   "avg_calls": 1.0
+  },
+  {
+   "config": "B_manual_star",
+   "config_dict": {
+    "verify": false,
+    "retries": 4
+   },
+   "family": "B",
+   "n": 600,
+   "success_rate": 0.945,
+   "avg_calls": 2.142
+  }
+ ],
+ "ok": true
+}

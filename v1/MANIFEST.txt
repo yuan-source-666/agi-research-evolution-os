@@ -1,0 +1,26 @@
+=== AGI Archive 111111 MANIFEST (v3 增量更新 16:35) ===
+Sat Aug 22 04:35:54 PM CST 2026
+
+294M	remote_full
+771K	local_scnet_v8
+
+remote_full: 4875 files
+local_scnet_v8: 78 files
+SHA256SUMS: 4953 校验项
+
+--- v5.x 新增关键文件 sha256 ---
+ba1b91c91816851dc5acb7ad16d73da313e84e031ab4855bbd5241ddc4a0ef8a  local_scnet_v8/chat_relay.py
+27568ae5eed66d5a816355dd2648d733c2c60be9bbb49b72f693798f7c3a92ae  local_scnet_v8/chat_relay_v4.py.bak3
+c989ac20749abefc476600d38d160b475cc1915f3b5d312856ae479b5768afa2  local_scnet_v8/probe_model.py
+02a2477ee46c00afad804dd331db08a5c9b6f27c882292292776e2c1ac3d889d  local_scnet_v8/probe_model2.py
+5d9d1ad8db5debdae3a92acfc64cdd32ad1a75f1ebc6e23f160bc28e45b1c4fc  local_scnet_v8/check_kernel.py
+aa1c38c70c177b2d4002cd462a9dbe6c4af2e3fce54fa725935fa72539d85831  RESTORE.md
+
+--- 核心常驻文件 sha256 ---
+7a0584b91ba7b564f74885b7756eda6ed63901c3c9fd456c69346eaf1269a423  remote_full/evo_daemon.py
+31566a85bd6737e6b05bd95055bfce82cd284ef6347773a6502b24ed55b39845  remote_full/agi_core.py
+e27930edb70d79901ee8671345538969260b0ad9bd278e93315051166b17a603  remote_full/agi_engine.py
+acc74760d944687370e7dab2029e3ba0ea5d1189cb3046cbc6b5233f149ea150  remote_full/agi_drives.json
+a9cbca7db486f56029ef3a8fc2bd9fbb980ce41279169db0fd53128c61a3a28d  remote_full/evo_daemon_state.json
+
+harness commit: 141eb6fef83422698aef7a981029e843e8161534

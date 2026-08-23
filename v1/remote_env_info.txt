@@ -1,0 +1,28 @@
+=== date ===
+Sat Aug 22 03:14:44 PM CST 2026
+=== os ===
+PRETTY_NAME="Ubuntu 22.04.5 LTS"
+NAME="Ubuntu"
+VERSION_ID="22.04"
+Linux [REDACTED-HOSTNAME] 5.15.0-25-generic #25 SMP Wed Sep 4 16:01:38 CST 2024 x86_64 x86_64 x86_64 GNU/Linux
+=== python ===
+Python 3.11.9
+/usr/local/bin/python3
+=== torch/rocm ===
+torch 2.9.0 cuda(hip): True
+=== node ===
+v22.19.0
+=== pip list (key) ===
+accelerate                         1.14.0
+numpy                              1.25.0
+peft                               0.20.0
+torch                              2.9.0+das.opt1.dtk2604
+torchdata                          0.8.0
+transformers                       4.57.6
+=== gpu ===
+
+================================= System Management Interface ==================================
+================================================================================================
+HCU[0]		: Card Series:		 BW
+HCU[0]		: Card Vendor:		 C-3000 IC Design Co., Ltd.
+================================================================================================

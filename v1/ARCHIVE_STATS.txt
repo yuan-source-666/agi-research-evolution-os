@@ -1,0 +1,4 @@
+total files: 75729
+total size: 711K	local_scnet_v8
+1.8G	remote_full
+711K	local_scnet_v8

@@ -1,0 +1,110 @@
+{
+ "stage": "d2_archive",
+ "ts_start": "2026-08-22 13:05:53",
+ "d2_archive": [
+  {
+   "name": "S0_direct",
+   "instruction": "Solve the math problem. Be concise.",
+   "decompose": false,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.38
+  },
+  {
+   "name": "S1_cot",
+   "instruction": "Solve the problem step by step, showing each calculation clearly before stating the final answer.",
+   "decompose": false,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.26
+  },
+  {
+   "name": "S2_cot_verify",
+   "instruction": "Solve the problem step by step, showing each calculation clearly before stating the final answer.",
+   "decompose": false,
+   "verify": true,
+   "vote_k": 0,
+   "acc": 0.21
+  },
+  {
+   "name": "S3_decompose_cot",
+   "instruction": "Solve the problem step by step, showing each calculation clearly.",
+   "decompose": true,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.28
+  },
+  {
+   "name": "S4_visualize_approach",
+   "instruction": "Visualize the problem step-by-step using diagrams or geometric shapes, then solve. This visual reasoning helps in understanding abstract concepts.",
+   "decompose": true,
+   "verify": true,
+   "vote_k": 0,
+   "acc": 0.27
+  },
+  {
+   "name": "S5_pattern_identify",
+   "instruction": "Look for patterns in numbers or sequences that can help you generalize and solve complex problems efficiently.",
+   "decompose": true,
+   "verify": true,
+   "vote_k": 0,
+   "acc": 0.17
+  },
+  {
+   "name": "S6_number_system_explore",
+   "instruction": "Understand different number systems like binary, hexadecimal before solving math problems in those bases; it simplifies calculations and reveals hidden patterns.",
+   "decompose": true,
+   "verify": true,
+   "vote_k": 0,
+   "acc": 0.18
+  },
+  {
+   "name": "Strategy_S7_divide_and_conquer",
+   "instruction": "Break down the problem into smaller sub-problems, solve each part independently, then combine the results.",
+   "decompose": true,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.3
+  },
+  {
+   "name": "Strategy_S8_simplify_equations_first",
+   "instruction": "Before solving the main equation, simplify it by combining like terms or factoring if possible.",
+   "decompose": false,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.3
+  },
+  {
+   "name": "Strategy_S9_check_for_trivial_cases",
+   "instruction": "Consider special cases where the equation is simpler, such as when all variables are zero.",
+   "decompose": false,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.3
+  },
+  {
+   "name": "S1_mathematical_patterns",
+   "instruction": "Identify underlying mathematical patterns in the problem statement that can simplify it significantly.",
+   "decompose": true,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.19
+  },
+  {
+   "name": "S2_complexity_reduction",
+   "instruction": "Break down complex problems into simpler components and tackle them one at a time.",
+   "decompose": true,
+   "verify": false,
+   "vote_k": 0,
+   "acc": 0.22
+  },
+  {
+   "name": "S3_guess_and_check",
+   "instruction": "Make an educated guess based on the given information and check its validity through calculations.",
+   "decompose": false,
+   "verify": true,
+   "vote_k": 0,
+   "acc": 0.27
+  }
+ ]
+}
